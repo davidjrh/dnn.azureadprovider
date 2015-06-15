@@ -1,0 +1,90 @@
+<dotnetnuke type="Package" version="5.0">
+  <packages>
+    <package name="AzureADProvider" type="Auth_System" version="01.00.00">
+      <friendlyName>DNN Azure Active Directory Provider</friendlyName>
+      <description>
+        The DNN Azure Active Directory Provider is an Authentication provider for DNN Platform that uses Azure Active Directory OAuth2 authentication to authenticate users.
+      </description>
+      <iconFile>~/Providers/AuthenticationProviders/DotNetNuke.Authentication.Azure/Images/azure.png</iconFile>
+      <owner>
+        <name>David Rodriguez</name>
+        <organization>David Rodriguez</organization>
+        <url>http://davidjrh.intelequia.com</url>
+        <email>davidjrh@hotmail.com</email>
+      </owner>
+      <license src="License.txt" />
+      <releaseNotes src="ReleaseNotes.txt"/>
+      <azureCompatible>true</azureCompatible>
+      <dependencies>
+        <dependency type="CoreVersion">07.04.01</dependency>
+      </dependencies>
+      
+      <components>
+        <component type="AuthenticationSystem">
+          <authenticationService>
+            <type>Azure</type>
+            <settingsControlSrc>DesktopModules/AuthenticationServices/Azure/Settings.ascx</settingsControlSrc>
+            <loginControlSrc>DesktopModules/AuthenticationServices/Azure/Login.ascx</loginControlSrc>
+            <logoffControlSrc/>
+          </authenticationService>
+        </component>
+        <component type="Assembly">
+          <assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>DotNetNuke.Authentication.Azure.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.IdentityModel.Tokens.Jwt.dll</name>
+            </assembly>
+          </assemblies>
+        </component>
+        <component type="File">
+          <files>
+            <basePath>DesktopModules/AuthenticationServices/Azure</basePath>
+            <file>
+              <path>App_LocalResources</path>
+              <name>Login.ascx.resx</name>
+            </file>
+            <file>
+              <path>App_LocalResources</path>
+              <name>Settings.ascx.resx</name>
+            </file>
+            <file>
+              <path>Images</path>
+              <name>azure.png</name>
+            </file>
+            <file>
+              <path>Images</path>
+              <name>azure-bg.png</name>
+            </file>
+            <file>
+              <path>Images</path>
+              <name>azure-login.png</name>
+            </file>
+            <file>
+              <path>Images</path>
+              <name>dnn-webapp.png</name>
+            </file>
+            <file>
+              <name>module.css</name>
+            </file>
+            <file>
+              <name>Login.ascx</name>
+            </file>
+            <file>
+              <name>Settings.ascx</name>
+            </file>
+            <file>
+              <name>License.txt</name>
+            </file>
+            <file>
+              <name>ReleaseNotes.txt</name>
+            </file>
+          </files>
+        </component>
+      </components>
+    </package>
+  </packages>
+</dotnetnuke>

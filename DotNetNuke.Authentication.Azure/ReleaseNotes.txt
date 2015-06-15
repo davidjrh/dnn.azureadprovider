@@ -1,0 +1,5 @@
+<p style="margin: 0"><b>DNN Azure Active Directory Authorization Provider</b></p>
+<p style="margin: 0"><a href="http://davidjrh.intelequia.com" target="_new">David Rodriguez</a><br /><a href="mailto:davidjrh@hotmail.com">davidjrh@hotmail.com</a></p>
+<p style="margin: 0"><strong>About the DNN Azure Active Directory Authorization Provider</strong></p>
+<p style="margin: 0"><b>Version 01.00.00</b></p>
+<p style="margin: 0">The DNN Azure Active Directory Provider is an Authentication provider for DNN Platform that uses Azure Active Directory OAuth2 authentication to authenticate users.</p>
