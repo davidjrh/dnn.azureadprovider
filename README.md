@@ -4,3 +4,4 @@ The DNN Azure Active Directory Provider is an Authentication provider for DNN Pl
 Requirements:
 * DNN Platform 7.4.1 or later
 
+## Installation and configuration guide
