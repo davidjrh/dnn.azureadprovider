@@ -5,6 +5,8 @@ Requirements:
 * DNN Platform 7.4.1 or later
 
 ## Installation and configuration guide
+
+### Azure Active Directory setup
 1. Go to https://manage.windowsazure.com to setup the required applications on your Azure Active Directory. You need to use the user credentials of an user having at least "Service Admin" role. 
 2. From the Azure Active Directory list, select the Directory you are going to setup
 3. Select the applications tab to create the two needed applications. On the scenario we are going to deploy we have a client application (the DNN web application) that will make requests to a Web API (the "resource" on the OAuth webflow). First of all we will setup the Web API app with permissions to read the AD, and then setup the second DNN Web app that has permissions to access the first app.
