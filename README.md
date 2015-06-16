@@ -46,8 +46,11 @@ It's important to remember that you need a DNN deployment with **version 7.4.1 o
 
 1. Download the DNN Azure AD provider from the Releases folder (i.e. AzureADProvider_01.00.00_Install.resources) https://github.com/davidjrh/dnn.azureadprovider/tree/master/Releases
 2. Login into your DNN Platform website as a host user and install the provider from the "Host > Extensions" page
-3. Use the "Install Extension Wizard" to upload and install the file you downloaded on step 1
-4. 
+3. Use the "Install Extension Wizard" to upload and install the file you downloaded on step 1. Once installed, you will see the auth provider listed under the "Authentication Systems" section.
+4. To setup the Azure AD provider for the current portal, go to "Admin > Extensions", and under the "Authentication Systems" click on the "Edit" module. A popup dialog opens to specify all the needed parameters:
+  1. Go to the Azure Management portal, and selecting the **My Contoso Web App**, click on the "View Endpoints" on the bottom bar to view the app endpoints. 
+!(https://intelequia.blob.core.windows.net/images/DNNAzureAD4.png)
+!(https://intelequia.blob.core.windows.net/images/DNNAzureAD5.png)
 
 
 References:
