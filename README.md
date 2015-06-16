@@ -12,7 +12,8 @@ Requirements:
   2. Click on "Add an application my organization is developing"
   3. Set the "name" of your Web API application. This can be any name you want and is simply how you will identify the application in your Azure Active Directory (i.e. MyContosoWebAPI).
   4. Set the type of application to "Web application and/or Web API" (notice that Web Applications and Web API’s are considered the same type of application as far as Azure AD is concerned), and click Next.
-  5. Set the "Sign-on URL". This is the URL where users will access your application. There is no verification of this URL so even if the application hasn’t been developed yet the portal will still let you add it. (i.e. "https://myconstoso.com/login")
+  5. Set the "Sign-on URL". This is the URL where users will access your application. There is no verification of this URL so even if the application hasn’t been developed yet the portal will still let you add it. (i.e. "https://mycontoso.com/login")
+  6. Set the "App Id URI". Notice this is a URI and not a URL. This is what Azure AD will use to identify your application when authentication users requesting access to it. It can be practically anything you want as long as it is *unique in your directory and a valid URI*. (i.e. "https://mycontoso.com/mywebapi")
 
 
 References:
