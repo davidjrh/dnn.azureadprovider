@@ -8,7 +8,7 @@ The DNN Azure Active Directory Provider is an Authentication provider for DNN Pl
 ![alt text](https://intelequia.blob.core.windows.net/images/DNNAzureAD3.png "Sign-in with Azure AD")
 
 Requirements:
-* **DNN Platform 7.4.1 or later** (special mention to Evan Smith for the pull request that made this possible https://dnntracker.atlassian.net/browse/DNN-6265)
+* **DNN Platform 7.4.1 or later** (special mention to Evan Smith for the pull request that made this possible https://github.com/dnnsoftware/Dnn.Platform/pull/250)
 
 ## Installation and configuration guide
 The installation and configuration guide has two parts: one referred to the Azure Active Directory setup; and a second one where we install the authorization provider on our DNN deployment and setup the AD parameters we created before. 
@@ -42,7 +42,10 @@ Following the guide before, you will give access to all your Azure AD users to r
 
 
 ### DNN provider installation and configuration
-It's important to remember that you need a DNN deployment with version 7.4.1 or later to continue. 
+It's important to remember that you need a DNN deployment with **version 7.4.1 or later** to continue. 
+
+1. Download the DNN Azure AD provider from the Releases folder https://github.com/davidjrh/dnn.azureadprovider/tree/master/Releases
+2. Login into your DNN Platform website as a host user and install the provider from the "Host > Extensions" page
 
 
 References:
