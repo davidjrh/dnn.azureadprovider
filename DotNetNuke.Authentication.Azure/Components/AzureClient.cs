@@ -94,8 +94,8 @@ namespace DotNetNuke.Authentication.Azure.Components
                 AzureFirstName = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.GivenName).Value,
                 AzureLastName = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.FamilyName).Value,
                 AzureDisplayName = claims.FirstOrDefault(x => x.Type == "name").Value,
-                Email = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.UniqueName).Value,
-                Id = claims.FirstOrDefault(x => x.Type == "oid").Value
+                Email = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Email).Value,
+                Id = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.UniqueName).Value
             };
             return user as TUserData;
         }
