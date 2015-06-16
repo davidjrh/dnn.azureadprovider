@@ -8,7 +8,7 @@ The DNN Azure Active Directory Provider is an Authentication provider for DNN Pl
 ![alt text](https://intelequia.blob.core.windows.net/images/DNNAzureAD3.png "Sign-in with Azure AD")
 
 Requirements:
-* DNN Platform 7.4.1 or later
+* **DNN Platform 7.4.1 or later** (special mention to Evan Smith for the pull request that made this possible https://dnntracker.atlassian.net/browse/DNN-6265)
 
 ## Installation and configuration guide
 The installation and configuration guide has two parts: one referred to the Azure Active Directory setup; and a second one where we install the authorization provider on our DNN deployment and setup the AD parameters we created before. 
@@ -39,6 +39,10 @@ Following the guide before, you will give access to all your Azure AD users to r
    3. Select the "My Contoso WebAPI" from the list below by clicking on the "+" icon and then click on the Finish button
    4. On the "My Contoso WebAPI" permissions row, check "Access MyContosoWebAPI" from the delegated permissions dropdown list.
    5. Click Save to finish.
+
+
+### DNN provider installation and configuration
+It's important to remember that you need a DNN deployment with version 7.4.1 or later to continue. 
 
 
 References:
