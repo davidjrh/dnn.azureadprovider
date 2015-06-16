@@ -60,7 +60,9 @@ It's important to remember that you need a DNN deployment with **version 7.4.1 o
   2. **AppIdUri**: copy and paste your **WebAPI App ID Uri** (**IMPORTANT**: this is not the WebApp ID Uri, is the WebAPI ID Uri you created before. On this example, is https://mycontoso.com/mywebapi). It's the unique parameter you need to specify from the first WebAPI you created, all the other ones are from the DNN Web App application.
   3. **Enable**: check to enable the provider
 
+![alt text](https://intelequia.blob.core.windows.net/images/DNNAzureAD6.png "Setup")
 
-References:
+
+#### References:
 * Azure Active Directory Part 2: Building Web Applications for Azure AD, Rick Rainey (http://justazure.com/azure-active-directory-part-2-building-web-applications-azure-ad/) 
 * What exactly is the App ID URI when adding a new Azure AD Application? https://social.msdn.microsoft.com/Forums/en-US/1bab0034-d01e-431b-9562-b7e9d7b2a180/what-exactly-is-the-app-id-uri-when-adding-a-new-azure-ad-application?forum=WindowsAzureAD
