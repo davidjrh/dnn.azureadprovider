@@ -49,8 +49,16 @@ It's important to remember that you need a DNN deployment with **version 7.4.1 o
 3. Use the "Install Extension Wizard" to upload and install the file you downloaded on step 1. Once installed, you will see the auth provider listed under the "Authentication Systems" section.
 4. To setup the Azure AD provider for the current portal, go to "Admin > Extensions", and under the "Authentication Systems" click on the "Edit" module. A popup dialog opens to specify all the needed parameters:
   1. Go to the Azure Management portal, and selecting the **My Contoso Web App**, click on the "View Endpoints" on the bottom bar to view the app endpoints. 
-!(https://intelequia.blob.core.windows.net/images/DNNAzureAD4.png)
-!(https://intelequia.blob.core.windows.net/images/DNNAzureAD5.png)
+![alt text](https://intelequia.blob.core.windows.net/images/DNNAzureAD4.png "View Endpoints")
+![alt text](https://intelequia.blob.core.windows.net/images/DNNAzureAD5.png "Endpoints")
+  2. **TokenEndpoint**: copy and paste the "OAuth 2.0 Token Endpoint"
+  3. **AuthorizationEndpoint**: copy and paste the "OAuth 2.0 Authorization Endpoint"
+  4. **GraphEndpoint**: copy and paste the "Windows Azure AD Graph API Endpoint" (this is not in use yet on this version, but will be used on new provider versions)
+5. Now fill the other fields:
+  1. **APIKey**: from the DNN Web Application you created on Azure, copy and paste the Client ID field that s under the "Configuration" section
+  2. **APISecret**: from the same DNN Web Application, copy and paste the key secret that you wrote down on a secure place. If you didn't, you can generate another one, remember that are only shown once
+  2. **AppIdUri**: copy and paste your **WebAPI App ID Uri** (**IMPORTANT**: this is not the WebApp ID Uri, is the WebAPI ID Uri you created before. On this example, is https://mycontoso.com/mywebapi). It's the unique parameter you need to specify from the first WebAPI you created, all the other ones are from the DNN Web App application.
+  3. **Enable**: check to enable the provider
 
 
 References:
