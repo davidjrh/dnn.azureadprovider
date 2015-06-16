@@ -153,7 +153,7 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <Extension>resources</Extension>
+    <Extension>zip</Extension>
     <DNNFileName>AzureADProvider</DNNFileName>
     <PackageName>AzureADProvider</PackageName>
     <BuildScriptsPath>$(MSBuildProjectDirectory)\.build</BuildScriptsPath>
