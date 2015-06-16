@@ -11,6 +11,9 @@ Requirements:
 * DNN Platform 7.4.1 or later
 
 ## Installation and configuration guide
+The installation and configuration guide has two parts: one referred to the Azure Active Directory setup; and a second one where we install the authorization provider on our DNN deployment and setup the AD parameters we created before. 
+
+Following the guide before, you will give access to all your Azure AD users to register and sign-in into your DNN application. You can go later and harden your security settings like only allow to access the DNN Web Application to certain users on the Azure Management portal. Also note that depending on you have "Public" or "Private" user account registration on your DNN portal, you will need to approve the registered user before allowing him to access the site. 
 
 ### Azure Active Directory setup
 1. Go to https://manage.windowsazure.com to setup the required applications on your Azure Active Directory. You need to use the user credentials of an user having at least "Service Admin" role. 
