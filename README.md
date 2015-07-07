@@ -65,7 +65,7 @@ It's important to remember that you need a DNN deployment with **version 7.4.1 o
 
 
 ## Known issues
-### Bad Request Invalid URL when running on Azure Websites
+### 400 Bad Request ("Invalid URL") when running on Azure Websites
 When running on Azure Websites, and just after successfully  sign in, the webflow redirects the user to the website with the authorization code in the query string. If the site is using the DNNFriendlyURL module configured in "advanced", the querystring will be changed to a "pretty URL" with slashes "/". This causes a 400 Bad Request because the code value is too long for passing this way.
 
 To avoid the issue, and following the instructions described at http://www.dnnsoftware.com/wiki/keeping-querystring-items-out-of-the-url-path-in-dnn, you need to update the "AUM_KeepInQueryStringRegex" setting of the Friendly URL provider. The regex to append to the existing value is "|(/code/[^/]+)", by using the following query:
