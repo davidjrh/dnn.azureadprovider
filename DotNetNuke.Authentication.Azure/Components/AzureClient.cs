@@ -73,6 +73,10 @@ namespace DotNetNuke.Authentication.Azure.Components
 
         protected override string GetToken(string responseText)
         {
+            if (string.IsNullOrEmpty(responseText))
+            {
+                throw new Exception("There was an error processing the credentials. Contact your system administrator.");
+            }
             var jsonSerializer = new JavaScriptSerializer();
             var tokenDictionary = jsonSerializer.DeserializeObject(responseText) as Dictionary<string, object>;
             var token = Convert.ToString(tokenDictionary["access_token"]);
@@ -94,7 +98,7 @@ namespace DotNetNuke.Authentication.Azure.Components
                 AzureFirstName = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.GivenName).Value,
                 AzureLastName = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.FamilyName).Value,
                 AzureDisplayName = claims.FirstOrDefault(x => x.Type == "name").Value,
-                Email = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Email).Value,
+                Email = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.UniqueName).Value,
                 Id = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.UniqueName).Value
             };
             return user as TUserData;
