@@ -64,6 +64,9 @@ namespace DotNetNuke.Authentication.Azure
             loginItem.Visible = (Mode == AuthMode.Login);
             registerItem.Visible = (Mode == AuthMode.Register);
 
+            var config = new AzureConfig("Azure", PortalId);
+            if (config.AutoRedirect && Request["legacy"] != "1")
+                loginButton_Click(null, null);
         }
 
         protected override void AddCustomProperties(NameValueCollection properties)

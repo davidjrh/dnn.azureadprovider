@@ -20,6 +20,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             TokenEndpoint = PortalController.GetPortalSetting(Service + "_TokenEndpoint", portalId, "");
             AuthorizationEndpoint = PortalController.GetPortalSetting(Service + "_AuthorizationEndpoint", portalId, "");
             GraphEndpoint = PortalController.GetPortalSetting(Service + "_GraphEndpoint", portalId, "");
+            AutoRedirect = bool.Parse(PortalController.GetPortalSetting(Service + "_AutoRedirect", portalId, "false"));
         }
 
         [SortOrder(1)]
@@ -30,6 +31,8 @@ namespace DotNetNuke.Authentication.Azure.Components
         public string GraphEndpoint { get; set; }
         [SortOrder(4)]
         public string AppIdUri { get; set; }
+        [SortOrder(5)]
+        public bool AutoRedirect { get; set; }
 
         private static string GetCacheKey(string service, int portalId)
         {
@@ -54,6 +57,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_TokenEndpoint", config.TokenEndpoint);
             PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_AuthorizationEndpoint", config.AuthorizationEndpoint);
             PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_GraphEndpoint", config.GraphEndpoint);
+            PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_AutoRedirect", config.AutoRedirect.ToString());
 
             UpdateConfig((OAuthConfigBase)config);
         }
