@@ -198,3 +198,5 @@ FakesAssemblies/
 # Folder config file
 [Dd]esktop.ini
 
+/DotNetNuke.Authentication.Azure/.vs
+/DotNetNuke.Authentication.Azure/packages

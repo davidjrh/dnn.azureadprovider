@@ -26,12 +26,14 @@
     <IISExpressUseClassicPipelineMode />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Websites\intelequia.dnndev.me\bin\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -162,4 +164,7 @@
   <Import Project="$(BuildScriptsPath)\ModulePackage.Targets" />
   <Target Name="AfterBuild" DependsOnTargets="PackageModule">
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>xcopy $(TargetDir)$(TargetName).* c:\websites\content911.dnndev.me\bin /Y</PostBuildEvent>
+  </PropertyGroup>
 </Project>

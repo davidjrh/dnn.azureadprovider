@@ -49,10 +49,19 @@ namespace DotNetNuke.Authentication.Azure.Components
             var config = new AzureConfig("Azure", portalId);
 
             TokenMethod = HttpMethod.POST;
-            TokenEndpoint = new Uri(config.TokenEndpoint);    
-            AuthorizationEndpoint =new Uri(config.AuthorizationEndpoint);
-            MeGraphEndpoint = new Uri(config.GraphEndpoint);
-                
+            if (!string.IsNullOrEmpty(config.TokenEndpoint))
+            {
+                TokenEndpoint = new Uri(config.TokenEndpoint);
+            }
+            if (!string.IsNullOrEmpty(config.AuthorizationEndpoint))
+            {
+                AuthorizationEndpoint = new Uri(config.AuthorizationEndpoint);
+            }
+            if (!string.IsNullOrEmpty(config.GraphEndpoint))
+            {
+                MeGraphEndpoint = new Uri(config.GraphEndpoint);
+            }
+
             Scope = "email";
 
             AuthTokenName = "AzureUserToken";
