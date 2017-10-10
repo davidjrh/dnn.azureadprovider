@@ -200,3 +200,4 @@ FakesAssemblies/
 
 /DotNetNuke.Authentication.Azure/.vs
 /DotNetNuke.Authentication.Azure/packages
+/Releases

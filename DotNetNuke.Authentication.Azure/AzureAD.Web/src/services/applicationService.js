@@ -8,12 +8,12 @@ class ApplicationService {
     }
 
     getSettings(callback) {
-        const sf = this.getServiceFramework("AppInsights");        
+        const sf = this.getServiceFramework("AzureAD");        
         sf.get("GetSettings", {}, callback);
     }
 
     updateSettings(payload, callback, failureCallback) {
-        const sf = this.getServiceFramework("AppInsights");        
+        const sf = this.getServiceFramework("AzureAD");        
         sf.post("UpdateSettings", payload, failureCallback, callback);
     }    
 }

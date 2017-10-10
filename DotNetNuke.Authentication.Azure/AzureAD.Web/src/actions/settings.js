@@ -2,6 +2,17 @@ import { settings as ActionTypes } from "../constants/actionTypes";
 import ApplicationService from "../services/applicationService";
 
 const settingsActions = {
+    switchTab(index, callback) {
+        return (dispatch) => {
+            dispatch({
+                type: ActionTypes.SWITCH_TAB,
+                payload: index
+            });
+            if (callback) {
+                callback();
+            }
+        };
+    },    
     getSettings(callback) {
         return (dispatch) => {
             ApplicationService.getSettings(data => {

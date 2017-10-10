@@ -18,7 +18,7 @@ module.exports = {
     output: {
         path: "../admin/personaBar/scripts/bundles/",
         filename: "bundle-en.js",
-        publicPath: isProduction ? "" : "http://localhost:8080/dist/"
+        publicPath: isProduction ? "" : "http://localhost:8080/dist/scripts/bundles"
     },
 
     module: {

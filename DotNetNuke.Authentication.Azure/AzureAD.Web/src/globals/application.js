@@ -5,7 +5,7 @@ const boilerPlate = {
         // to allow the web application to download assets on demand 
         // eslint-disable-next-line no-undef
         // __webpack_public_path__ = options.publicPath;        
-        let options = window.dnn.initAppInsights();
+        let options = window.dnn.initAzureAD();
 
         utilities.init(options.utility);
         utilities.moduleName = options.moduleName;

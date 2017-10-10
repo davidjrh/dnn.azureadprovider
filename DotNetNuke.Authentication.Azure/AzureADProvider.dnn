@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="AzureADProvider" type="Auth_System" version="01.00.01">
+    <package name="AzureADProvider" type="Auth_System" version="03.00.00">
       <friendlyName>DNN Azure Active Directory Provider</friendlyName>
       <description>
         The DNN Azure Active Directory Provider is an Authentication provider for DNN Platform that uses Azure Active Directory OAuth2 authentication to authenticate users.
@@ -12,13 +12,14 @@
         <url>http://davidjrh.intelequia.com</url>
         <email>davidjrh@hotmail.com</email>
       </owner>
-      <license src="License.txt" />
-      <releaseNotes src="ReleaseNotes.txt"/>
+      <license src="AzureADLicense.txt" />
+      <releaseNotes src="AzureADReleaseNotes.txt"/>
       <azureCompatible>true</azureCompatible>
       <dependencies>
-        <dependency type="CoreVersion">07.04.01</dependency>
+        <dependency type="CoreVersion">09.00.01</dependency>
+        <dependency type="ManagedPackage" version="01.00.00">Dnn.PersonaBar.UI</dependency>
       </dependencies>
-      
+
       <components>
         <component type="AuthenticationSystem">
           <authenticationService>
@@ -48,6 +49,28 @@
             </resourceFile>
           </resourceFiles>
         </component>
+        <component type="ResourceFile">
+          <resourceFiles>
+            <basePath>DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.AzureAD</basePath>
+            <resourceFile>
+              <name>PersonaBarResources.zip</name>
+            </resourceFile>
+          </resourceFiles>
+        </component>
+
+        <component type="PersonaBarMenu">
+          <menu>
+            <identifier>Dnn.AzureAD</identifier>
+            <moduleName>AzureAD</moduleName>
+            <controller>DotNetNuke.Authentication.Azure.Components.MenuController, DotNetNuke.Authentication.Azure</controller>
+            <resourceKey>nav_AzureAD</resourceKey>
+            <path>AzureAD</path>
+            <parent>Settings</parent>
+            <mobileSupport>true</mobileSupport>
+            <order>10</order>
+          </menu>
+        </component>
+
       </components>
     </package>
   </packages>
