@@ -1,0 +1,6 @@
+const settingsActionTypes =  {    
+    RETRIEVED_SETTINGS: "RETRIEVED_SETTINGS",
+    UPDATED_SETTINGS: "UPDATED_SETTINGS",
+    SETTINGS_CLIENT_MODIFIED: "SETTINGS_CLIENT_MODIFIED"
+};
+export default settingsActionTypes;
