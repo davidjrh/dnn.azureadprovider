@@ -135,4 +135,85 @@
   <data name="Yes.Text" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="lblApiEndpoint.Error" xml:space="preserve">
+    <value>You must specify the URL of the API</value>
+  </data>
+  <data name="lblApiEndpoint.Help" xml:space="preserve">
+    <value>URL of the Web API</value>
+  </data>
+  <data name="lblApiEndpoint.Text" xml:space="preserve">
+    <value>Api Endpoint</value>
+  </data>
+  <data name="lblAppId.Error" xml:space="preserve">
+    <value>You must specify your application ID</value>
+  </data>
+  <data name="lblAppId.Help" xml:space="preserve">
+    <value>Application Id</value>
+  </data>
+  <data name="lblAppId.Text" xml:space="preserve">
+    <value>App ID</value>
+  </data>
+  <data name="lblAppSecret.Error" xml:space="preserve">
+    <value>You must specify a secret key</value>
+  </data>
+  <data name="lblAppSecret.Help" xml:space="preserve">
+    <value>Secret key</value>
+  </data>
+  <data name="lblAppSecret.Text" xml:space="preserve">
+    <value>Secret</value>
+  </data>
+  <data name="lblAppUri.Error" xml:space="preserve">
+    <value>You must specify your app URI</value>
+  </data>
+  <data name="lblAppUri.Help" xml:space="preserve">
+    <value>URI of the application</value>
+  </data>
+  <data name="lblAppUri.Text" xml:space="preserve">
+    <value>App Uri</value>
+  </data>
+  <data name="lblAutoRedirect.Help" xml:space="preserve">
+    <value>If enabled, the login page will automatically redirect to the Azure AD login page</value>
+  </data>
+  <data name="lblAutoRedirect.Text" xml:space="preserve">
+    <value>Auto-Redirect</value>
+  </data>
+  <data name="lblEnabled.Help" xml:space="preserve">
+    <value>Enables the Azure Active Directory authentication provider for this portal</value>
+  </data>
+  <data name="lblEnabled.Text" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="lblEndpoints.Text" xml:space="preserve">
+    <value>Endpoints</value>
+  </data>
+  <data name="lblGraphEndpoint.Error" xml:space="preserve">
+    <value>You must specify your Windows Azure AD Graph API Endpoint</value>
+  </data>
+  <data name="lblGraphEndpoint.Help" xml:space="preserve">
+    <value>Windows Azure AD Graph API Endpoint</value>
+  </data>
+  <data name="lblGraphEndpoint.Text" xml:space="preserve">
+    <value>Graph Endpoint</value>
+  </data>
+  <data name="lblProviderCredentials.Text" xml:space="preserve">
+    <value>Provider credentials</value>
+  </data>
+  <data name="lblTabDescription.Text" xml:space="preserve">
+    <value>The DNN Azure Active Directory Provider is an Authentication provider for DNN Platform that uses Azure Active Directory OAuth2 authentication to authenticate users.</value>
+  </data>
+  <data name="lblTokenEndpoint.Error" xml:space="preserve">
+    <value>You must specify your OAuth 2.0 Token Endpoint</value>
+  </data>
+  <data name="lblTokenEndpoint.Help" xml:space="preserve">
+    <value>OAuth 2.0 Token Endpoint</value>
+  </data>
+  <data name="lblTokenEndpoint.Text" xml:space="preserve">
+    <value>Token Endpoint</value>
+  </data>
+  <data name="SaveSettings.Text" xml:space="preserve">
+    <value>Save Settings</value>
+  </data>
 </root>

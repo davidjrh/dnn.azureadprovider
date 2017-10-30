@@ -67,17 +67,17 @@ class GeneralSettings extends Component {
         return (
             <div className={styles.generalSettings}>
                 <GridCell columnSize={50}>
-                    <p>The DNN Azure Active Directory Provider is an Authentication provider for DNN Platform that uses Azure Active Directory OAuth2 authentication to authenticate users.</p>
-                    <Switch label="Enabled"
+                    <p>{resx.get("lblTabDescription")}</p>
+                    <Switch label={resx.get("lblEnabled")}
                             onText=""
                             offText=""
                             value={this.props.enabled}
-                            tooltipMessage="Enables the Azure Active Directory authentication provider for this portal"
+                            tooltipMessage={resx.get("lblEnabled.Help")}
                             onChange={this.onSettingChange.bind(this, "AADProviderEnabled")} />
-                    <Switch label="Auto-redirect"
+                    <Switch label={resx.get("lblAutoRedirect")}
                             onText=""
                             offText=""
-                            tooltipMessage="If enabled, the login page will automatically redirect to the Azure AD login page"
+                            tooltipMessage={resx.get("lblAutoRedirect.Help")}
                             value={this.props.autoRedirect}
                             onChange={this.onSettingChange.bind(this, "AutoRedirect")} />
                 </GridCell>
@@ -86,15 +86,15 @@ class GeneralSettings extends Component {
                 </GridCell>
                 <GridCell columnSize={100}>
                     <GridCell columnSize={50}>
-                        <h1>Provider credentials</h1>
+                        <h1>{resx.get("lblProviderCredentials")}</h1>
                         <div className="editor-row">
                             <SingleLineInputWithError
                                 withLabel={true}
-                                label="App ID"
+                                label={resx.get("lblAppId")}
                                 enabled={true}
                                 error={false}
-                                errorMessage={"You must specify a "}
-                                tooltipMessage="aa"
+                                errorMessage={resx.get("lblAppId.Error")}
+                                tooltipMessage={resx.get("lblAppId.Help")}
                                 value={this.props.apiKey}
                                 onChange={this.onSettingChange.bind(this, "AppId")}
                                 />
@@ -102,11 +102,11 @@ class GeneralSettings extends Component {
                         <div className="editor-row">
                             <SingleLineInputWithError
                                 withLabel={true}
-                                label="Secret"
+                                label={resx.get("lblAppSecret")}
                                 enabled={true}
                                 error={false}
-                                errorMessage={"You must specify a "}
-                                tooltipMessage="aa"
+                                errorMessage={resx.get("lblAppSecret.Error")}
+                                tooltipMessage={resx.get("lblAppSecret.Help")}
                                 value={this.props.apiSecret}
                                 autocomplete="off"
                                 onChange={this.onSettingChange.bind(this, "AppSecret")}
@@ -115,26 +115,26 @@ class GeneralSettings extends Component {
                         <div className="editor-row">
                             <SingleLineInputWithError
                                 withLabel={true}
-                                label="App Uri"
+                                label={resx.get("lblAppUri")}
                                 enabled={true}
                                 error={false}
-                                errorMessage={"You must specify a "}
-                                tooltipMessage="aa"
+                                errorMessage={resx.get("lblAppUri.Error")}
+                                tooltipMessage={resx.get("lblAppUri.Help")}
                                 value={this.props.appUri}
                                 onChange={this.onSettingChange.bind(this, "AppUri")}
                                 />
                         </div>
                     </GridCell>
                     <GridCell columnSize={50}>
-                        <h1>Endpoints</h1>
+                        <h1>{resx.get("lblEndpoints")}</h1>
                         <div className="editor-row">
                             <SingleLineInputWithError
                                 withLabel={true}
-                                label="Api Endpoint"
+                                label={resx.get("lblApiEndpoint")}
                                 enabled={true}
                                 error={false}
-                                errorMessage={"You must specify a "}
-                                tooltipMessage="aa"
+                                errorMessage={resx.get("lblApiEndpoint.Error")}
+                                tooltipMessage={resx.get("lblApiEndpoint.Help")}
                                 value={this.props.authorizationEndpoint}
                                 onChange={this.onSettingChange.bind(this, "ApiEndpoint")}
                                 />
@@ -142,11 +142,11 @@ class GeneralSettings extends Component {
                         <div className="editor-row">
                             <SingleLineInputWithError
                                 withLabel={true}
-                                label="Graph Endpoint"
+                                label={resx.get("lblGraphEndpoint")}
                                 enabled={true}
                                 error={false}
-                                errorMessage={"You must specify a "}
-                                tooltipMessage="aa"
+                                errorMessage={resx.get("lblGraphEndpoint.Error")}
+                                tooltipMessage={resx.get("lblGraphEndpoint.Help")}
                                 value={this.props.graphEndpoint}
                                 autocomplete="off"
                                 onChange={this.onSettingChange.bind(this, "GraphEndpoint")}
@@ -155,11 +155,11 @@ class GeneralSettings extends Component {
                         <div className="editor-row">
                             <SingleLineInputWithError
                                 withLabel={true}
-                                label="Token Endpoint"
+                                label={resx.get("lblTokenEndpoint")}
                                 enabled={true}
                                 error={false}
-                                errorMessage={"You must specify a "}
-                                tooltipMessage="aa"
+                                errorMessage={resx.get("lblTokenEndpoint.Error")}
+                                tooltipMessage={resx.get("lblTokenEndpoint.Help")}
                                 value={this.props.tokenEndpoint}
                                 onChange={this.onSettingChange.bind(this, "TokenEndpoint")}
                                 />
@@ -173,14 +173,14 @@ class GeneralSettings extends Component {
                             type="secondary"
                             onClick={this.onClickCancel.bind(this)}
                         >
-                            Cancel
+                            {resx.get("Cancel")}
                         </Button>
                         <Button
                             disabled={false}
                             type="primary"
                             onClick={this.onClickSave.bind(this)}
                         >
-                            Save Settings
+                            {resx.get("SaveSettings")}
                         </Button>
                     </div>
                 </GridCell>
