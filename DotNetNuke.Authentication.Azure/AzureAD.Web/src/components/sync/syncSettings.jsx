@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from "react";
 import { connect } from "react-redux";
 import GridCell from "dnn-grid-cell";
 import Switch from "dnn-switch";
-import SettingsActions from "../../actions/settings";
+//import SettingsActions from "../../actions/settings";
 import SingleLineInputWithError from "dnn-single-line-input-with-error";
 import Button from "dnn-button";
 
@@ -91,7 +91,8 @@ SyncSettings.propTypes = {
 };
 
 
-function mapStateToProps(state) {
+//function mapStateToProps(state) {
+function mapStateToProps() {
     return {
     };
 }

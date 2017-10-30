@@ -20,7 +20,13 @@ const settingsActions = {
                     type: ActionTypes.RETRIEVED_SETTINGS,
                     data: {
                         enabled: data.enabled,
-                        instrumentationKey: data.instrumentationKey,
+                        autoRedirect: data.autoRedirect,
+                        apiKey: data.apiKey,
+                        apiSecret: data.apiSecret,
+                        appUri: data.appUri,
+                        authorizationEndpoint: data.authorizationEndpoint,
+                        graphEndpoint: data.graphEndpoint,
+                        tokenEndpoint: data.tokenEndpoint,
                         clientModified: false
                     }
                 });
@@ -55,7 +61,13 @@ const settingsActions = {
                 type: ActionTypes.SETTINGS_CLIENT_MODIFIED,
                 data: {
                     enabled: settings.enabled,
-                    instrumentationKey: settings.instrumentationKey,
+                    autoRedirect: settings.autoRedirect,
+                    apiKey: settings.apiKey,
+                    apiSecret: settings.apiSecret,
+                    appUri: settings.appUri,
+                    authorizationEndpoint: settings.authorizationEndpoint,
+                    graphEndpoint: settings.graphEndpoint,
+                    tokenEndpoint: settings.tokenEndpoint,
                     clientModified: true
                 }
             });

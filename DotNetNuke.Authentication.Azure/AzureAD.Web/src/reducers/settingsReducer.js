@@ -7,13 +7,25 @@ export default function settings(state = {
         case ActionTypes.RETRIEVED_SETTINGS:
             return { ...state,
                 enabled: action.data.enabled,
-                instrumentationKey: action.data.instrumentationKey,
-                clientModified: action.data.clientModified
+                autoRedirect: action.data.autoRedirect,
+                apiKey: action.data.apiKey,
+                apiSecret: action.data.apiSecret,
+                authorizationEndpoint: action.data.authorizationEndpoint,
+                graphEndpoint: action.data.graphEndpoint,
+                tokenEndpoint: action.data.tokenEndpoint,                
+                clientModified: action.data.clientModified,
+                appUri: action.data.appUri
             };
         case ActionTypes.SETTINGS_CLIENT_MODIFIED:
             return { ...state,
                 enabled: action.data.enabled,
-                instrumentationKey: action.data.instrumentationKey,
+                autoRedirect: action.data.autoRedirect,
+                apiKey: action.data.apiKey,
+                apiSecret: action.data.apiSecret,
+                appUri: action.data.appUri,
+                authorizationEndpoint: action.data.authorizationEndpoint,
+                graphEndpoint: action.data.graphEndpoint,
+                tokenEndpoint: action.data.tokenEndpoint,                
                 clientModified: action.data.clientModified
             };
         case ActionTypes.UPDATED_SETTINGS:

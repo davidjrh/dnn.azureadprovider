@@ -14,6 +14,7 @@ const languages = {
 const webpackExternals = require("dnn-webpack-externals");
 
 module.exports = {
+    devtool: 'inline-source-map',
     entry: "./src/main.jsx",
     output: {
         path: "../admin/personaBar/scripts/bundles/",
