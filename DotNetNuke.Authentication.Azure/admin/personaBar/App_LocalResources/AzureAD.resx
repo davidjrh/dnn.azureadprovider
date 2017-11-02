@@ -142,7 +142,7 @@
     <value>You must specify the Azure Tenant ID</value>
   </data>
   <data name="lblTenantId.Help" xml:space="preserve">
-    <value>Azure Active Directory tenant ID (directory ID)</value>
+    <value>Azure Active Directory tenant ID (Directory ID)</value>
   </data>
   <data name="lblTenantId.Text" xml:space="preserve">
     <value>Tenant ID</value>

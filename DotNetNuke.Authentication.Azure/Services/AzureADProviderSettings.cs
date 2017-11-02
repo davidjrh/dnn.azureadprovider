@@ -1,54 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using DotNetNuke.Entities.Controllers;
+﻿using System.Runtime.Serialization;
+using DotNetNuke.Authentication.Azure.Components;
 
 namespace DotNetNuke.Authentication.Azure.Services
 {
-    /*
     [DataContract]
     public class AzureADProviderSettings
     {
+        [DataMember(Name = "tenantId")]
+        public string TenantId { get; set; }
         [DataMember(Name = "apiKey")]
         public string ApiKey { get; set; }
         [DataMember(Name = "apiSecret")]
         public string ApiSecret { get; set; }
         [DataMember(Name = "appUri")]
         public string AppUri { get; set; }
-        [DataMember(Name = "tenantId")]
-        public string TenantId { get; set; }
         [DataMember(Name = "autoRedirect")]
         public bool AutoRedirect { get; set; }
         [DataMember(Name = "enabled")]
         public bool Enabled { get; set; }
 
-        internal void LoadSettings()
+        public static AzureADProviderSettings LoadSettings(string service, int portalId)
         {
-            ApiKey = HostController.Instance.GetString("AzureAD.ApiKey");
-            ApiSecret = HostController.Instance.GetString("AzureAD.ApiSecret");
-            TenantId = HostController.Instance.GetString("AzureAD.TenantId");
-            AutoRedirect = bool.Parse(HostController.Instance.GetString("AzureAD.AutoRedirect", "False"));
-            Enabled = bool.Parse(HostController.Instance.GetString("AzureAD.Enabled", "False"));
-            AppUri = HostController.Instance.GetString("AzureAD.AppUri");
+            var config = new AzureConfig(service, portalId);
+            return new AzureADProviderSettings
+            {
+                TenantId = config.TenantId,
+                ApiKey = config.APIKey,
+                ApiSecret = config.APISecret,
+                AppUri = config.AppUri,
+                AutoRedirect = config.AutoRedirect,
+                Enabled = config.Enabled
+            };
         }
 
-        internal void SaveSettings()
+        public static void SaveSettings(string service, int portalId, AzureADProviderSettings settings)
         {
-            var settings = new Dictionary<string, string>
+            var config = new AzureConfig(service, portalId)
             {
-                {"AzureAD.ApiKey", ApiKey },
-                {"AzureAD.ApiSecret", ApiSecret },
-                {"AzureAD.TenantId", TenantId },
-                {"AzureAD.AutoRedirect", AutoRedirect.ToString() },
-                {"AzureAD.Enabled", Enabled.ToString() },
-                {"AzureAD.AppUri", AppUri}
+                TenantId = settings.TenantId,
+                APIKey = settings.ApiKey,
+                APISecret = settings.ApiSecret,
+                AppUri = settings.AppUri,
+                AutoRedirect = settings.AutoRedirect,
+                Enabled = settings.Enabled
             };
 
-            HostController.Instance.Update(settings);
+            AzureConfig.UpdateConfig(config);
         }
     }
-    */
 }

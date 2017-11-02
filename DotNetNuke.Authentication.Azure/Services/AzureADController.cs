@@ -29,12 +29,7 @@ namespace DotNetNuke.Authentication.Azure.Services
         {
             try
             {
-                /*
-                var settings = new AzureADProviderSettings();
-                settings.LoadSettings();
-                return Request.CreateResponse(HttpStatusCode.OK, settings);
-                */
-                var settings = new AzureConfig("Azure", PortalId);
+                var settings = AzureADProviderSettings.LoadSettings("Azure", PortalId);
                 return Request.CreateResponse(HttpStatusCode.OK, settings);
             }
             catch (Exception ex)
@@ -52,13 +47,11 @@ namespace DotNetNuke.Authentication.Azure.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage UpdateSettings(AzureConfig settings)
+        public HttpResponseMessage UpdateSettings(AzureADProviderSettings settings)
         {
             try
             {
-                //settings.SaveSettings();
-                AzureConfig.UpdateConfig(settings);
-
+                AzureADProviderSettings.SaveSettings("Azure", PortalId, settings);
                 return Request.CreateResponse(HttpStatusCode.OK);
             }
             catch (Exception ex)
