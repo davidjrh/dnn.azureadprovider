@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Dnn.PersonaBar.Library;
 using Dnn.PersonaBar.Library.Attributes;
+using DotNetNuke.Authentication.Azure.Components;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Web.Api;
 
@@ -16,7 +17,7 @@ namespace DotNetNuke.Authentication.Azure.Services
     [MenuPermission(Scope = ServiceScope.Host)]
     public class AzureADController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AzureADProviderSettings));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AzureADController));
 
         /// GET: api/AzureAD/GetSettings
         /// <summary>
@@ -28,8 +29,12 @@ namespace DotNetNuke.Authentication.Azure.Services
         {
             try
             {
+                /*
                 var settings = new AzureADProviderSettings();
                 settings.LoadSettings();
+                return Request.CreateResponse(HttpStatusCode.OK, settings);
+                */
+                var settings = new AzureConfig("Azure", PortalId);
                 return Request.CreateResponse(HttpStatusCode.OK, settings);
             }
             catch (Exception ex)
@@ -47,11 +52,12 @@ namespace DotNetNuke.Authentication.Azure.Services
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage UpdateSettings(AzureADProviderSettings settings)
+        public HttpResponseMessage UpdateSettings(AzureConfig settings)
         {
             try
             {
-                settings.SaveSettings();
+                //settings.SaveSettings();
+                AzureConfig.UpdateConfig(settings);
 
                 return Request.CreateResponse(HttpStatusCode.OK);
             }

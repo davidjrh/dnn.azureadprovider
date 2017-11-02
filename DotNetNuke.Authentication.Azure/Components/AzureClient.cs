@@ -28,7 +28,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Web.Script.Serialization;
-using DotNetNuke.Common.Utilities;
+using DotNetNuke.Authentication.Azure.Common;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Authentication.OAuth;
 
@@ -38,6 +38,9 @@ namespace DotNetNuke.Authentication.Azure.Components
 {
     public class AzureClient : OAuthClientBase
     {
+        private const string TokenEndpointPattern = "https://login.microsoftonline.com/{0}/oauth2/token";
+        private const string AuthorizationEndpointPattern = "https://login.microsoftonline.com/{0}/oauth2/authorize";
+        private const string GraphEndpointPattern = "https://graph.windows.net/{0}";
         #region Constructors
 
         private JwtSecurityToken JwtSecurityToken { get; set; }
@@ -49,25 +52,19 @@ namespace DotNetNuke.Authentication.Azure.Components
             var config = new AzureConfig("Azure", portalId);
 
             TokenMethod = HttpMethod.POST;
-            if (!string.IsNullOrEmpty(config.TokenEndpoint))
+            if (!string.IsNullOrEmpty(config.TenantId))
             {
-                TokenEndpoint = new Uri(config.TokenEndpoint);
-            }
-            if (!string.IsNullOrEmpty(config.AuthorizationEndpoint))
-            {
-                AuthorizationEndpoint = new Uri(config.AuthorizationEndpoint);
-            }
-            if (!string.IsNullOrEmpty(config.GraphEndpoint))
-            {
-                MeGraphEndpoint = new Uri(config.GraphEndpoint);
+                TokenEndpoint = new Uri(string.Format(Utils.GetAppSetting("AzureAD.TokenEndpointPattern", TokenEndpointPattern), config.TenantId));
+                AuthorizationEndpoint = new Uri(string.Format(Utils.GetAppSetting("AzureAD.AuthorizationEndpointPattern", AuthorizationEndpointPattern), config.TenantId));
+                MeGraphEndpoint = new Uri(string.Format(Utils.GetAppSetting("AzureAD.GraphEndpointPattern", GraphEndpointPattern), config.TenantId));
             }
 
             Scope = "email";
 
             AuthTokenName = "AzureUserToken";
-            APIResource = config.AppIdUri;
+            APIResource = config.AppUri;
             OAuthVersion = "2.0";
-            LoadTokenCookie(String.Empty);
+            LoadTokenCookie(string.Empty);
             JwtSecurityToken = null;
         }
 

@@ -113,6 +113,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Utils.cs" />
     <Compile Include="Components\AzureClient.cs" />
     <Compile Include="Components\AzureConfig.cs" />
     <Compile Include="Components\AzureUserData.cs" />

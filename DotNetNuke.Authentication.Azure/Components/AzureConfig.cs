@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Web;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -16,23 +17,26 @@ namespace DotNetNuke.Authentication.Azure.Components
 
         protected internal AzureConfig(string service, int portalId) : base(service, portalId)
         {
-            AppIdUri = PortalController.GetPortalSetting(Service + "_AppIdUri", portalId, "");
-            TokenEndpoint = PortalController.GetPortalSetting(Service + "_TokenEndpoint", portalId, "");
-            AuthorizationEndpoint = PortalController.GetPortalSetting(Service + "_AuthorizationEndpoint", portalId, "");
-            GraphEndpoint = PortalController.GetPortalSetting(Service + "_GraphEndpoint", portalId, "");
+            ApiKey = PortalController.GetPortalSetting(Service + "_ApiKey", portalId, "");
+            ApiSecret = PortalController.GetPortalSetting(Service + "_ApiSecret", portalId, "");
+            AppUri = PortalController.GetPortalSetting(Service + "_AppUri", portalId, "");
+            TenantId = PortalController.GetPortalSetting(Service + "_TenantId", portalId, "");
             AutoRedirect = bool.Parse(PortalController.GetPortalSetting(Service + "_AutoRedirect", portalId, "false"));
+            ProviderEnabled = bool.Parse(PortalController.GetPortalSetting(Service + "_ProviderEnabled", portalId, "false"));
         }
 
-        [SortOrder(1)]
-        public string TokenEndpoint { get; set; }
-        [SortOrder(2)]
-        public string AuthorizationEndpoint { get; set; }
-        [SortOrder(3)]
-        public string GraphEndpoint { get; set; }
-        [SortOrder(4)]
-        public string AppIdUri { get; set; }
-        [SortOrder(5)]
+        [DataMember(Name = "apiKey")]
+        public string ApiKey { get; set; }
+        [DataMember(Name = "apiSecret")]
+        public string ApiSecret { get; set; }
+        [DataMember(Name = "appUri")]
+        public string AppUri { get; set; }
+        [DataMember(Name = "tenantId")]
+        public string TenantId { get; set; }
+        [DataMember(Name = "autoRedirect")]
         public bool AutoRedirect { get; set; }
+        [DataMember(Name = "enabled")]
+        public bool ProviderEnabled { get; set; }
 
         private static string GetCacheKey(string service, int portalId)
         {
@@ -53,13 +57,16 @@ namespace DotNetNuke.Authentication.Azure.Components
 
         public static void UpdateConfig(AzureConfig config)
         {
-            PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_AppIdUri", config.AppIdUri);
-            PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_TokenEndpoint", config.TokenEndpoint);
-            PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_AuthorizationEndpoint", config.AuthorizationEndpoint);
-            PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_GraphEndpoint", config.GraphEndpoint);
+            PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_ApiKey", config.ApiKey);
+            PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_ApiSecret", config.ApiSecret);
+            PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_AppUri", config.AppUri);
+            PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_TenantId", config.TenantId);
             PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_AutoRedirect", config.AutoRedirect.ToString());
+            PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_ProviderEnabled", config.ProviderEnabled.ToString());
 
-            UpdateConfig((OAuthConfigBase)config);
+            var oauthConfig = (OAuthConfigBase) config;
+            oauthConfig.Enabled = config.ProviderEnabled;
+            UpdateConfig((OAuthConfigBase)oauthConfig);
         }
     }
 }

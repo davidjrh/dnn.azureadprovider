@@ -10,9 +10,7 @@ export default function settings(state = {
                 autoRedirect: action.data.autoRedirect,
                 apiKey: action.data.apiKey,
                 apiSecret: action.data.apiSecret,
-                authorizationEndpoint: action.data.authorizationEndpoint,
-                graphEndpoint: action.data.graphEndpoint,
-                tokenEndpoint: action.data.tokenEndpoint,                
+                tenantId: action.data.tenantId,
                 clientModified: action.data.clientModified,
                 appUri: action.data.appUri
             };
@@ -23,9 +21,7 @@ export default function settings(state = {
                 apiKey: action.data.apiKey,
                 apiSecret: action.data.apiSecret,
                 appUri: action.data.appUri,
-                authorizationEndpoint: action.data.authorizationEndpoint,
-                graphEndpoint: action.data.graphEndpoint,
-                tokenEndpoint: action.data.tokenEndpoint,                
+                tenantId: action.data.tenantId,
                 clientModified: action.data.clientModified
             };
         case ActionTypes.UPDATED_SETTINGS:

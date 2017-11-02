@@ -29,9 +29,7 @@ class GeneralSettings extends Component {
             autoRedirect: (key === "AutoRedirect") ? !props.autoRedirect : props.autoRedirect,
             apiKey: (key === "AppId") ? event.target.value : props.apiKey,
             apiSecret: (key === "AppSecret") ? event.target.value : props.apiSecret,
-            authorizationEndpoint: (key === "ApiEndpoint") ? event.target.value : props.authorizationEndpoint,
-            graphEndpoint: (key === "GraphEndpoint") ? event.target.value : props.graphEndpoint,
-            tokenEndpoint: (key === "TokenEndpoint") ? event.target.value : props.tokenEndpoint,
+            tenantId: (key === "TenantId") ? event.target.value : props.tenantId,
             appUri: (key === "AppUri") ? event.target.value : props.appUri
         }));
     }
@@ -50,9 +48,7 @@ class GeneralSettings extends Component {
             apiKey: props.apiKey,
             apiSecret: props.apiSecret,
             appUri: props.appUri,
-            authorizationEndpoint: props.authorizationEndpoint,
-            graphEndpoint: props.graphEndpoint,
-            tokenEndpoint: props.tokenEndpoint
+            tenantId: props.tenantId
         }, () => {
             utils.utilities.notify(resx.get("SettingsUpdateSuccess"));
             this.setState({
@@ -84,9 +80,26 @@ class GeneralSettings extends Component {
                 <GridCell columnSize={50}>
                     <div className="logo"></div>
                 </GridCell>
-                <GridCell columnSize={100}>
+                <GridCell columnSize={100} className="directory-section">
                     <GridCell columnSize={50}>
-                        <h1>{resx.get("lblProviderCredentials")}</h1>
+                        <h1>{resx.get("lblDirectory")}</h1>
+                        <div className="editor-row">
+                            <SingleLineInputWithError
+                                withLabel={true}
+                                label={resx.get("lblTenantId")}
+                                enabled={true}
+                                error={false}
+                                errorMessage={resx.get("lblTenantId.Error")}
+                                tooltipMessage={resx.get("lblTenantId.Help")}
+                                value={this.props.tenantId}
+                                onChange={this.onSettingChange.bind(this, "TenantId")}
+                                />
+                        </div>
+                    </GridCell>
+                </GridCell>
+                <GridCell columnSize={100}>
+                    <h1>{resx.get("lblProviderCredentials")}</h1>
+                    <GridCell columnSize={50}>
                         <div className="editor-row">
                             <SingleLineInputWithError
                                 withLabel={true}
@@ -99,6 +112,8 @@ class GeneralSettings extends Component {
                                 onChange={this.onSettingChange.bind(this, "AppId")}
                                 />
                         </div>
+                    </GridCell>
+                    <GridCell columnSize={50}>
                         <div className="editor-row">
                             <SingleLineInputWithError
                                 withLabel={true}
@@ -112,7 +127,9 @@ class GeneralSettings extends Component {
                                 onChange={this.onSettingChange.bind(this, "AppSecret")}
                                 />
                         </div>
-                        <div className="editor-row">
+                    </GridCell>
+                    <GridCell columnSize={100}>
+                        <div className="editor-row input-full-row">
                             <SingleLineInputWithError
                                 withLabel={true}
                                 label={resx.get("lblAppUri")}
@@ -122,46 +139,6 @@ class GeneralSettings extends Component {
                                 tooltipMessage={resx.get("lblAppUri.Help")}
                                 value={this.props.appUri}
                                 onChange={this.onSettingChange.bind(this, "AppUri")}
-                                />
-                        </div>
-                    </GridCell>
-                    <GridCell columnSize={50}>
-                        <h1>{resx.get("lblEndpoints")}</h1>
-                        <div className="editor-row">
-                            <SingleLineInputWithError
-                                withLabel={true}
-                                label={resx.get("lblApiEndpoint")}
-                                enabled={true}
-                                error={false}
-                                errorMessage={resx.get("lblApiEndpoint.Error")}
-                                tooltipMessage={resx.get("lblApiEndpoint.Help")}
-                                value={this.props.authorizationEndpoint}
-                                onChange={this.onSettingChange.bind(this, "ApiEndpoint")}
-                                />
-                        </div>
-                        <div className="editor-row">
-                            <SingleLineInputWithError
-                                withLabel={true}
-                                label={resx.get("lblGraphEndpoint")}
-                                enabled={true}
-                                error={false}
-                                errorMessage={resx.get("lblGraphEndpoint.Error")}
-                                tooltipMessage={resx.get("lblGraphEndpoint.Help")}
-                                value={this.props.graphEndpoint}
-                                autocomplete="off"
-                                onChange={this.onSettingChange.bind(this, "GraphEndpoint")}
-                                />
-                        </div>
-                        <div className="editor-row">
-                            <SingleLineInputWithError
-                                withLabel={true}
-                                label={resx.get("lblTokenEndpoint")}
-                                enabled={true}
-                                error={false}
-                                errorMessage={resx.get("lblTokenEndpoint.Error")}
-                                tooltipMessage={resx.get("lblTokenEndpoint.Help")}
-                                value={this.props.tokenEndpoint}
-                                onChange={this.onSettingChange.bind(this, "TokenEndpoint")}
                                 />
                         </div>
                     </GridCell>
@@ -195,9 +172,7 @@ GeneralSettings.propTypes = {
     autoRedirect: PropTypes.bool,
     apiKey: PropTypes.string,
     apiSecret: PropTypes.string,
-    authorizationEndpoint: PropTypes.string,
-    graphEndpoint: PropTypes.string,
-    tokenEndpoint: PropTypes.string,
+    tenantId: PropTypes.string,
     appUri: PropTypes.string
 };
 
@@ -208,9 +183,7 @@ function mapStateToProps(state) {
         autoRedirect: state.settings.autoRedirect,
         apiKey: state.settings.apiKey,
         apiSecret: state.settings.apiSecret,
-        authorizationEndpoint: state.settings.authorizationEndpoint,
-        graphEndpoint: state.settings.graphEndpoint,
-        tokenEndpoint: state.settings.tokenEndpoint,
+        tenantId: state.settings.tenantId,
         appUri: state.settings.appUri
     };
 }

@@ -24,9 +24,7 @@ const settingsActions = {
                         apiKey: data.apiKey,
                         apiSecret: data.apiSecret,
                         appUri: data.appUri,
-                        authorizationEndpoint: data.authorizationEndpoint,
-                        graphEndpoint: data.graphEndpoint,
-                        tokenEndpoint: data.tokenEndpoint,
+                        tenantId: data.tenantId,
                         clientModified: false
                     }
                 });
@@ -65,9 +63,7 @@ const settingsActions = {
                     apiKey: settings.apiKey,
                     apiSecret: settings.apiSecret,
                     appUri: settings.appUri,
-                    authorizationEndpoint: settings.authorizationEndpoint,
-                    graphEndpoint: settings.graphEndpoint,
-                    tokenEndpoint: settings.tokenEndpoint,
+                    tenantId: settings.tenantId,
                     clientModified: true
                 }
             });
