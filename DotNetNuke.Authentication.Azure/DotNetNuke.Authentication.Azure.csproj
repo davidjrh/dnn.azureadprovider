@@ -140,6 +140,7 @@
     <None Include="app.config" />
     <None Include="AzureADProvider.dnn" />
     <Content Include="packages.config" />
+    <None Include="Providers\DataProviders\SqlDataProvider\03.00.00.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\Login.ascx.resx">

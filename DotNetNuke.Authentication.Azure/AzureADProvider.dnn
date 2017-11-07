@@ -71,6 +71,18 @@
           </menu>
         </component>
 
+        <!-- Database scripts -->
+        <component type="Script">
+          <scripts>
+            <basePath>DesktopModules\AuthenticationServices\Azure</basePath>
+            <script type="Install">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>03.00.00.SqlDataProvider</name>
+              <version>03.00.00</version>
+            </script>
+          </scripts>
+        </component>
+        
       </components>
     </package>
   </packages>

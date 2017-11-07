@@ -1,0 +1,10 @@
+﻿UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
+   SET SettingName = 'Azure_TenantId'
+     , SettingValue = RIGHT(SUBSTRING(SettingValue, 0, CHARINDEX('/oauth2/authorize', SettingValue)), CHARINDEX('/', REVERSE(SUBSTRING(SettingValue, 0, CHARINDEX('/oauth2/authorize', SettingValue))) + '/') - 1)
+ WHERE SettingName = 'Azure_AuthorizationEndpoint'
+GO
+
+DELETE {databaseOwner}[{objectQualifier}PortalSettings]
+ WHERE SettingName = 'Azure_GraphEndpoint'
+    OR SettingName = 'Azure_TokenEndpoint'
+GO
