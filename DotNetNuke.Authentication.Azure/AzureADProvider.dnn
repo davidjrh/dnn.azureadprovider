@@ -80,6 +80,12 @@
               <name>03.00.00.SqlDataProvider</name>
               <version>03.00.00</version>
             </script>
+
+            <script type="UnInstall" >
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>uninstall.SqlDataProvider</name>
+              <version>03.00.00</version>
+            </script>
           </scripts>
         </component>
         

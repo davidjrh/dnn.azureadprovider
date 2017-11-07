@@ -1,0 +1,11 @@
+﻿DELETE {databaseOwner}[{objectQualifier}PortalSettings]
+ WHERE SettingName IN
+ (
+     'Azure_APIKey'
+   , 'Azure_APISecret'
+   , 'Azure_AppIdUri'
+   , 'Azure_AutoRedirect'
+   , 'Azure_Enabled'
+   , 'Azure_TenantId'
+ )
+GO

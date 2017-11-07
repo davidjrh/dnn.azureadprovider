@@ -141,6 +141,7 @@
     <None Include="AzureADProvider.dnn" />
     <Content Include="packages.config" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.00.00.SqlDataProvider" />
+    <None Include="Providers\DataProviders\SqlDataProvider\uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_LocalResources\Login.ascx.resx">
