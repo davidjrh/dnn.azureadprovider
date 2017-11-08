@@ -13,12 +13,30 @@ class GeneralSettings extends Component {
 
     constructor() {
         super();
+
+        this.state = {
+            error: {
+                appId: false,
+                appSecret: false,
+                tenantId: false,
+                appUri: false
+            }
+        };
     }
 
     componentWillMount() {
         const {props} = this;
 
         props.dispatch(SettingsActions.getSettings());
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const {state} = this;
+
+        state.error["appId"] = (nextProps.apiKey === "");
+        state.error["appSecret"] = (nextProps.apiSecret === "");
+        state.error["tenantId"] = (nextProps.tenantId === "");
+        state.error["appUri"] = (nextProps.appUri === "");
     }
 
     onSettingChange(key, event) {
@@ -88,7 +106,7 @@ class GeneralSettings extends Component {
                                 withLabel={true}
                                 label={resx.get("lblTenantId")}
                                 enabled={true}
-                                error={false}
+                                error={this.state.error.tenantId}
                                 errorMessage={resx.get("lblTenantId.Error")}
                                 tooltipMessage={resx.get("lblTenantId.Help")}
                                 value={this.props.tenantId}
@@ -105,7 +123,7 @@ class GeneralSettings extends Component {
                                 withLabel={true}
                                 label={resx.get("lblAppId")}
                                 enabled={true}
-                                error={false}
+                                error={this.state.error.appId}
                                 errorMessage={resx.get("lblAppId.Error")}
                                 tooltipMessage={resx.get("lblAppId.Help")}
                                 value={this.props.apiKey}
@@ -118,8 +136,9 @@ class GeneralSettings extends Component {
                             <SingleLineInputWithError
                                 withLabel={true}
                                 label={resx.get("lblAppSecret")}
+                                type="password"
                                 enabled={true}
-                                error={false}
+                                error={this.state.error.appSecret}
                                 errorMessage={resx.get("lblAppSecret.Error")}
                                 tooltipMessage={resx.get("lblAppSecret.Help")}
                                 value={this.props.apiSecret}
@@ -134,7 +153,7 @@ class GeneralSettings extends Component {
                                 withLabel={true}
                                 label={resx.get("lblAppUri")}
                                 enabled={true}
-                                error={false}
+                                error={this.state.error.appUri}
                                 errorMessage={resx.get("lblAppUri.Error")}
                                 tooltipMessage={resx.get("lblAppUri.Help")}
                                 value={this.props.appUri}
@@ -153,7 +172,7 @@ class GeneralSettings extends Component {
                             {resx.get("Cancel")}
                         </Button>
                         <Button
-                            disabled={false}
+                            disabled={this.state.error.appId || this.state.error.appSecret || this.state.error.appUri || this.state.error.tenantId}
                             type="primary"
                             onClick={this.onClickSave.bind(this)}
                         >
