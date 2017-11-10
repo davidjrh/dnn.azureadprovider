@@ -12,8 +12,6 @@ namespace DotNetNuke.Authentication.Azure.Services
         public string ApiKey { get; set; }
         [DataMember(Name = "apiSecret")]
         public string ApiSecret { get; set; }
-        [DataMember(Name = "appUri")]
-        public string AppUri { get; set; }
         [DataMember(Name = "autoRedirect")]
         public bool AutoRedirect { get; set; }
         [DataMember(Name = "enabled")]
@@ -27,7 +25,6 @@ namespace DotNetNuke.Authentication.Azure.Services
                 TenantId = config.TenantId,
                 ApiKey = config.APIKey,
                 ApiSecret = config.APISecret,
-                AppUri = config.AppUri,
                 AutoRedirect = config.AutoRedirect,
                 Enabled = config.Enabled
             };
@@ -40,7 +37,6 @@ namespace DotNetNuke.Authentication.Azure.Services
                 TenantId = settings.TenantId,
                 APIKey = settings.ApiKey,
                 APISecret = settings.ApiSecret,
-                AppUri = settings.AppUri,
                 AutoRedirect = settings.AutoRedirect,
                 Enabled = settings.Enabled
             };

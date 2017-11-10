@@ -15,7 +15,6 @@ namespace DotNetNuke.Authentication.Azure.Components
         {
             APIKey = PortalController.GetPortalSetting(Service + "_ApiKey", portalId, "");
             APISecret = PortalController.GetPortalSetting(Service + "_ApiSecret", portalId, "");
-            AppUri = PortalController.GetPortalSetting(Service + "_AppIdUri", portalId, "");
             TenantId = PortalController.GetPortalSetting(Service + "_TenantId", portalId, "");
             AutoRedirect = bool.Parse(PortalController.GetPortalSetting(Service + "_AutoRedirect", portalId, "false"));
             Enabled = bool.Parse(PortalController.GetPortalSetting(Service + "_Enabled", portalId, "false"));
@@ -24,8 +23,6 @@ namespace DotNetNuke.Authentication.Azure.Components
         [SortOrder(1)]
         public string TenantId { get; set; }
         [SortOrder(2)]
-        public string AppUri { get; set; }
-        [SortOrder(3)]
         public bool AutoRedirect { get; set; }
 
         private static string GetCacheKey(string service, int portalId)
@@ -49,7 +46,6 @@ namespace DotNetNuke.Authentication.Azure.Components
         {
             PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_ApiKey", config.APIKey);
             PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_ApiSecret", config.APISecret);
-            PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_AppIdUri", config.AppUri);
             PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_TenantId", config.TenantId);
             PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_AutoRedirect", config.AutoRedirect.ToString());
             PortalController.UpdatePortalSetting(config.PortalID, config.Service + "_Enabled", config.Enabled.ToString());

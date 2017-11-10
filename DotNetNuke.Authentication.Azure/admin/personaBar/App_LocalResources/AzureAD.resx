@@ -165,15 +165,6 @@
   <data name="lblAppSecret.Text" xml:space="preserve">
     <value>Secret</value>
   </data>
-  <data name="lblAppUri.Error" xml:space="preserve">
-    <value>You must specify your app URI</value>
-  </data>
-  <data name="lblAppUri.Help" xml:space="preserve">
-    <value>URI of the application</value>
-  </data>
-  <data name="lblAppUri.Text" xml:space="preserve">
-    <value>App Uri</value>
-  </data>
   <data name="lblAutoRedirect.Help" xml:space="preserve">
     <value>If enabled, the login page will automatically redirect to the Azure AD login page</value>
   </data>

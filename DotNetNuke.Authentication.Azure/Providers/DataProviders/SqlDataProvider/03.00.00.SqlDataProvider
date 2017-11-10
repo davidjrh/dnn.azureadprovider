@@ -7,4 +7,5 @@ GO
 DELETE {databaseOwner}[{objectQualifier}PortalSettings]
  WHERE SettingName = 'Azure_GraphEndpoint'
     OR SettingName = 'Azure_TokenEndpoint'
+    OR SettingName = 'Azure_AppIdUri'
 GO

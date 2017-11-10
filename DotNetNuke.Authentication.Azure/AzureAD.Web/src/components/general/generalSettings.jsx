@@ -18,8 +18,7 @@ class GeneralSettings extends Component {
             error: {
                 appId: false,
                 appSecret: false,
-                tenantId: false,
-                appUri: false
+                tenantId: false
             }
         };
     }
@@ -36,7 +35,6 @@ class GeneralSettings extends Component {
         state.error["appId"] = (nextProps.apiKey === "");
         state.error["appSecret"] = (nextProps.apiSecret === "");
         state.error["tenantId"] = (nextProps.tenantId === "");
-        state.error["appUri"] = (nextProps.appUri === "");
     }
 
     onSettingChange(key, event) {
@@ -47,8 +45,7 @@ class GeneralSettings extends Component {
             autoRedirect: (key === "AutoRedirect") ? !props.autoRedirect : props.autoRedirect,
             apiKey: (key === "AppId") ? event.target.value : props.apiKey,
             apiSecret: (key === "AppSecret") ? event.target.value : props.apiSecret,
-            tenantId: (key === "TenantId") ? event.target.value : props.tenantId,
-            appUri: (key === "AppUri") ? event.target.value : props.appUri
+            tenantId: (key === "TenantId") ? event.target.value : props.tenantId
         }));
     }
 
@@ -65,7 +62,6 @@ class GeneralSettings extends Component {
             autoRedirect: props.autoRedirect,
             apiKey: props.apiKey,
             apiSecret: props.apiSecret,
-            appUri: props.appUri,
             tenantId: props.tenantId
         }, () => {
             utils.utilities.notify(resx.get("SettingsUpdateSuccess"));
@@ -81,7 +77,7 @@ class GeneralSettings extends Component {
         return (
             <div className={styles.generalSettings}>
                 <GridCell columnSize={50}>
-                    <p>{resx.get("lblTabDescription")}</p>
+                    <p className="panel-description">{resx.get("lblTabDescription")}</p>
                     <Switch label={resx.get("lblEnabled")}
                             onText=""
                             offText=""
@@ -147,20 +143,6 @@ class GeneralSettings extends Component {
                                 />
                         </div>
                     </GridCell>
-                    <GridCell columnSize={100}>
-                        <div className="editor-row input-full-row">
-                            <SingleLineInputWithError
-                                withLabel={true}
-                                label={resx.get("lblAppUri")}
-                                enabled={true}
-                                error={this.state.error.appUri}
-                                errorMessage={resx.get("lblAppUri.Error")}
-                                tooltipMessage={resx.get("lblAppUri.Help")}
-                                value={this.props.appUri}
-                                onChange={this.onSettingChange.bind(this, "AppUri")}
-                                />
-                        </div>
-                    </GridCell>
                 </GridCell>
                 <GridCell columnSize={100}>
                     <div className="buttons-box">
@@ -172,7 +154,7 @@ class GeneralSettings extends Component {
                             {resx.get("Cancel")}
                         </Button>
                         <Button
-                            disabled={this.state.error.appId || this.state.error.appSecret || this.state.error.appUri || this.state.error.tenantId}
+                            disabled={this.state.error.appId || this.state.error.appSecret || this.state.error.tenantId}
                             type="primary"
                             onClick={this.onClickSave.bind(this)}
                         >
@@ -191,8 +173,7 @@ GeneralSettings.propTypes = {
     autoRedirect: PropTypes.bool,
     apiKey: PropTypes.string,
     apiSecret: PropTypes.string,
-    tenantId: PropTypes.string,
-    appUri: PropTypes.string
+    tenantId: PropTypes.string
 };
 
 
@@ -202,8 +183,7 @@ function mapStateToProps(state) {
         autoRedirect: state.settings.autoRedirect,
         apiKey: state.settings.apiKey,
         apiSecret: state.settings.apiSecret,
-        tenantId: state.settings.tenantId,
-        appUri: state.settings.appUri
+        tenantId: state.settings.tenantId
     };
 }
 

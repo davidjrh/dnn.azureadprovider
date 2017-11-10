@@ -23,7 +23,6 @@ const settingsActions = {
                         autoRedirect: data.autoRedirect,
                         apiKey: data.apiKey,
                         apiSecret: data.apiSecret,
-                        appUri: data.appUri,
                         tenantId: data.tenantId,
                         clientModified: false
                     }
@@ -62,7 +61,6 @@ const settingsActions = {
                     autoRedirect: settings.autoRedirect,
                     apiKey: settings.apiKey,
                     apiSecret: settings.apiSecret,
-                    appUri: settings.appUri,
                     tenantId: settings.tenantId,
                     clientModified: true
                 }

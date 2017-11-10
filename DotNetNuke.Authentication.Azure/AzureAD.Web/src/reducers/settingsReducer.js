@@ -11,8 +11,7 @@ export default function settings(state = {
                 apiKey: action.data.apiKey,
                 apiSecret: action.data.apiSecret,
                 tenantId: action.data.tenantId,
-                clientModified: action.data.clientModified,
-                appUri: action.data.appUri
+                clientModified: action.data.clientModified
             };
         case ActionTypes.SETTINGS_CLIENT_MODIFIED:
             return { ...state,
@@ -20,7 +19,6 @@ export default function settings(state = {
                 autoRedirect: action.data.autoRedirect,
                 apiKey: action.data.apiKey,
                 apiSecret: action.data.apiSecret,
-                appUri: action.data.appUri,
                 tenantId: action.data.tenantId,
                 clientModified: action.data.clientModified
             };

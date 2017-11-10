@@ -62,7 +62,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             Scope = "email";
 
             AuthTokenName = "AzureUserToken";
-            APIResource = config.AppUri;
+            APIResource = config.APIKey;
             OAuthVersion = "2.0";
             LoadTokenCookie(string.Empty);
             JwtSecurityToken = null;
