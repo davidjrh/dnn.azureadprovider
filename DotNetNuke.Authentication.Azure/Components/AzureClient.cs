@@ -101,8 +101,8 @@ namespace DotNetNuke.Authentication.Azure.Components
             var claims = JwtSecurityToken.Claims.ToArray();
             var user = new AzureUserData()
             {
-                AzureFirstName = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.GivenName).Value,
-                AzureLastName = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.FamilyName).Value,
+                AzureFirstName = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.GivenName)?.Value,
+                AzureLastName = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.FamilyName)?.Value,
                 AzureDisplayName = claims.FirstOrDefault(x => x.Type == "name").Value,
                 Email = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.UniqueName).Value,
                 Id = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.UniqueName).Value
