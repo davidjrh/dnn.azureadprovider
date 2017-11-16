@@ -42,7 +42,7 @@ It's important to remember that you need a DNN deployment with **version 7.4.1 o
     * Using the new settings page, under the section **Azure Active Directory** on the Persona Bar:
 ![alt text](https://intelequia.blob.core.windows.net/images/DNNAzureADv3_5.png "AAD settings v3")
 
-The settings page is very straightforward. It only requires three parameter from your Azure AD application:
+The settings page is very straightforward. It only requires three parameters from your Azure AD application:
 * **Directory Tenant ID**: You can get this parameter from the **Properties** section of your active directory (it's the value of the field **Directory ID**)
 * **App ID**: This is the **Application ID** of the application you created in [step 4](#applicationid) of the previous section of this guide
 * **Secret**: This is the **Key** that you generated in [step 6](#getaadkey) of the previous section
