@@ -18,16 +18,16 @@ This guide has two parts:
 * How to setup Azure Active Directory
 * How to install the authorization provider in our DNN deployment and how to setup the AD parameters we created before
 
-Following the guide before, you will give access to all your Azure AD users to register and sign-in into your DNN application. You can go later and harden your security settings like only allow to access the DNN Web Application to certain users on the Azure portal. Also note that depending on whether you have "Public" or "Private" user account registration on your DNN portal, you will need to approve the registered user before allowing him to access the site.
+Following this two steps, you will give access to all your Azure AD users to register and sign-in into your DNN application. You can go later and harden your security settings like only allow to access the DNN Web Application to certain users on the Azure portal. Also note that depending on whether you have "Public" or "Private" user account registration on your DNN portal, you will need to approve the registered user before allowing him to access the site.
 
 ### Azure Active Directory setup
-1. Go to https://portal.azure.com to setup the required applications on your Azure Active Directory. You need to use the user credentials of an user having at least "Service Admin" role. 
-2. In the left-hand navigation pane, click the Azure Active Directory service, click "App registration"s, and click "New application registration".
+1. Go to https://portal.azure.com to setup the required applications on your Azure Active Directory. You need to use the user credentials of a user with at least "Service Admin" role. 
+2. In the left-hand navigation pane, click the Azure Active Directory service, click **App registrations**, and click **New application registration**.
 3. When the **Create** page appears, enter your application's registration information:
-  * **Name**: Enter a meaningful application name. This can be any name you want and is simply how you will identify the application in your Azure Active Directory (i.e. "My Contoso WebAPI").
-  * **Application type**: Select "Web app / API" (notice that Web Applications and Web API’s are considered the same type of application as far as Azure AD is concerned)
-  * **Sign-On URL**: This is the URL where user can sign in and use your app. In a typical DNN site, this should be something like "http://mysite.com/Login". You can change this URL later.
-4. <a name="applicationid"></a> When finished, click **Create**. Azure AD assigns a unique Application ID to your application, and you're taken to your application's main registration page.
+    * **Name**: Enter a meaningful application name. This can be any name you want and is simply how you will identify the application in your Azure Active Directory (i.e. "My Contoso WebAPI").
+    * **Application type**: Select "Web app / API" (notice that Web Applications and Web API’s are considered the same type of application as far as Azure AD is concerned)
+    * **Sign-On URL**: This is the URL where user can sign in and use your app. In a typical DNN site, this should be something like "http://mysite.com/Login". You can change this URL later.
+4. <a name="applicationid"></a> When finished, click **Create**. Azure AD assigns a unique **Application ID** to your application, and you're taken to your application's main registration page.
 5. Click on the name of the app we've just created and then on "All settings" > "Required permissions" > "Windows Azure Active Directory". Ensure that the app has, at least, **Sign in and read user profile** checked, in the **Delegated permissions** section.
 6. <a name="getaadkey"></a> Now on the **Settings** page, under the **keys** section, create a new key with the desired expiration. Click on Save and then copy the key to a secure location. `IMPORTANT: you won't be able to copy this key later, so copy it now or generate a new one when needed.`
 
@@ -37,9 +37,9 @@ It's important to remember that you need a DNN deployment with **version 7.4.1 o
 1. Download the DNN Azure AD provider from the Releases folder (i.e. AzureADProvider_03.00.00_Install.zip) https://github.com/davidjrh/dnn.azureadprovider/releases
 2. Login into your DNN Platform website as a host user and install the provider from the "Host > Extensions" page
 3. Use the **Install Extension Wizard** to upload and install the file you downloaded on step 1. Once installed, you can setup the provider from two different places:
-  * Using the legacy settings page, under the section **Authentication Systems** of the Extensions page:
+    * Using the legacy settings page, under the section **Authentication Systems** of the Extensions page:
 ![alt text](https://intelequia.blob.core.windows.net/images/DNNAzureADv3_4.png "AAD settings v1")
-  * Using the new settings page, under the section **Azure Active Directory** on the Persona Bar:
+    * Using the new settings page, under the section **Azure Active Directory** on the Persona Bar:
 ![alt text](https://intelequia.blob.core.windows.net/images/DNNAzureADv3_5.png "AAD settings v3")
 
 The settings page is very straightforward. It only requires three parameter from your Azure AD application:
