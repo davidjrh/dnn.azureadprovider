@@ -9,10 +9,18 @@ The DNN Azure Active Directory Provider is an Authentication provider for DNN Pl
 
 ![alt text](https://intelequia.blob.core.windows.net/images/DNNAzureADv3_3.png "Sign-in with Azure AD")
 
-## Requirements
+# Contents
+- [Requirements](#requirements)
+- [Installation and configuration guide](#installation_and_configuration_guide)
+  - [Azure Active Directory setup](#AAD-setup)
+  - [DNN Provider installation and configuration](#provider-configuration)
+- [Known issues](#known-issues)
+
+<a name="requirements"></a>## Requirements
 * For v1.x: **DNN Platform 7.4.1 or later** (special mention to Evan Smith for the pull request that made this possible https://github.com/dnnsoftware/Dnn.Platform/pull/250)
 * For v3.x: **DNN Platform 9.0.0 or later**
 
+<a name="installation-and-configuration-guide"></a>
 ## Installation and configuration guide
 This guide has two parts:
 * How to setup Azure Active Directory
@@ -20,6 +28,7 @@ This guide has two parts:
 
 Following this two steps, you will give access to all your Azure AD users to register and sign-in into your DNN application. You can go later and harden your security settings like only allow to access the DNN Web Application to certain users on the Azure portal. Also note that depending on whether you have "Public" or "Private" user account registration on your DNN portal, you will need to approve the registered user before allowing him to access the site.
 
+<a name="AAD-setup"></a>
 ### Azure Active Directory setup
 1. Go to https://portal.azure.com to setup the required applications on your Azure Active Directory. You need to use the user credentials of a user with at least "Service Admin" role. 
 2. In the left-hand navigation pane, click the Azure Active Directory service, click **App registrations**, and click **New application registration**.
@@ -31,6 +40,7 @@ Following this two steps, you will give access to all your Azure AD users to reg
 5. Click on the name of the app we've just created and then on "All settings" > "Required permissions" > "Windows Azure Active Directory". Ensure that the app has, at least, **Sign in and read user profile** checked, in the **Delegated permissions** section.
 6. <a name="getaadkey"></a> Now on the **Settings** page, under the **keys** section, create a new key with the desired expiration. Click on Save and then copy the key to a secure location. `IMPORTANT: you won't be able to copy this key later, so copy it now or generate a new one when needed.`
 
+<a name="provider-configuration"></a>
 ### DNN provider installation and configuration
 It's important to remember that you need a DNN deployment with **version 7.4.1 or later** for v1.0.1 and **version 9.0.0 or later** for v3.0 to continue. 
 
@@ -50,6 +60,7 @@ The settings page is very straightforward. It only requires three parameters fro
 * **Auto-Redirect**: This option allows you to automatically redirect your login page to the Azure AD login page
 ![alt text](https://intelequia.blob.core.windows.net/images/DNNAzureADv3_6.png "AAD settings")
 
+<a name="known-issues"></a>
 ## Known issues
 ### 400 Bad Request ("Invalid URL") when running on Azure Websites
 When running on Azure Websites, and just after successfully sign in, the webflow redirects the user to the website with the authorization code in the query string. If the site is using the DNNFriendlyURL module configured in "advanced", the querystring will be changed to a "pretty URL" with slashes "/". This causes a 400 Bad Request because the code value is too long for passing this way.
