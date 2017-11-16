@@ -1,6 +1,16 @@
 # DNN Azure Active Directory provider
 ### Latest release [![Latest release](https://intelequia.blob.core.windows.net/images/DNNAzureAD_LatestRelease.svg)](https://github.com/davidjrh/dnn.azureadprovider/releases/latest)
 
+## Contents
+- [Overview](#overview)
+- [Requirements](#requirements)
+- [Installation and configuration guide](#installation-and-configuration-guide)
+  - [Azure Active Directory setup](#AAD-setup)
+  - [DNN Provider installation and configuration](#provider-configuration)
+- [Known issues](#known-issues)
+
+<a name="overview"></a>
+## Overview
 The DNN Azure Active Directory Provider is an Authentication provider for DNN Platform that uses Azure Active Directory OAuth2 authentication to authenticate users.
 
 ![alt text](https://intelequia.blob.core.windows.net/images/DNNAzureADv3_1.png "Sign-in with Azure AD")
@@ -9,14 +19,8 @@ The DNN Azure Active Directory Provider is an Authentication provider for DNN Pl
 
 ![alt text](https://intelequia.blob.core.windows.net/images/DNNAzureADv3_3.png "Sign-in with Azure AD")
 
-# Contents
-- [Requirements](#requirements)
-- [Installation and configuration guide](#installation_and_configuration_guide)
-  - [Azure Active Directory setup](#AAD-setup)
-  - [DNN Provider installation and configuration](#provider-configuration)
-- [Known issues](#known-issues)
-
-<a name="requirements"></a>## Requirements
+<a name="requirements"></a>
+## Requirements
 * For v1.x: **DNN Platform 7.4.1 or later** (special mention to Evan Smith for the pull request that made this possible https://github.com/dnnsoftware/Dnn.Platform/pull/250)
 * For v3.x: **DNN Platform 9.0.0 or later**
 
