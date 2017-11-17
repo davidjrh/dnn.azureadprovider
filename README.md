@@ -80,3 +80,4 @@ UPDATE dnn_HostSettings
 ## References
 * Azure Active Directory Part 2: Building Web Applications for Azure AD, Rick Rainey (http://justazure.com/azure-active-directory-part-2-building-web-applications-azure-ad/) 
 * What exactly is the App ID URI when adding a new Azure AD Application? https://social.msdn.microsoft.com/Forums/en-US/1bab0034-d01e-431b-9562-b7e9d7b2a180/what-exactly-is-the-app-id-uri-when-adding-a-new-azure-ad-application?forum=WindowsAzureAD
+* Integrating applications with Azure Active Directory. https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-integrating-applications
