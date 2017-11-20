@@ -103,6 +103,9 @@
     <Content Include="Images\azure.png" />
     <Content Include="Images\dnn-webapp.png" />
     <Content Include="AzureADLicense.txt" />
+    <Content Include="Logoff.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="Login.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -118,6 +121,13 @@
     <Compile Include="Components\AzureConfig.cs" />
     <Compile Include="Components\AzureUserData.cs" />
     <Compile Include="Components\MenuController.cs" />
+    <Compile Include="Logoff.ascx.cs">
+      <DependentUpon>Logoff.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Logoff.ascx.designer.cs">
+      <DependentUpon>Logoff.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Login.ascx.cs">
       <DependentUpon>Login.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

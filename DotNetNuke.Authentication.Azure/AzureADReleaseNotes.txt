@@ -5,6 +5,7 @@
 <p style="margin: 0">Fully redesigned configuration page which can be now accessible from the Persona bar.</p>
 <p style="margin: 0">Added a new option to allow the login page to be automatically redirected to the Azure AD login page.</p>
 <p style="margin: 0">The settings page has been simplified. It now requires only 4 parameters from Azure AD, instead of 6.</p>
+<p style="margin: 0">Now the provider supports the Azure OAuth logout workflow, so when a user logoff on DNN, is also logged out from Azure AD.</p>
 <p style="margin: 0">Bug fixes.</p>
 
 <p style="margin: 0"><b>Version 01.00.01</b></p>

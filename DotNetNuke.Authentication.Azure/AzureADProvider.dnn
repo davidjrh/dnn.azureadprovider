@@ -26,7 +26,7 @@
             <type>Azure</type>
             <settingsControlSrc>DesktopModules/AuthenticationServices/Azure/Settings.ascx</settingsControlSrc>
             <loginControlSrc>DesktopModules/AuthenticationServices/Azure/Login.ascx</loginControlSrc>
-            <logoffControlSrc/>
+            <logoffControlSrc>DesktopModules/AuthenticationServices/Azure/Logoff.ascx</logoffControlSrc>
           </authenticationService>
         </component>
         <component type="Assembly">
