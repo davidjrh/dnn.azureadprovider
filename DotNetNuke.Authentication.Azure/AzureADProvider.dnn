@@ -10,7 +10,7 @@
         <name>David Rodriguez</name>
         <organization>David Rodriguez</organization>
         <url>http://davidjrh.intelequia.com</url>
-        <email>davidjrh@hotmail.com</email>
+        <email>davidj@intelequia.com</email>
       </owner>
       <license src="AzureADLicense.txt" />
       <releaseNotes src="AzureADReleaseNotes.txt"/>

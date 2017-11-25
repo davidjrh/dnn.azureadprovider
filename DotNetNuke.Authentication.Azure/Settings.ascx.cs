@@ -1,9 +1,9 @@
 ﻿#region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
-// by DotNetNuke Corporation
+// Intelequia Software solutions - https://intelequia.com
+// Copyright (c) 2010-2017
+// by Intelequia Software Solutions
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -33,10 +33,7 @@ namespace DotNetNuke.Authentication.Azure
 {
     public partial class Settings : OAuthSettingsBase
     {
-        protected override string AuthSystemApplicationName
-        {
-            get { return "Azure"; }
-        }
+        protected override string AuthSystemApplicationName => "Azure";
 
         public override void UpdateSettings()
         {

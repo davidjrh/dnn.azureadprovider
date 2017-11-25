@@ -1,9 +1,9 @@
 ﻿#region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
-// Copyright (c) 2002-2014
-// by DotNetNuke Corporation
+// Intelequia Software solutions - https://intelequia.com
+// Copyright (c) 2010-2017
+// by Intelequia Software Solutions
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 // documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -24,7 +24,6 @@
 #region Usings
 
 using System;
-using System.Collections.Specialized;
 using DotNetNuke.Authentication.Azure.Components;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Authentication.OAuth;
@@ -37,15 +36,9 @@ namespace DotNetNuke.Authentication.Azure
 {
     public partial class Login : OAuthLoginBase
     {
-        protected override string AuthSystemApplicationName
-        {
-            get { return "Azure"; }
-        }
+        protected override string AuthSystemApplicationName => "Azure";
 
-        public override bool SupportsRegistration
-        {
-            get { return true; }
-        }
+        public override bool SupportsRegistration => true;
 
         protected override UserData GetCurrentUser()
         {
@@ -67,13 +60,6 @@ namespace DotNetNuke.Authentication.Azure
             var config = new AzureConfig("Azure", PortalId);
             if (config.AutoRedirect && Request["legacy"] != "1")
                 loginButton_Click(null, null);
-        }
-
-        protected override void AddCustomProperties(NameValueCollection properties)
-        {
-            base.AddCustomProperties(properties);
-
-            //properties.Add("Azure", OAuthClient.GetCurrentUser<AzureUserData>().Link.ToString());
         }
 
         private void loginButton_Click(object sender, EventArgs e)
