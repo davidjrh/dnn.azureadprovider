@@ -41,7 +41,7 @@ Following this two steps, you will give access to all your Azure AD users to reg
     * **Application type**: Select "Web app / API" (notice that Web Applications and Web API’s are considered the same type of application as far as Azure AD is concerned)
     * **Sign-On URL**: This is the URL where user can sign in and use your app. In a typical DNN site, this should be something like "http://mysite.com/Login". You can change this URL later.
 4. <a name="applicationid"></a> When finished, click **Create**. Azure AD assigns a unique **Application ID** to your application, and you're taken to your application's main registration page.
-5. Click on the name of the app we've just created and then on "All settings" > "Required permissions" > "Windows Azure Active Directory". Ensure that the app has, at least, **Sign in and read user profile** checked, in the **Delegated permissions** section.
+5. Click on the name of the app we've just created and then on "All settings" > "Required permissions" > "Windows Azure Active Directory". Ensure that the app has, at least, **Sign in and read user profile** checked, in the **Delegated permissions** section. Optionally, if as an administrator you want to avoid your users to consent access after login in the first time, you can click on the **Grant permissions** button.
 6. <a name="getaadkey"></a> Now on the **Settings** page, under the **keys** section, create a new key with the desired expiration. Click on Save and then copy the key to a secure location. `IMPORTANT: you won't be able to copy this key later, so copy it now or generate a new one when needed.`
 
 <a name="provider-configuration"></a>
@@ -50,10 +50,7 @@ It's important to remember that you need a DNN deployment with **version 7.4.1 o
 
 1. Download the DNN Azure AD provider from the Releases folder (i.e. AzureADProvider_03.00.00_Install.zip) https://github.com/davidjrh/dnn.azureadprovider/releases
 2. Login into your DNN Platform website as a host user and install the provider from the "Host > Extensions" page
-3. Use the **Install Extension Wizard** to upload and install the file you downloaded on step 1. Once installed, you can setup the provider from two different places:
-    * Using the legacy settings page, under the section **Authentication Systems** of the Extensions page:
-![alt text](https://intelequia.blob.core.windows.net/images/DNNAzureADv3_4.png "AAD settings v1")
-    * Using the new settings page, under the section **Azure Active Directory** on the Persona Bar:
+3. Use the **Install Extension Wizard** to upload and install the file you downloaded on step 1. Once installed, you can setup the provider from the new settings page, under the section **Azure Active Directory** on the Persona Bar:
 ![alt text](https://intelequia.blob.core.windows.net/images/DNNAzureADv3_5.png "AAD settings v3")
 
 The settings page is very straightforward. It only requires three parameters from your Azure AD application:
