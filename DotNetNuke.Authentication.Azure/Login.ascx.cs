@@ -24,11 +24,14 @@
 #region Usings
 
 using System;
+using System.Diagnostics;
 using DotNetNuke.Authentication.Azure.Components;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Authentication.OAuth;
+using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.UI.Skins.Controls;
+using log4net;
 
 #endregion
 
@@ -36,6 +39,7 @@ namespace DotNetNuke.Authentication.Azure
 {
     public partial class Login : OAuthLoginBase
     {
+        private ILog _logger = LogManager.GetLogger(typeof(Login));
         protected override string AuthSystemApplicationName => "Azure";
 
         public override bool SupportsRegistration => true;
@@ -64,11 +68,20 @@ namespace DotNetNuke.Authentication.Azure
 
         private void loginButton_Click(object sender, EventArgs e)
         {
-            AuthorisationResult result = OAuthClient.Authorize();
-            if (result == AuthorisationResult.Denied)
+            if (!string.IsNullOrEmpty(Request["error"]))
             {
-                UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
-                
+                var errorMessage = Localization.GetString("LoginError", LocalResourceFile);
+                errorMessage = string.Format(errorMessage, Request["error"], Request["error_description"]);
+                _logger.Error(errorMessage);
+                UI.Skins.Skin.AddModuleMessage(this, errorMessage, ModuleMessage.ModuleMessageType.RedError);
+            }
+            else
+            {
+                AuthorisationResult result = OAuthClient.Authorize();
+                if (result == AuthorisationResult.Denied)
+                {
+                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
+                }
             }
         }
     }

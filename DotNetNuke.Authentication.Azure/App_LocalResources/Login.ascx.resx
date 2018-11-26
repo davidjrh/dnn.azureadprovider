@@ -120,6 +120,9 @@
   <data name="LoginAzure.Text" xml:space="preserve">
     <value>Sign in with Azure</value>
   </data>
+  <data name="LoginError.Text" xml:space="preserve">
+    <value>Error: {0}&lt;br/&gt;Details: {1}</value>
+  </data>
   <data name="RegisterAzure.Text" xml:space="preserve">
     <value>Register with Azure</value>
   </data>
