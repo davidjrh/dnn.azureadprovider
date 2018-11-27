@@ -74,13 +74,17 @@ namespace DotNetNuke.Authentication.Azure
                 errorMessage = string.Format(errorMessage, Request["error"], Request["error_description"]);
                 _logger.Error(errorMessage);
                 UI.Skins.Skin.AddModuleMessage(this, errorMessage, ModuleMessage.ModuleMessageType.RedError);
-            }
+            }           
             else
             {
-                AuthorisationResult result = OAuthClient.Authorize();
-                if (result == AuthorisationResult.Denied)
+                var hasVerificationCode = OAuthClient.IsCurrentService() && OAuthClient.HaveVerificationCode();
+                if (!hasVerificationCode)
                 {
-                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
+                    AuthorisationResult result = OAuthClient.Authorize();
+                    if (result == AuthorisationResult.Denied)
+                    {
+                        UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
+                    }
                 }
             }
         }
