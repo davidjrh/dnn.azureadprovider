@@ -5,6 +5,7 @@
 <p style="margin: 0"><b>Version 03.00.01</b></p>
 <p style="margin: 0">Fixed double exchange code for token calls, causing a login issue introduced on Azure AD after October 10th, 2018</p>
 <p style="margin: 0">Fix to avoid infinite redirect loop handling, when an authorized Azure AD user has not been asigned to the Azure App Registration (or whatever other Authorization issue)</p>
+<p style="margin: 0">Updated minimum DNN Platform version to 9.2.0 to avoid package dependency security warnings</p>
 
 
 <p style="margin: 0"><b>Version 03.00.00</b></p>

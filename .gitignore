@@ -201,3 +201,4 @@ FakesAssemblies/
 /DotNetNuke.Authentication.Azure/.vs
 /DotNetNuke.Authentication.Azure/packages
 /Releases
+/DotNetNuke.Authentication.Azure/AzureAD.Web/package-lock.json

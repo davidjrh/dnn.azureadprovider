@@ -16,7 +16,7 @@
       <releaseNotes src="AzureADReleaseNotes.txt"/>
       <azureCompatible>true</azureCompatible>
       <dependencies>
-        <dependency type="CoreVersion">09.00.01</dependency>
+        <dependency type="CoreVersion">09.02.00</dependency>
         <dependency type="ManagedPackage" version="01.00.00">Dnn.PersonaBar.UI</dependency>
       </dependencies>
 
