@@ -1,5 +1,5 @@
 # DNN Azure Active Directory provider
-### Latest release [![Latest release](https://intelequia.blob.core.windows.net/images/DNNAzureAD_LatestRelease.svg)](https://github.com/davidjrh/dnn.azureadprovider/releases/latest)
+### Latest release [![Latest release](https://intelequia.blob.core.windows.net/images/DNNAzureAD_3.0.1.svg)](https://github.com/davidjrh/dnn.azureadprovider/releases/latest)
 
 ## Contents
 - [Overview](#overview)
