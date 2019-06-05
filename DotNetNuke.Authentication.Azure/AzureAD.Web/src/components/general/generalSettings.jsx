@@ -1,13 +1,11 @@
-import React, {Component, PropTypes} from "react";
+import React, {Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import GridCell from "dnn-grid-cell";
-import Switch from "dnn-switch";
+import { GridCell, Switch, SingleLineInputWithError, Button } from "@dnnsoftware/dnn-react-common";
 import SettingsActions from "../../actions/settings";
-import SingleLineInputWithError from "dnn-single-line-input-with-error";
-import Button from "dnn-button";
 import resx from "../../resources";
-import styles from "./generalSettings.less";
 import utils from "../../utils";
+import "./generalSettings.less";
 
 class GeneralSettings extends Component {
 
@@ -23,13 +21,13 @@ class GeneralSettings extends Component {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         const {props} = this;
 
         props.dispatch(SettingsActions.getSettings());
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         const {state} = this;
 
         state.error["appId"] = (nextProps.apiKey === "");
@@ -75,21 +73,21 @@ class GeneralSettings extends Component {
 
     render() {
         return (
-            <div className={styles.generalSettings}>
+            <div className="dnn-azuread-generalSettings">
                 <GridCell columnSize={50}>
                     <p className="panel-description">{resx.get("lblTabDescription")}</p>
                     <Switch label={resx.get("lblEnabled")}
-                            onText=""
-                            offText=""
-                            value={this.props.enabled}
-                            tooltipMessage={resx.get("lblEnabled.Help")}
-                            onChange={this.onSettingChange.bind(this, "AADProviderEnabled")} />
+                        onText=""
+                        offText=""
+                        value={this.props.enabled}
+                        tooltipMessage={resx.get("lblEnabled.Help")}
+                        onChange={this.onSettingChange.bind(this, "AADProviderEnabled")} />
                     <Switch label={resx.get("lblAutoRedirect")}
-                            onText=""
-                            offText=""
-                            tooltipMessage={resx.get("lblAutoRedirect.Help")}
-                            value={this.props.autoRedirect}
-                            onChange={this.onSettingChange.bind(this, "AutoRedirect")} />
+                        onText=""
+                        offText=""
+                        tooltipMessage={resx.get("lblAutoRedirect.Help")}
+                        value={this.props.autoRedirect}
+                        onChange={this.onSettingChange.bind(this, "AutoRedirect")} />
                 </GridCell>
                 <GridCell columnSize={50}>
                     <div className="logo"></div>
@@ -106,8 +104,7 @@ class GeneralSettings extends Component {
                                 errorMessage={resx.get("lblTenantId.Error")}
                                 tooltipMessage={resx.get("lblTenantId.Help")}
                                 value={this.props.tenantId}
-                                onChange={this.onSettingChange.bind(this, "TenantId")}
-                                />
+                                onChange={this.onSettingChange.bind(this, "TenantId")} />
                         </div>
                     </GridCell>
                 </GridCell>
@@ -123,8 +120,7 @@ class GeneralSettings extends Component {
                                 errorMessage={resx.get("lblAppId.Error")}
                                 tooltipMessage={resx.get("lblAppId.Help")}
                                 value={this.props.apiKey}
-                                onChange={this.onSettingChange.bind(this, "AppId")}
-                                />
+                                onChange={this.onSettingChange.bind(this, "AppId")} />
                         </div>
                     </GridCell>
                     <GridCell columnSize={50}>
@@ -139,8 +135,7 @@ class GeneralSettings extends Component {
                                 tooltipMessage={resx.get("lblAppSecret.Help")}
                                 value={this.props.apiSecret}
                                 autocomplete="off"
-                                onChange={this.onSettingChange.bind(this, "AppSecret")}
-                                />
+                                onChange={this.onSettingChange.bind(this, "AppSecret")} />
                         </div>
                     </GridCell>
                 </GridCell>

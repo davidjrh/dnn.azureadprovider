@@ -8,33 +8,39 @@ module.exports = {
         "commonjs": true
     },
     "extends": ["eslint:recommended", "plugin:react/recommended"],
+    "settings": {
+        "react": {
+          "version": "16"
+        }
+    },     
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true,
-            "experimentalObjectRestSpread": true
+            "arrowFunctions": true,
+            "blockBindings": true,
+            "classes": true,
+            "defaultParams": true,
+            "destructuring": true,
+            "forOf": true,
+            "generators": true,
+            "modules": true,
+            "objectLiteralComputedProperties": true,
+            "regexUFlag": true,
+            "regexYFlag": true,
+            "spread": true,
+            "superInFunctions": false,
+            "templateStrings": true            
         },
-        "ecmaVersion": 6,
+        "ecmaVersion": 2018,
         "sourceType": "module"
-    },        
+    },           
     "globals": {
         "__": false,
         "Promise": false,
         "VERSION": false
     },
     "rules": {
-//       "spellcheck/spell-checker": [1,
-//        {
-//            "comments": "true",
-//            "strings": "true",
-//            "identifiers": "true",
-//            "skipWords": require("./.eslintskipwords"),
-//            "skipIfMatch": [
-//                "http://[^s]*",
-//                "https://[^s]*",
-//                "(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)" // CSS hex color
-//            ]
-//        }
-//      ],      
+    
       "semi": "error",
       "no-var": "error",
       "quotes": ["warn", "double" ],

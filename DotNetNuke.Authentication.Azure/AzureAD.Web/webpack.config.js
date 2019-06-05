@@ -1,4 +1,6 @@
 ﻿const webpack = require("webpack");
+const webpackExternals = require("@dnnsoftware/dnn-react-common/WebpackExternals");
+const path = require("path");
 const packageJson = require("./package.json");
 const isProduction = process.env.NODE_ENV === "production";
 const languages = {
@@ -11,38 +13,70 @@ const languages = {
     // "nl": require("./localizations/nl.json")
 };
 
-const webpackExternals = require("dnn-webpack-externals");
-
 module.exports = {
-    devtool: 'inline-source-map',
     entry: "./src/main.jsx",
+    optimization: {
+        minimize: isProduction
+    },    
     output: {
-        path: "../admin/personaBar/scripts/bundles/",
+        path: path.resolve(__dirname, "../admin/personaBar/scripts/bundles/"),
         filename: "bundle-en.js",
         publicPath: isProduction ? "" : "http://localhost:8080/dist/scripts/bundles"
     },
 
-    module: {
-        loaders: [
-            { test: /\.(js|jsx)$/, exclude: /node_modules/, loaders: ["react-hot-loader", "babel-loader"] },
-            { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
-            { test: /\.(eot|svg|jpg|png)$/, loader: "url-loader?limit=16384" }
-        ],
-
-        preLoaders: [
-            { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: "eslint-loader" }
-        ]
-    },
-
     resolve: {
-        extensions: ["", ".js", ".json", ".jsx"]
-    },
+        extensions: [".js", ".json", ".jsx"],
+        modules: [
+            path.resolve('./src'),           // Look in src first
+            path.resolve('./node_modules')  // Try local node_modules
+        ]
+    },    
 
+    module: {
+        rules: [
+            { 
+                test: /\.(js|jsx)$/, 
+                exclude: /node_modules/, 
+                enforce: "pre",
+                use: [
+                    'eslint-loader'
+                 ]
+            },
+            { 
+                test: /\.less$/, 
+                use: [{
+                    loader: 'style-loader'  // creates style nodes from JS strings
+                }, {
+                    loader: 'css-loader'    // translates CSS into CommonJS
+                }, {
+                    loader: 'less-loader'   // compiles Less to CSS
+                }] 
+            },
+            { 
+                test: /\.(js|jsx)$/, 
+                exclude: /node_modules/, 
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env','@babel/preset-react']
+                    }
+                }
+            },
+            { 
+                test: /\.(ttf|woff)$/, 
+                use: {
+                    loader: 'url-loader?limit=8192'
+                 }
+            },
+            { 
+                test: /\.(gif|png)$/, 
+                loader: "url-loader?mimetype=image/png" 
+            }
+        ]
+    }, 
     externals: webpackExternals,
 
     plugins: isProduction ? [
-        new webpack.optimize.UglifyJsPlugin(),
-        new webpack.optimize.DedupePlugin(),
         new webpack.DefinePlugin({
             VERSION: JSON.stringify(packageJson.version),
             "process.env": {
@@ -51,7 +85,11 @@ module.exports = {
         })
     ] : [
             new webpack.DefinePlugin({
-                VERSION: JSON.stringify(packageJson.version)
+                VERSION: JSON.stringify(packageJson.version),
+                "process.env": {
+                    "NODE_ENV": JSON.stringify("development")
+                }                
             })
-    ]
+        ],
+    devtool: 'source-map'
 };
