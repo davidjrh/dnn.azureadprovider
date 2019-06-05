@@ -1,5 +1,5 @@
 # DNN Azure Active Directory provider
-### Latest release [![Latest release](https://intelequia.blob.core.windows.net/images/DNNAzureAD_3.0.1.svg)](https://github.com/davidjrh/dnn.azureadprovider/releases/latest)
+### Latest release [![Latest release](https://github.com/davidjrh/dnn.azureadprovider/raw/master/docs/images/DNNAzureAD_LatestRelease.svg)](https://github.com/davidjrh/dnn.azureadprovider/releases/latest)
 
 ## Contents
 - [Overview](#overview)
@@ -13,11 +13,11 @@
 ## Overview
 The DNN Azure Active Directory Provider is an Authentication provider for DNN Platform that uses Azure Active Directory OAuth2 authentication to authenticate users.
 
-![alt text](https://intelequia.blob.core.windows.net/images/DNNAzureADv3_1.png "Sign-in with Azure AD")
+![alt text](https://github.com/davidjrh/dnn.azureadprovider/raw/master/docs/images/DNNAzureADv3_1.png "Sign-in with Azure AD")
 
-![alt text](https://intelequia.blob.core.windows.net/images/DNNAzureADv3_2.png "Sign-in with Azure AD")
+![alt text](https://github.com/davidjrh/dnn.azureadprovider/raw/master/docs/images/DNNAzureADv3_2.png "Sign-in with Azure AD")
 
-![alt text](https://intelequia.blob.core.windows.net/images/DNNAzureADv3_3.png "Sign-in with Azure AD")
+![alt text](https://github.com/davidjrh/dnn.azureadprovider/raw/master/docs/images/DNNAzureADv3_3.png "Sign-in with Azure AD")
 
 <a name="requirements"></a>
 ## Requirements
@@ -51,7 +51,7 @@ It's important to remember that you need a DNN deployment with **version 7.4.1 o
 1. Download the DNN Azure AD provider from the Releases folder (i.e. AzureADProvider_03.00.00_Install.zip) https://github.com/davidjrh/dnn.azureadprovider/releases
 2. Login into your DNN Platform website as a host user and install the provider from the "Host > Extensions" page
 3. Use the **Install Extension Wizard** to upload and install the file you downloaded on step 1. Once installed, you can setup the provider from the new settings page, under the section **Azure Active Directory** on the Persona Bar:
-![alt text](https://intelequia.blob.core.windows.net/images/DNNAzureADv3_5.png "AAD settings v3")
+![alt text](https://github.com/davidjrh/dnn.azureadprovider/raw/master/docs/images/DNNAzureADv3_5.png "AAD settings v3")
 
 The settings page is very straightforward. It only requires three parameters from your Azure AD application:
 * **Directory Tenant ID**: You can get this parameter from the **Properties** section of your active directory (it's the value of the field **Directory ID**)
@@ -59,7 +59,7 @@ The settings page is very straightforward. It only requires three parameters fro
 * **Secret**: This is the **Key** that you generated in [step 6](#getaadkey) of the previous section
 * **Enabled**: Use this switch to enable/disable the provider
 * **Auto-Redirect**: This option allows you to automatically redirect your login page to the Azure AD login page
-![alt text](https://intelequia.blob.core.windows.net/images/DNNAzureADv3_6.png "AAD settings")
+![alt text](https://github.com/davidjrh/dnn.azureadprovider/raw/master/docs/images/DNNAzureADv3_6.png "AAD settings")
 
 ## Building the solution
 ### Requirements
