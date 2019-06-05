@@ -1,5 +1,5 @@
 # DNN Azure Active Directory provider
-### Latest release [![Latest release](https://github.com/davidjrh/dnn.azureadprovider/raw/master/docs/images/DNNAzureAD_LatestRelease.svg)](https://github.com/davidjrh/dnn.azureadprovider/releases/latest)
+### Latest release [![Latest release](docs/images/DNNAzureAD_LatestRelease.svg)](https://github.com/davidjrh/dnn.azureadprovider/releases/latest)
 
 ## Contents
 - [Overview](#overview)
