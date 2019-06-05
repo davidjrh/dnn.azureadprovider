@@ -1,9 +1,7 @@
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import PersonaBarPage from "dnn-persona-bar-page";
-import PersonaBarPageHeader from "dnn-persona-bar-page-header";
-import PersonaBarPageBody from "dnn-persona-bar-page-body";
-import Tabs from "dnn-tabs";
+import { PersonaBarPage, PersonaBarPageHeader, PersonaBarPageBody, DnnTabs as Tabs} from "@dnnsoftware/dnn-react-common";
 import SettingsActions from "../actions/settings";
 import GeneralSettings from "./general";
 
@@ -25,12 +23,12 @@ class App extends Component {
                     <PersonaBarPageHeader title="Azure Active Directory" titleCharLimit={30}>
                     </PersonaBarPageHeader>
                     <PersonaBarPageBody>
-                    <Tabs
-                        onSelect={this.onSelectTab.bind(this)}
-                        selectedIndex={this.props.selectedTab}
-                        tabHeaders={["General Settings"]}>
-                        <GeneralSettings />
-                    </Tabs>                        
+                        <Tabs
+                            onSelect={this.onSelectTab.bind(this)}
+                            selectedIndex={this.props.selectedTab}
+                            tabHeaders={["General Settings"]}>
+                            <GeneralSettings />
+                        </Tabs>                        
                     </PersonaBarPageBody>
                 </PersonaBarPage>
             </div>

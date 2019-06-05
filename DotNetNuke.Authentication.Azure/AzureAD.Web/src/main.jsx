@@ -15,6 +15,6 @@ render(
     <Provider store={store}>
         <Root />
     </Provider>,
-appContainer
+    appContainer
 );    
 

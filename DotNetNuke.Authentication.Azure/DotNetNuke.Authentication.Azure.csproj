@@ -204,6 +204,6 @@
   </UsingTask>
   <Target Name="SampleTarget" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Release' ">
     <SetEnvironmentVariableTask Name="NODE_ENV" Value="production" />
-    <Exec Command="webpack -p" WorkingDirectory="AzureAD.Web" />
+    <Exec Command="webpack --mode=production" WorkingDirectory="AzureAD.Web" />
   </Target>
 </Project>

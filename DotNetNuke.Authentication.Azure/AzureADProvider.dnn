@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="AzureADProvider" type="Auth_System" version="03.00.01">
+    <package name="AzureADProvider" type="Auth_System" version="03.01.00">
       <friendlyName>DNN Azure Active Directory Provider</friendlyName>
       <description>
         The DNN Azure Active Directory Provider is an Authentication provider for DNN Platform that uses Azure Active Directory OAuth2 authentication to authenticate users.
@@ -8,7 +8,7 @@
       <iconFile>~/DesktopModules/AuthenticationServices/Azure/Images/azure.png</iconFile>
       <owner>
         <name>David Rodriguez</name>
-        <organization>David Rodriguez</organization>
+        <organization>Intelequia Software Solutions</organization>
         <url>http://davidjrh.intelequia.com</url>
         <email>davidj@intelequia.com</email>
       </owner>
@@ -16,7 +16,7 @@
       <releaseNotes src="AzureADReleaseNotes.txt"/>
       <azureCompatible>true</azureCompatible>
       <dependencies>
-        <dependency type="CoreVersion">09.02.00</dependency>
+        <dependency type="CoreVersion">09.03.00</dependency>
         <dependency type="ManagedPackage" version="01.00.00">Dnn.PersonaBar.UI</dependency>
       </dependencies>
 
