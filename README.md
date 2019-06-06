@@ -72,7 +72,7 @@ From the command line, the following command must be executed:
    npm config set registry https://www.myget.org/F/dnn-software-public/npm/
 ```
 ### Install package dependencies
-From the comman line, enter the <RepoRoot>\RedisCachingProvider\RedisCaching.Web and run the following commands:
+From the comman line, enter the `<RepoRoot>\DotNetNuke.Authentication.Azure\AzureAD.Web` and run the following commands:
 ```
   npm install -g webpack
   npm install
