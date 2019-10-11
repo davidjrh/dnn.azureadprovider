@@ -25,11 +25,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Web;
 using System.Web.Script.Serialization;
 using DotNetNuke.Authentication.Azure.Common;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Authentication.OAuth;
 
@@ -82,6 +85,38 @@ namespace DotNetNuke.Authentication.Azure.Components
             var tokenDictionary = jsonSerializer.DeserializeObject(responseText) as Dictionary<string, object>;
 
             return new TimeSpan(0, 0, Convert.ToInt32(tokenDictionary["expires_in"]));
+        }
+
+        public override void AuthenticateUser(UserData user, PortalSettings settings, string IPAddress, Action<NameValueCollection> addCustomProperties, Action<UserAuthenticatedEventArgs> onAuthenticated)
+        {
+            var userInfo = UserController.GetUserByEmail(PortalSettings.Current.PortalId, user.Email);
+            // If user doesn't exist, base.AuthenticateUser() will create it. 
+            if (userInfo == null)
+            {
+                base.AuthenticateUser(user, settings, IPAddress, addCustomProperties, onAuthenticated);
+                if (IsCurrentUserAuthorized())
+                {
+                    userInfo = UserController.GetUserByEmail(PortalSettings.Current.PortalId, user.Email);
+                    ApproveUser(userInfo);
+                }
+            }
+            else
+            {
+                if (IsCurrentUserAuthorized())
+                {
+                    ApproveUser(userInfo);
+                }
+                base.AuthenticateUser(user, settings, IPAddress, addCustomProperties, onAuthenticated);
+            }
+        }
+
+        private void ApproveUser(UserInfo userInfo)
+        {
+            if (!userInfo.Membership.Approved && IsCurrentUserAuthorized())
+            {
+                userInfo.Membership.Approved = true; // Delegate approval on Auth Provider
+                UserController.UpdateUser(userInfo.PortalID, userInfo);
+            }
         }
 
         protected override string GetToken(string responseText)
