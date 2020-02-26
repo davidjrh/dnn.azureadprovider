@@ -189,4 +189,250 @@
   <data name="SaveSettings.Text" xml:space="preserve">
     <value>Save Settings</value>
   </data>
+  <data name="AadClaim.Header.Text" xml:space="preserve">
+    <value>AAD Claim</value>
+  </data>
+  <data name="AadExtension.Header.Text" xml:space="preserve">
+    <value>AAD Extension</value>
+  </data>
+  <data name="AadProperty.Header.Text" xml:space="preserve">
+    <value>AAD Claim</value>
+  </data>
+  <data name="AadRole.Header.Text" xml:space="preserve">
+    <value>AAD Role</value>
+  </data>
+  <data name="AdvancedSettings.Text" xml:space="preserve">
+    <value>Advanced Settings</value>
+  </data>
+  <data name="cmdAddProfileMapping.Text" xml:space="preserve">
+    <value>Add Mapping</value>
+  </data>
+  <data name="cmdAddRoleMapping.Text" xml:space="preserve">
+    <value>Add Mapping</value>
+  </data>
+  <data name="DnnProfileProperty.Header.Text" xml:space="preserve">
+    <value>DNN Profile Property</value>
+  </data>
+  <data name="DnnProperty.Header.Text" xml:space="preserve">
+    <value>DNN Property</value>
+  </data>
+  <data name="DnnRole.Header.Text" xml:space="preserve">
+    <value>DNN Role</value>
+  </data>
+  <data name="ErrorMappingDuplicated.Text" xml:space="preserve">
+    <value>This item is already mapped</value>
+  </data>
+  <data name="ErrorProfileMappingDuplicated.Text" xml:space="preserve">
+    <value>This property is already mapped</value>
+  </data>
+  <data name="ErrorUserMappingDuplicated.Text" xml:space="preserve">
+    <value>This property is already mapped</value>
+  </data>
+  <data name="GeneralSettings.Text" xml:space="preserve">
+    <value>General Settings</value>
+  </data>
+  <data name="InvalidAadClaimName.Text" xml:space="preserve">
+    <value>You have to type a valid AAD claim name</value>
+  </data>
+  <data name="InvalidAadPropertyName.Text" xml:space="preserve">
+    <value>Incorrect AAD property name</value>
+  </data>
+  <data name="InvalidAadRoleName.Text" xml:space="preserve">
+    <value>Incorrect Aad role name</value>
+  </data>
+  <data name="lblAADAppClientId.Error" xml:space="preserve">
+    <value>You must specify the Azure AD Application ID</value>
+  </data>
+  <data name="lblAADAppClientId.Help" xml:space="preserve">
+    <value>The Azure AD Application ID (it's used to sync user data)</value>
+  </data>
+  <data name="lblAADAppClientId.Text" xml:space="preserve">
+    <value>Application Id</value>
+  </data>
+  <data name="lblAADAppSecret.Error" xml:space="preserve">
+    <value>You must especify the application key</value>
+  </data>
+  <data name="lblAADAppSecret.Help" xml:space="preserve">
+    <value>A valid key for that Azure AD Application</value>
+  </data>
+  <data name="lblAADAppSecret.Text" xml:space="preserve">
+    <value>Application Key</value>
+  </data>
+  <data name="lblAadClaimName.Help" xml:space="preserve">
+    <value>The AAD claim name</value>
+  </data>
+  <data name="lblAadClaimName.Text" xml:space="preserve">
+    <value>AAD Claim*</value>
+  </data>
+  <data name="lblAadExtensionName.Help" xml:space="preserve">
+    <value>The AAD extension name</value>
+  </data>
+  <data name="lblAadExtensionName.Text" xml:space="preserve">
+    <value>AAD Extension</value>
+  </data>
+  <data name="lblAadPropertyName.Help" xml:space="preserve">
+    <value>This is the AAD property against which the DNN property will be mapped.</value>
+  </data>
+  <data name="lblAadPropertyName.Text" xml:space="preserve">
+    <value>AAD Property</value>
+  </data>
+  <data name="lblAadRoleName.Text" xml:space="preserve">
+    <value>AAD Role*</value>
+  </data>
+  <data name="lblAADSettings.Text" xml:space="preserve">
+    <value>Graph Client</value>
+  </data>
+  <data name="lblAPIResource.Text" xml:space="preserve">
+    <value>API Resource</value>
+  </data>
+  <data name="lblAPIResourceDesc.Text" xml:space="preserve">
+    <value>If you are going to use the issued tokens to access an external WebAPI that uses B2C Authorization, you can specify the App ID URI and scopes that will be validated by the WebAPI</value>
+  </data>
+  <data name="lblAppIdUri.Help" xml:space="preserve">
+    <value>The App ID Uri of the external WebAPI, obtained from the Azure portal (i.e. https://mytenant.onmicrosoft.com/myapi/)</value>
+  </data>
+  <data name="lblAppIdUri.Text" xml:space="preserve">
+    <value>App ID Uri</value>
+  </data>
+  <data name="lblAudiences.Help" xml:space="preserve">
+    <value>Introduce the audiences to validate JWT tokens, separated by commas. If left empty, the B2C Application Id will be used by default.</value>
+  </data>
+  <data name="lblAudiences.Text" xml:space="preserve">
+    <value>Audiences</value>
+  </data>
+  <data name="lblDnnProfilePropertyName.Help" xml:space="preserve">
+    <value>The DNN profile property you want to map with a AAD claim</value>
+  </data>
+  <data name="lblDnnProfilePropertyName.Text" xml:space="preserve">
+    <value>DNN profile property*</value>
+  </data>
+  <data name="lblDnnPropertyName.Help" xml:space="preserve">
+    <value>This is the DNN property that is going to be mapped against a AAD property</value>
+  </data>
+  <data name="lblDnnPropertyName.Text" xml:space="preserve">
+    <value>DNN Property</value>
+  </data>
+  <data name="lblDnnRoleName.Help" xml:space="preserve">
+    <value>The DNN role you want to map with a AAD role</value>
+  </data>
+  <data name="lblDnnRoleName.Text" xml:space="preserve">
+    <value>DNN Role*</value>
+  </data>
+  <data name="lblDnnUserPropertyName.Help" xml:space="preserve">
+    <value>The DNN user property you want to map with a AAD claim</value>
+  </data>
+  <data name="lblDnnUserPropertyName.Text" xml:space="preserve">
+    <value>DNN user property*</value>
+  </data>
+  <data name="lblGraphClient.Help" xml:space="preserve">
+    <value>If the sync is enabled, you need to specify an Azure App ID and secret to use the Microsoft Graph API.</value>
+  </data>
+  <data name="lblGroupNamePrefixEnabled.Help" xml:space="preserve">
+    <value>Enables the addition of the prefix "Azure-" to all group names coming from AAD.</value>
+  </data>
+  <data name="lblGroupNamePrefixEnabled.Text" xml:space="preserve">
+    <value>Prefix group names</value>
+  </data>
+  <data name="lblJwtAuthEnabled.Help" xml:space="preserve">
+    <value>Enables JWT authorization for this portal</value>
+  </data>
+  <data name="lblJwtAuthEnabled.Text" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="lblNamePrefixes.Help" xml:space="preserve">
+    <value>By default, all users and groups coming from B2C will contain the prefix "Azure-". The following two options allow you to disable the addition of that prefix</value>
+  </data>
+  <data name="lblNamePrefixes.Text" xml:space="preserve">
+    <value>Name prefixes</value>
+  </data>
+  <data name="lblPortalId.Text" xml:space="preserve">
+    <value>PortalId</value>
+  </data>
+  <data name="lblProfilePropertiesMapping.Text" xml:space="preserve">
+    <value>USER PROFILE PROPERTIES MAPPING</value>
+  </data>
+  <data name="lblProfileSyncEnabled.Help" xml:space="preserve">
+    <value>Enables the profile synchronization for this portal</value>
+  </data>
+  <data name="lblProfileSyncEnabled.Text" xml:space="preserve">
+    <value>Profile Sync</value>
+  </data>
+  <data name="lblRedirectUri.Help" xml:space="preserve">
+    <value>If specified, the redirect uri after a successful login. By default (blank), the user will be redirected to the page originating the login redirection.</value>
+  </data>
+  <data name="lblRedirectUri.Text" xml:space="preserve">
+    <value>Redirect Uri</value>
+  </data>
+  <data name="lblRolesMapping.Text" xml:space="preserve">
+    <value>ROLES MAPPING</value>
+  </data>
+  <data name="lblRoleSyncEnabled.Help" xml:space="preserve">
+    <value>Enables the role synchronization for this portal</value>
+  </data>
+  <data name="lblRoleSyncEnabled.Text" xml:space="preserve">
+    <value>Role Sync</value>
+  </data>
+  <data name="lblScopes.Help" xml:space="preserve">
+    <value>The scopes separated by spaces, that will be include in the issued tokens, to be validated by the external WebAPI (i.e. "read write")</value>
+  </data>
+  <data name="lblScopes.Text" xml:space="preserve">
+    <value>Scopes</value>
+  </data>
+  <data name="lblSynchronization.Text" xml:space="preserve">
+    <value>Synchronization</value>
+  </data>
+  <data name="lblSynchronizationDesc.Text" xml:space="preserve">
+    <value>The synchronization process automatically syncs roles and profile from your Azure AD B2C tenant into your DNN portal when a user logins. This can affect login performance.</value>
+  </data>
+  <data name="lblTabDescription.Text1" xml:space="preserve">
+    <value>The DNN Azure Active Directory  Provider is an Authentication provider for DNN Platform that uses Azure Active Directory OAuth2 authentication to authenticate users.</value>
+  </data>
+  <data name="lblTokenValidation.Help" xml:space="preserve">
+    <value>This provider supports JWT authorization. If enabled, you can get a JWT token directly from the Azure AD API, and then call a DNN WebAPI controller.</value>
+  </data>
+  <data name="lblTokenValidation.Text" xml:space="preserve">
+    <value>JWT Authorization</value>
+  </data>
+  <data name="lblUseGlobalSettings.Help" xml:space="preserve">
+    <value>If enabled, all the settings are applied to all portals on this deployment. Only Super Users can edit this setting</value>
+  </data>
+  <data name="lblUseGlobalSettings.Text" xml:space="preserve">
+    <value>Use Global Settings</value>
+  </data>
+  <data name="lblUsernamePrefixEnabled.Help" xml:space="preserve">
+    <value>Enables the addition of the prefix "Azure-" to all user names coming from AAD.</value>
+  </data>
+  <data name="lblUsernamePrefixEnabled.Text" xml:space="preserve">
+    <value>Prefix user names</value>
+  </data>
+  <data name="lblUsersMapping.Text" xml:space="preserve">
+    <value>USER PROPERTIES MAPPINGS</value>
+  </data>
+  <data name="MappingDeletedWarning.Text" xml:space="preserve">
+    <value>Are you sure you want to delete this mapping?&lt;br/&gt;AAD users will remain in the DNN role</value>
+  </data>
+  <data name="MappingDeleteSuccess.Text" xml:space="preserve">
+    <value>Mapping removed successfully</value>
+  </data>
+  <data name="Mappings.Text" xml:space="preserve">
+    <value>Mappings</value>
+  </data>
+  <data name="MappingUpdateSuccess.Text" xml:space="preserve">
+    <value>Mapping saved successfully</value>
+  </data>
+  <data name="NamePrefixesWarningMessage.Text" xml:space="preserve">
+    <value>Warning: If these settings change, all users who have already been synchronized will be synchronized again with their new usernames after the next login, leaving the old ones in the system.</value>
+  </data>
+  <data name="ProfileMappingDeletedWarning.Text" xml:space="preserve">
+    <value>Are you sure you want to delete this mapping?</value>
+  </data>
+  <data name="TabRoleMappings.Text" xml:space="preserve">
+    <value>Role Mappings</value>
+  </data>
+  <data name="TabUserMappings.Text" xml:space="preserve">
+    <value>User Mappings</value>
+  </data>
+  <data name="TabUserProfileMappings.Text" xml:space="preserve">
+    <value>User Profile Mappings</value>
+  </data>
 </root>

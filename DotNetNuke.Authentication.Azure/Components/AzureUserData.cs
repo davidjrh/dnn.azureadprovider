@@ -2,7 +2,7 @@
 
 // 
 // Intelequia Software solutions - https://intelequia.com
-// Copyright (c) 2010-2017
+// Copyright (c) 2019
 // by Intelequia Software Solutions
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,6 +24,7 @@
 #region Usings
 
 using System.Runtime.Serialization;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Authentication.OAuth;
 
 #endregion
@@ -63,6 +64,19 @@ namespace DotNetNuke.Authentication.Azure.Components
 
         [DataMember(Name = "name")]
         public string AzureDisplayName { get; set; }
+
+        public UserInfo ToUserInfo(bool usernamePrefixEnabled)
+        {
+            return new UserInfo()
+            {
+                DisplayName = this.DisplayName,
+                FirstName = this.FirstName,
+                LastName = this.LastName,
+                Email = this.Email,
+                Username = usernamePrefixEnabled ? $"AzureAD-{this.Id}" : this.Id
+            };
+        }
+
 
     }
 }

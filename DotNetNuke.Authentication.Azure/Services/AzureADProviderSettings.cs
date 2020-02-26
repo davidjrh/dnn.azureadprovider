@@ -35,10 +35,35 @@ namespace DotNetNuke.Authentication.Azure.Services
         public string ApiKey { get; set; }
         [DataMember(Name = "apiSecret")]
         public string ApiSecret { get; set; }
+        [DataMember(Name = "redirectUri")]
+        public string RedirectUri { get; set; }
         [DataMember(Name = "autoRedirect")]
         public bool AutoRedirect { get; set; }
         [DataMember(Name = "enabled")]
         public bool Enabled { get; set; }
+        [DataMember(Name = "useGlobalSettings")]
+        public bool UseGlobalSettings { get; set; }
+        [DataMember(Name = "aadAppClientId")]
+        public string AadAppClientId { get; set; }
+        [DataMember(Name = "aadAppSecret")]
+        public string AadAppSecret { get; set; }
+        [DataMember(Name = "jwtAudiences")]
+        public string JwtAudiences { get; set; }
+        [DataMember(Name = "roleSyncEnabled")]
+        public bool RoleSyncEnabled { get; set; }
+        [DataMember(Name = "profileSyncEnabled")]
+        public bool ProfileSyncEnabled { get; set; }
+        [DataMember(Name = "jwtAuthEnabled")]
+        public bool JwtAuthEnabled { get; set; }
+        [DataMember(Name = "apiResource")]
+        public string ApiResource { get; set; }
+        [DataMember(Name = "scopes")]
+        public string Scopes { get; set; }
+        [DataMember(Name = "usernamePrefixEnabled")]
+        public bool UsernamePrefixEnabled { get; set; }
+        [DataMember(Name = "groupNamePrefixEnabled")]
+        public bool GroupNamePrefixEnabled { get; set; }
+
 
         public static AzureADProviderSettings LoadSettings(string service, int portalId)
         {
@@ -48,20 +73,53 @@ namespace DotNetNuke.Authentication.Azure.Services
                 TenantId = config.TenantId,
                 ApiKey = config.APIKey,
                 ApiSecret = config.APISecret,
+                RedirectUri = config.RedirectUri,
                 AutoRedirect = config.AutoRedirect,
-                Enabled = config.Enabled
+                AadAppClientId = config.AADApplicationId,
+                AadAppSecret = config.AADApplicationKey,
+                Enabled = config.Enabled,
+                UseGlobalSettings = config.UseGlobalSettings,
+                JwtAudiences = config.JwtAudiences,
+                RoleSyncEnabled = config.RoleSyncEnabled,
+                ProfileSyncEnabled = config.ProfileSyncEnabled,
+                JwtAuthEnabled = config.JwtAuthEnabled,
+                ApiResource = config.APIResource,
+                Scopes = config.Scopes,
+                UsernamePrefixEnabled = config.UsernamePrefixEnabled,
+                GroupNamePrefixEnabled = config.GroupNamePrefixEnabled
             };
         }
 
-        public static void SaveSettings(string service, int portalId, AzureADProviderSettings settings)
+        public static void SaveGeneralSettings(string service, int portalId, AzureADProviderSettings settings)
         {
             var config = new AzureConfig(service, portalId)
             {
                 TenantId = settings.TenantId,
                 APIKey = settings.ApiKey,
                 APISecret = settings.ApiSecret,
+                RedirectUri = settings.RedirectUri,
                 AutoRedirect = settings.AutoRedirect,
-                Enabled = settings.Enabled
+                Enabled = settings.Enabled,
+                UseGlobalSettings = settings.UseGlobalSettings
+            };
+
+            AzureConfig.UpdateConfig(config);
+        }
+
+        public static void SaveAdvancedSettings(string service, int portalId, AzureADProviderSettings settings)
+        {
+            var config = new AzureConfig(service, portalId)
+            {
+                AADApplicationId = settings.AadAppClientId,
+                AADApplicationKey = settings.AadAppSecret,
+                JwtAudiences = settings.JwtAudiences,
+                RoleSyncEnabled = settings.RoleSyncEnabled,
+                ProfileSyncEnabled = settings.ProfileSyncEnabled,
+                JwtAuthEnabled = settings.JwtAuthEnabled,
+                APIResource = settings.ApiResource + (!string.IsNullOrEmpty(settings.ApiResource.Trim()) && !settings.ApiResource.EndsWith("/") ? "/" : ""),
+                Scopes = settings.Scopes,
+                UsernamePrefixEnabled = settings.UsernamePrefixEnabled,
+                GroupNamePrefixEnabled = settings.GroupNamePrefixEnabled
             };
 
             AzureConfig.UpdateConfig(config);

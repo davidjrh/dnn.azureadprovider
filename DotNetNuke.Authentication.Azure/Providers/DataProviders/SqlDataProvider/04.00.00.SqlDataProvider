@@ -1,0 +1,187 @@
+﻿IF NOT EXISTS (SELECT * FROM {databaseOwner}[{objectQualifier}Schedule] WHERE TypeFullName = 'DotNetNuke.Authentication.Azure.ScheduledTasks.SyncSchedule, DotNetNuke.Authentication.Azure')
+BEGIN
+	INSERT INTO {databaseOwner}[{objectQualifier}Schedule]
+           ([TypeFullName]
+           ,[TimeLapse]
+           ,[TimeLapseMeasurement]
+           ,[RetryTimeLapse]
+           ,[RetryTimeLapseMeasurement]
+           ,[RetainHistoryNum]
+           ,[AttachToEvent]
+           ,[CatchUpEnabled]
+           ,[Enabled]
+           ,[ObjectDependencies]
+           ,[Servers]
+           ,[CreatedByUserID]
+           ,[CreatedOnDate]
+           ,[LastModifiedByUserID]
+           ,[LastModifiedOnDate]
+           ,[FriendlyName])
+     VALUES
+           ('DotNetNuke.Authentication.Azure.ScheduledTasks.SyncSchedule, DotNetNuke.Authentication.Azure',
+		   3, 'h',
+		   30, 'm',
+		   10,
+		   '', 'false', 'true',
+		   '', NULL,
+		   NULL, NULL,
+		   NULL, NULL,
+		   'Azure AD Sync')
+END
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AzureAD_UserMappings]', N'U') IS NULL
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}AzureAD_UserMappings](
+		[UserMappingId] [int] NOT NULL IDENTITY (1, 1),
+		[DnnPropertyName] [nvarchar](50) NOT NULL,
+		[AadClaimName] [nvarchar](100) NULL,
+		[PortalId] [int] NULL,
+		[CreatedByUserId] [int] NULL,
+		[CreatedOnDate] [datetime] NULL,
+		[LastModifiedByUserId] [int] NULL,
+		[LastModifiedOnDate] [datetime] NULL,
+	 CONSTRAINT [PK_AzureAD_UserMappings] PRIMARY KEY CLUSTERED 
+		(
+			[UserMappingId] ASC
+		) ON [PRIMARY]
+	) ON [PRIMARY]
+
+	-- Insert default values:
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_UserMappings] ([DnnPropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'PortalId', '', PortalId, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_UserMappings] ([DnnPropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'Id', 'unique_name', PortalID, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_UserMappings] ([DnnPropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'FirstName', 'given_name', PortalId, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_UserMappings] ([DnnPropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'LastName', 'family_name', PortalId, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_UserMappings] ([DnnPropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'DisplayName', 'name', PortalId, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_UserMappings] ([DnnPropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'Email', 'unique_name', PortalId, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AzureAD_ProfileMappings]', N'U') IS NULL
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}AzureAD_ProfileMappings](
+		[ProfileMappingId] [int] NOT NULL IDENTITY (1, 1),
+		[DnnProfilePropertyName] [nvarchar](50) NOT NULL,
+		[AadClaimName] [nvarchar](100) NULL,
+		[PortalId] [int] NULL,
+		[CreatedByUserId] [int] NULL,
+		[CreatedOnDate] [datetime] NULL,
+		[LastModifiedByUserId] [int] NULL,
+		[LastModifiedOnDate] [datetime] NULL,
+	 CONSTRAINT [PK_AzureAD_ProfileMappings] PRIMARY KEY CLUSTERED 
+		(
+			[ProfileMappingId] ASC
+		) ON [PRIMARY]
+	) ON [PRIMARY]
+
+	-- Insert default values:
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_ProfileMappings] ([DnnProfilePropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'Biography', 'Biography', PortalId, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_ProfileMappings] ([DnnProfilePropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'Cell', 'Cell', PortalId, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_ProfileMappings] ([DnnProfilePropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'City', 'City', PortalId, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_ProfileMappings] ([DnnProfilePropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'Fax', 'Fax', PortalId, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_ProfileMappings] ([DnnProfilePropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'IM', 'IM', PortalId, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_ProfileMappings] ([DnnProfilePropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'LinkedIn', 'LinkedIn', PortalId, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_ProfileMappings] ([DnnProfilePropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'MiddleName', 'MiddleName', PortalId, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_ProfileMappings] ([DnnProfilePropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'Photo', 'Photo', PortalId, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_ProfileMappings] ([DnnProfilePropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'PreferredLocale', 'PreferredLocale', PortalId, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_ProfileMappings] ([DnnProfilePropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'PreferredTimeZone', 'PreferredTimeZone', PortalId, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_ProfileMappings] ([DnnProfilePropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'Prefix', 'Prefix', PortalId, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_ProfileMappings] ([DnnProfilePropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'Skype', 'Skype', PortalId, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_ProfileMappings] ([DnnProfilePropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'Suffix', 'Suffix', PortalId, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_ProfileMappings] ([DnnProfilePropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'Telephone', 'Telephone', PortalId, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_ProfileMappings] ([DnnProfilePropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'TimeZone', 'TimeZone', PortalId, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_ProfileMappings] ([DnnProfilePropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'Twitter', 'Twitter', PortalId, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_ProfileMappings] ([DnnProfilePropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'Unit', 'Unit', PortalId, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+
+	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_ProfileMappings] ([DnnProfilePropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
+		 SELECT 'Website', 'Website', PortalId, -1, GETDATE(), -1, GETDATE()
+		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
+END
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AzureAD_RoleMappings]', N'U') IS NULL
+BEGIN
+	CREATE TABLE {databaseOwner}[{objectQualifier}AzureAD_RoleMappings](
+		[RoleMappingId] [int] NOT NULL IDENTITY (1, 1),
+		[DnnRoleName] [nvarchar](50) NOT NULL,
+		[AadRoleName] [nvarchar](100) NULL,
+		[PortalId] [int] NULL,
+		[CreatedByUserId] [int] NULL,
+		[CreatedOnDate] [datetime] NULL,
+		[LastModifiedByUserId] [int] NULL,
+		[LastModifiedOnDate] [datetime] NULL,
+	 CONSTRAINT [PK_AzureAD_RoleMappings] PRIMARY KEY CLUSTERED 
+		(
+			[RoleMappingId] ASC
+		) ON [PRIMARY]
+	) ON [PRIMARY]
+
+END
+GO
+

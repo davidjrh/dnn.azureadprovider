@@ -3,8 +3,62 @@
  (
      'Azure_APIKey'
    , 'Azure_APISecret'
+   , 'Azure_RedirectUri'
+   , 'Azure_TenantId'
    , 'Azure_AutoRedirect'
    , 'Azure_Enabled'
-   , 'Azure_TenantId'
+   , 'Azure_AADApplicationId'
+   , 'Azure_AADApplicationKey'
+   , 'Azure_JwtAudiences'
+   , 'Azure_RoleSyncEnabled'
+   , 'Azure_ProfileSyncEnabled'
+   , 'Azure_JwtAuthEnabled'
+   , 'Azure_APIResource'
+   , 'Azure_Scopes'
+   , 'Azure_UsernamePrefixEnabled'
+   , 'Azure_GroupNamePrefixEnabled'
+   , 'AzureB2C_UserGlobalSettings'
  )
 GO
+
+DELETE {databaseOwner}[{objectQualifier}HostSettings]
+ WHERE SettingName IN
+ (
+     'Azure_APIKey'
+   , 'Azure_APISecret'
+   , 'Azure_RedirectUri'
+   , 'Azure_TenantId'
+   , 'Azure_AutoRedirect'
+   , 'Azure_Enabled'
+   , 'Azure_AADApplicationId'
+   , 'Azure_AADApplicationKey'
+   , 'Azure_JwtAudiences'
+   , 'Azure_RoleSyncEnabled'
+   , 'Azure_ProfileSyncEnabled'
+   , 'Azure_JwtAuthEnabled'
+   , 'Azure_APIResource'
+   , 'Azure_Scopes'
+   , 'Azure_UsernamePrefixEnabled'
+   , 'Azure_GroupNamePrefixEnabled'
+   , 'AzureB2C_UserGlobalSettings'
+ )
+GO
+
+DELETE FROM {databaseOwner}[{objectQualifier}Schedule] 
+WHERE TypeFullName = 'DotNetNuke.Authentication.Azure.ScheduledTasks.SyncSchedule, DotNetNuke.Authentication.Azure')
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AzureAD_UserMappings]', N'U') IS NULL
+BEGIN
+	DROP TABLE {databaseOwner}[{objectQualifier}AzureAD_UserMappings]
+END
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AzureAD_ProfileMappings]', N'U') IS NULL
+BEGIN
+	DROP TABLE {databaseOwner}[{objectQualifier}AzureAD_ProfileMappings]
+END
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}AzureAD_RoleMappings]', N'U') IS NULL
+BEGIN
+	DROP TABLE {databaseOwner}[{objectQualifier}AzureAD_RoleMappings]
+END

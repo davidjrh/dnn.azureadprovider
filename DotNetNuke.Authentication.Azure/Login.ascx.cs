@@ -24,6 +24,7 @@
 #region Usings
 
 using System;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using DotNetNuke.Authentication.Azure.Components;
 using DotNetNuke.Services.Authentication;
@@ -40,9 +41,14 @@ namespace DotNetNuke.Authentication.Azure
     public partial class Login : OAuthLoginBase
     {
         private ILog _logger = LogManager.GetLogger(typeof(Login));
-        protected override string AuthSystemApplicationName => "Azure";
+        protected override string AuthSystemApplicationName => AzureConfig.ServiceName;
 
         public override bool SupportsRegistration => true;
+
+        protected override void AddCustomProperties(NameValueCollection properties)
+        {
+            ((AzureClient)OAuthClient).AddCustomProperties(properties);
+        }
 
         protected override UserData GetCurrentUser()
         {
@@ -53,6 +59,7 @@ namespace DotNetNuke.Authentication.Azure
         {
             base.OnInit(e);
 
+            
             loginButton.Click += loginButton_Click;
             registerButton.Click += loginButton_Click;
 
@@ -61,8 +68,9 @@ namespace DotNetNuke.Authentication.Azure
             loginItem.Visible = (Mode == AuthMode.Login);
             registerItem.Visible = (Mode == AuthMode.Register);
 
-            var config = new AzureConfig("Azure", PortalId);
-            if (config.AutoRedirect && Request["legacy"] != "1")
+            var config = new AzureConfig(AzureConfig.ServiceName, PortalId);
+            var hasVerificationCode = ((AzureClient)OAuthClient).IsCurrentService() && OAuthClient.HaveVerificationCode();
+            if ((config.AutoRedirect && Request["legacy"] != "1") || hasVerificationCode)
                 loginButton_Click(null, null);
         }
 
@@ -77,14 +85,10 @@ namespace DotNetNuke.Authentication.Azure
             }           
             else
             {
-                var hasVerificationCode = OAuthClient.IsCurrentService() && OAuthClient.HaveVerificationCode();
-                if (!hasVerificationCode)
+                AuthorisationResult result = OAuthClient.Authorize();
+                if (result == AuthorisationResult.Denied)
                 {
-                    AuthorisationResult result = OAuthClient.Authorize();
-                    if (result == AuthorisationResult.Denied)
-                    {
-                        UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
-                    }
+                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
                 }
             }
         }

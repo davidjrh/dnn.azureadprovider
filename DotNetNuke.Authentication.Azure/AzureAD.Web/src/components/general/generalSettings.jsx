@@ -40,9 +40,11 @@ class GeneralSettings extends Component {
 
         props.dispatch(SettingsActions.settingsClientModified({
             enabled: (key === "AADProviderEnabled") ? !props.enabled : props.enabled,
+            useGlobalSettings: (key === "UseGlobalSettings") ? !props.useGlobalSettings : props.useGlobalSettings,            
             autoRedirect: (key === "AutoRedirect") ? !props.autoRedirect : props.autoRedirect,
             apiKey: (key === "AppId") ? event.target.value : props.apiKey,
             apiSecret: (key === "AppSecret") ? event.target.value : props.apiSecret,
+            redirectUri: (key === "RedirectUri") ? event.target.value: props.redirectUri,            
             tenantId: (key === "TenantId") ? event.target.value : props.tenantId
         }));
     }
@@ -57,9 +59,11 @@ class GeneralSettings extends Component {
 
         props.dispatch(SettingsActions.updateSettings({
             enabled: props.enabled,
+            useGlobalSettings: props.useGlobalSettings,            
             autoRedirect: props.autoRedirect,
             apiKey: props.apiKey,
             apiSecret: props.apiSecret,
+            redirectUri: props.redirectUri,            
             tenantId: props.tenantId
         }, () => {
             utils.utilities.notify(resx.get("SettingsUpdateSuccess"));
@@ -91,6 +95,12 @@ class GeneralSettings extends Component {
                 </GridCell>
                 <GridCell columnSize={50}>
                     <div className="logo"></div>
+                    <Switch label={resx.get("lblUseGlobalSettings")}
+                        onText=""
+                        offText=""
+                        value={this.props.useGlobalSettings}
+                        tooltipMessage={resx.get("lblUseGlobalSettings.Help")}
+                        onChange={this.onSettingChange.bind(this, "UseGlobalSettings")} />
                 </GridCell>
                 <GridCell columnSize={100} className="directory-section">
                     <GridCell columnSize={50}>
@@ -138,6 +148,19 @@ class GeneralSettings extends Component {
                                 onChange={this.onSettingChange.bind(this, "AppSecret")} />
                         </div>
                     </GridCell>
+                    <GridCell columnSize={50}>
+                        <div className="editor-row">                        
+                            <SingleLineInputWithError
+                                withLabel={true}
+                                label={resx.get("lblRedirectUri")}
+                                enabled={true}
+                                tooltipMessage={resx.get("lblRedirectUri.Help")}
+                                errorMessage=""
+                                value={this.props.redirectUri}
+                                onChange={this.onSettingChange.bind(this, "RedirectUri")}
+                            />
+                        </div>
+                    </GridCell>
                 </GridCell>
                 <GridCell columnSize={100}>
                     <div className="buttons-box">
@@ -165,9 +188,11 @@ class GeneralSettings extends Component {
 GeneralSettings.propTypes = {
     dispatch: PropTypes.func.isRequired,
     enabled: PropTypes.bool,
+    useGlobalSettings: PropTypes.bool,    
     autoRedirect: PropTypes.bool,
     apiKey: PropTypes.string,
     apiSecret: PropTypes.string,
+    redirectUri: PropTypes.string,    
     tenantId: PropTypes.string
 };
 
@@ -175,9 +200,11 @@ GeneralSettings.propTypes = {
 function mapStateToProps(state) {
     return {
         enabled: state.settings.enabled,
+        useGlobalSettings: state.settings.useGlobalSettings,        
         autoRedirect: state.settings.autoRedirect,
         apiKey: state.settings.apiKey,
         apiSecret: state.settings.apiSecret,
+        redirectUri: state.settings.redirectUri,
         tenantId: state.settings.tenantId
     };
 }

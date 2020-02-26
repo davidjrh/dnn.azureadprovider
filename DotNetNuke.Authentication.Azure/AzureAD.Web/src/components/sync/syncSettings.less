@@ -1,5 +1,5 @@
-@import "~dnn-global-styles/index";
-:local(.syncSettings) {
+@import "~@dnnsoftware/dnn-react-common/styles/index";
+.dnn-azuread-aad-syncSettings {
     box-sizing: border-box;
     padding: 35px 25px;
     * {
@@ -28,9 +28,37 @@
         margin-bottom: 0px!important;
     }
     .buttons-box {
+        margin-top: 50px;
         margin-bottom: 30px;
         button.dnn-ui-common-button[role=primary] {
             margin-left: 10px;
         }        
-    }    
+    }
+    .warning-container {
+        width: 100%;
+        float: left;
+        margin: 10px 0 15px 0;
+        font-weight: bolder;
+        color: @alizarinCrimson;
+        .collapsible-content {
+            margin-top: 5px;
+            > div {
+                border: solid 1px;
+            }
+        }
+        .warning-icon {
+            > svg {
+                width: 17px;
+                float: left;
+                height: 17px;
+                margin: 0 10px 0 0;
+            }
+        }
+        .warning-msg {
+            margin-left: 30px;
+        }
+    }
+    h1.spacer {
+        margin-top: 25px;
+    }
 }

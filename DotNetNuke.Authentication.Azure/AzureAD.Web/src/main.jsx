@@ -11,6 +11,9 @@ application.dispatch = store.dispatch;
 application.init();
 
 const appContainer = document.getElementById("azureAD-container");
+const initCallback = appContainer.getAttribute("data-init-callback");
+application.init(initCallback);
+
 render(
     <Provider store={store}>
         <Root />

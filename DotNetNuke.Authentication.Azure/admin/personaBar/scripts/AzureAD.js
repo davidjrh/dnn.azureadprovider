@@ -52,7 +52,7 @@ define(['jquery',
                             notifyError: util.notifyError
                         }
                     };
-                }
+                };
                 loadScript(publicPath);
 
                 if (typeof callback === "function") {
