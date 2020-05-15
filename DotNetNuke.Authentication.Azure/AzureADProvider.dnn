@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="AzureADProvider" type="Auth_System" version="04.00.00">
+    <package name="AzureADProvider" type="Auth_System" version="04.00.01">
       <friendlyName>DNN Azure Active Directory Provider</friendlyName>
       <description>
         The DNN Azure Active Directory Provider is an Authentication provider for DNN Platform that uses Azure Active Directory OAuth2 authentication to authenticate users.
@@ -38,6 +38,18 @@
             <assembly>
               <path>bin</path>
               <name>System.IdentityModel.Tokens.Jwt.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.IdentityModel.Clients.ActiveDirectory.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.IdentityModel.Protocols.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.IdentityModel.Protocols.OpenIdConnect.dll</name>
             </assembly>
             <assembly>
               <path>bin</path>

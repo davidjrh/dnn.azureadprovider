@@ -2,6 +2,37 @@
 <p style="margin: 0"><a href="http://davidjrh.intelequia.com" target="_new">David Rodriguez</a><br /><a href="mailto:davidj@intelequia.com">davidj@intelequia.com</a></p>
 <p style="margin: 0"><strong>About the DNN Azure Active Directory Authorization Provider</strong></p>
 
+<p style="margin: 0"><b>Version 04.00.01</b></p>
+<p style="margin: 0">
+# Bug fixes
+* Update settings not working properly (javascript error)
+* Fixed missing assemblies on the installation package causing the role sync not working
+</p>
+
+<p style="margin: 0"><b>Version 04.00.00</b></p>
+<p style="margin: 0">
+New release with lot of new features coming from the Azure AD B2C implementation (https://github.com/intelequia/dnn.azureadb2cprovider), like role sync, profile properties, claim mappings and JWT authentication. <br/>
+**This is a preview release. Please install and test on a non-production environments** <br/>
+# New features <br/>
+* Users are now automatically approved if they have access to the Azure AD Application, so there is no need to manually authorize the user or to set the registration to verified.  <br/>
+* Added new general setting to set all the settings as "Global" (at host level), so the same configuration can be shared between all the portals under the same DNN installation <br/>
+* Added new general setting to customize the return URL instead the default behaviour (redirect to the page causing the login) <br/>
+* Added new scheduled task to sync roles. The role synchronization depends on the “Enable Role Sync” setting as well as the role mappings (see below). By default, the task runs every 3 hours <br/>
+* Added new advanced setting to enable role synchronization. The role sync is executed after the user logins, syncing the user roles, as well as part of the new role sync scheduled task <br/>
+* Added new advanced setting to enable profile synchronization. The profile is synced depending on the profile mappings. The Azure AD user picture is synced as part of the profile sync <br/>
+* Added new MS Graph Client credentials on advanced settings tab, to enable role and profile synchronization. See documentation for required API permissions <br/>
+* Added new advanced setting to enable/disable the “Azure-“ prefix on usernames <br/>
+* Added new advanced setting to enable/disable the “Azure-“ prefix on roles <br/>
+* Added support for JWT auth, so native client apps (i.e. mobile) can obtain a token from Azure AD by using Resource Owner Password Credential (ROPC), and then call a DNN controller. See examples and documentation for more information <br/>
+* Added option to use token to call from client side WebAPIs hosted outside DNN (i.e. Azure AD secured microservices scenario, with microservices built on .NET Core running on Kubernetes). See examples and documentation for more information <br/>
+* Added options to customize the claim mappings to user properties: first name, last name, display name, email and user Id. Default configuration uses the v3.1 claim mapping for backwards compatibility <br/>
+* Added options to customize the claim mappings to user profile properties. Added default configuration to map current Azure AD user properties <br/>
+* Added options to customize the role sync. By default, no mapping is specified, so all the Azure AD roles are synced to DNN. If there is at least one role mapping, then only the roles mapped will be synced <br/>
+# Bug fixes <br/>
+* Defensive code to avoid exchanging authorization code twice <br/>
+</p>
+
+
 <p style="margin: 0"><b>Version 03.01.00</b></p>
 <p style="margin: 0">Updated persona bar module settings to be 9.3.x compatible</p>
 <p style="margin: 0">Shortened the menu name to "Azure AD" on the persona bar</p>
