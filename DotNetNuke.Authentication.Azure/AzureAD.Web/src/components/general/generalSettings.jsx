@@ -57,7 +57,7 @@ class GeneralSettings extends Component {
         event.preventDefault();
         let {props} = this;
 
-        props.dispatch(SettingsActions.updateSettings({
+        props.dispatch(SettingsActions.updateGeneralSettings({
             enabled: props.enabled,
             useGlobalSettings: props.useGlobalSettings,            
             autoRedirect: props.autoRedirect,
