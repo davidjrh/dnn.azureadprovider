@@ -4,6 +4,7 @@ using DotNetNuke.Authentication.Azure.Components.Models;
 using DotNetNuke.Authentication.Azure.Data;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Scheduling;
 using System;
@@ -14,6 +15,8 @@ namespace DotNetNuke.Authentication.Azure.ScheduledTasks
 {
     public class SyncSchedule : SchedulerClient
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SyncSchedule));
+
         private List<RoleMapping> _globalRoleMappings;
         public List<RoleMapping> GlobalRoleMappings
         {
@@ -110,6 +113,10 @@ namespace DotNetNuke.Authentication.Azure.ScheduledTasks
         {
             try
             {
+                var syncErrorsDesc = "";
+                var syncErrors = 0;
+                var groupsCreated = 0;
+                var groupsDeleted = 0;
                 var customRoleMappings = GetRoleMappingsForPortal(portalId, settings);
 
                 if (string.IsNullOrEmpty(settings.AADApplicationId) || string.IsNullOrEmpty(settings.AADApplicationKey))
@@ -119,30 +126,48 @@ namespace DotNetNuke.Authentication.Azure.ScheduledTasks
 
                 var graphClient = new GraphClient(settings.AADApplicationId, settings.AADApplicationKey, settings.TenantId);
 
-                // Add roles from AAD B2C
+                // Add roles from AAD 
                 var aadGroups = graphClient.GetAllGroups("");
+                var allaadGroups = new List<Components.Graph.Models.Group>();
                 if (aadGroups != null && aadGroups.Values != null)
                 {
                     var groupPrefix = settings.GroupNamePrefixEnabled ? "Azure-" : "";
-                    var groups = aadGroups.Values;
-                    if (customRoleMappings != null && customRoleMappings.Count > 0)
-                    { 
-                        groupPrefix = "";
-                        var b2cRoles = customRoleMappings.Select(rm => rm.AadRoleName);
-                        groups.RemoveAll(x => !b2cRoles.Contains(x.DisplayName));
-                    }
-
-                    foreach (var aadGroup in groups)
-                    {                        
-                        var dnnRole = RoleController.Instance.GetRoleByName(portalId, $"{groupPrefix}{aadGroup.DisplayName}");
-                        if (dnnRole == null)
+                    while (aadGroups.Values.Count > 0)
+                    {
+                        var groups = aadGroups.Values;
+                        allaadGroups.AddRange(groups);
+                        if (customRoleMappings != null && customRoleMappings.Count > 0)
                         {
-                            // Create role
-                            var roleId = AddRole(portalId, $"{groupPrefix}{aadGroup.DisplayName}", aadGroup.Description, true);
+                            groupPrefix = "";
+                            var b2cRoles = customRoleMappings.Select(rm => rm.AadRoleName);
+                            groups.RemoveAll(x => !b2cRoles.Contains(x.DisplayName));
                         }
-                    }
+
+                        foreach (var aadGroup in groups)
+                        {
+                            var dnnRole = RoleController.Instance.GetRoleByName(portalId, $"{groupPrefix}{aadGroup.DisplayName}");
+                            if (dnnRole == null)
+                            {
+                                try
+                                {
+                                    // Create role
+                                    var roleId = AddRole(portalId, $"{groupPrefix}{aadGroup.DisplayName}", aadGroup.Description, true);
+                                    groupsCreated++;
+                                }
+                                catch (Exception ex)
+                                {
+                                    syncErrors++;
+                                    syncErrorsDesc += $"\n{ex.Message}";
+                                }
+                            }
+                        }
+
+                        if (string.IsNullOrEmpty(aadGroups.ODataNextLink))
+                            break;
+                        aadGroups = graphClient.GetNextGroups(aadGroups.ODataNextLink);
+                    }                    
                 }
-                // Let's remove DNN roles imported from B2C that no longer exists in B2C
+                // Let's remove DNN roles imported from B2C that no longer exists in AAD
                 var dnnAadRoles = GetDnnAadRoles(portalId);
                 // Let's exclude first the mapped roles (we won't remove mapped roles)
                 foreach (var role in customRoleMappings)
@@ -153,23 +178,42 @@ namespace DotNetNuke.Authentication.Azure.ScheduledTasks
                         dnnAadRoles.Remove(mappedRole);
                     }
                 }
-                // Remove roles no longer exists in AAD B2C (only the ones that are not mapped against a DNN role)
+                // Remove roles no longer exists in AAD (only the ones that are not mapped against a DNN role)
                 foreach (var dnnRole in dnnAadRoles)
                 {
-                    if (aadGroups == null
-                        || aadGroups.Values == null
-                        || aadGroups.Values.FirstOrDefault(x => x.DisplayName == (dnnRole.RoleName.StartsWith("Azure-") ? dnnRole.RoleName.Substring("Azure-".Length) : dnnRole.RoleName)) == null)
+                    if (allaadGroups.Count == 0
+                        || allaadGroups.FirstOrDefault(x => x.DisplayName == (dnnRole.RoleName.StartsWith("Azure-") ? dnnRole.RoleName.Substring("Azure-".Length) : dnnRole.RoleName)) == null)
                     {
-                        RoleController.Instance.DeleteRole(dnnRole);
-                        // This is a workaround to a bug in DNN where RoleSettings is not deleted when a role is deleted
-                        DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, $"DELETE {DotNetNuke.Data.DataProvider.Instance().DatabaseOwner}{DotNetNuke.Data.DataProvider.Instance().ObjectQualifier}RoleSettings WHERE RoleID = @0", dnnRole.RoleID);
+                        try
+                        {
+                            RoleController.Instance.DeleteRole(dnnRole);
+                            // This is a workaround to a bug in DNN where RoleSettings is not deleted when a role is deleted
+                            DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, $"DELETE {DotNetNuke.Data.DataProvider.Instance().DatabaseOwner}{DotNetNuke.Data.DataProvider.Instance().ObjectQualifier}RoleSettings WHERE RoleID = @0", dnnRole.RoleID);
+                            groupsDeleted++;
+                        }
+                        catch (Exception ex)
+                        {
+                            syncErrors++;
+                            syncErrorsDesc += $"\n{ex.Message}";
+                        }
                     }
                 }
 
-                return $"Successfully synchronized portal {portalId}";
+                var syncResultDesc = "";
+                if (!string.IsNullOrEmpty(syncErrorsDesc))
+                {
+                    Logger.Error($"AAD Role Sync errors detected: {syncErrorsDesc}");
+                    syncResultDesc = $"Portal {portalId} synced with errors, check logs for more information (sync errors: {syncErrors}; groups created: {groupsCreated}; groups deleted: {groupsDeleted}";
+                }
+                else
+                {
+                    syncResultDesc = $"Successfully synchronized portal {portalId} (sync errors: 0; groups created: {groupsCreated}; groups deleted: {groupsDeleted}";                    
+                }
+                return syncResultDesc;
             }
             catch (Exception e)
             {
+                Logger.Error($"Error while synchronizing the roles from portal {portalId}: {e}");
                 return $"Error while synchronizing the roles from portal {portalId}: {e}";
             }
         }

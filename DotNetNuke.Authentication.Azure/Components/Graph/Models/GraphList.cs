@@ -29,11 +29,14 @@ namespace DotNetNuke.Authentication.Azure.Components.Graph.Models
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class GraphList<T>
     {
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "@odata.metadata", Required = Required.Default)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "odata.metadata", Required = Required.Default)]
         public string ODataMetadata { get; set; }
 
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "@odata.context", Required = Required.Default)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "odata.context", Required = Required.Default)]
         public string ODataContext { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "odata.nextlink", Required = Required.Default)]
+        public string ODataNextLink { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore, PropertyName = "value", Required = Required.Default)]
         public List<T> Values { get; set; }
