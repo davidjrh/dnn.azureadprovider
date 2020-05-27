@@ -9,6 +9,7 @@ using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Scheduling;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 
 namespace DotNetNuke.Authentication.Azure.ScheduledTasks
@@ -125,9 +126,14 @@ namespace DotNetNuke.Authentication.Azure.ScheduledTasks
                 }
 
                 var graphClient = new GraphClient(settings.AADApplicationId, settings.AADApplicationKey, settings.TenantId);
-
+                var query = "$orderby=displayName";
+                var filter = ConfigurationManager.AppSettings["AzureAD.GetAllGroups.Filter"];
+                if (!string.IsNullOrEmpty(filter))
+                {
+                    query = $"$filter={filter}";
+                }
                 // Add roles from AAD 
-                var aadGroups = graphClient.GetAllGroups("");
+                var aadGroups = graphClient.GetAllGroups(query);
                 var allaadGroups = new List<Components.Graph.Models.Group>();
                 if (aadGroups != null && aadGroups.Values != null)
                 {
