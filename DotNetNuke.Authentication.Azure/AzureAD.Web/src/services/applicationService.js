@@ -13,7 +13,7 @@ class ApplicationService {
 
     updateGeneralSettings(payload, callback, failureCallback) {
         const sf = this.getServiceFramework("AzureAD");        
-        sf.post("UpdateGeneralSettings", payload, failureCallback, callback);
+        sf.post("UpdateGeneralSettings", payload, callback, failureCallback);
     }    
 
     updateAdvancedSettings(payload, callback, failureCallback) {
