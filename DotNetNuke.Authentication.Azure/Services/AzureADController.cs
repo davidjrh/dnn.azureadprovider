@@ -123,7 +123,7 @@ namespace DotNetNuke.Authentication.Azure.Services
                 {
                     PrepareUserMappingsForCurrentPortal();
                 }
-                return Request.CreateResponse(HttpStatusCode.OK);
+                return Request.CreateResponse(HttpStatusCode.OK, new { });
             }
             catch (Exception ex)
             {
