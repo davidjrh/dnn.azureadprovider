@@ -769,6 +769,10 @@ namespace DotNetNuke.Authentication.Azure.Components
 
         private void UpdateUserProfilePicture(string aadUserId, UserInfo userInfo, bool saveUserInfo = false)
         {
+            if (!Settings.ProfileSyncEnabled)
+            {
+                return;
+            }
             try
             {
                 if (!string.IsNullOrEmpty(aadUserId) && userInfo != null)
