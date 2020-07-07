@@ -2,6 +2,18 @@
 <p style="margin: 0"><a href="http://davidjrh.intelequia.com" target="_new">David Rodriguez</a><br /><a href="mailto:davidj@intelequia.com">davidj@intelequia.com</a></p>
 <p style="margin: 0"><strong>About the DNN Azure Active Directory Authorization Provider</strong></p>
 
+<p style="margin: 0"><b>Version 04.00.02</b></p>
+<p style="margin: 0">
+# New features
+* Added option on web.config to filter the groups to sync
+* Added MS Graph API pagination on role sync
+
+# Bug fixes
+* Fix for "Object moved here" issue when automatic redirection is enabled
+* Fix for ui message on save on expired session (thanks @gbulicanu)
+* Fix to avoid syncing the profile picture if profile sync is not enabled (thanks @moorecreativeco)
+</p>
+
 <p style="margin: 0"><b>Version 04.00.01</b></p>
 <p style="margin: 0">
 # Bug fixes
