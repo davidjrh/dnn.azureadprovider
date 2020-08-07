@@ -44,6 +44,9 @@ namespace DotNetNuke.Authentication.Azure.Components
             // Gets the settings scope (global or per portal)
             UseGlobalSettings = bool.Parse(HostController.Instance.GetString(Service + "_UseGlobalSettings", "false"));
 
+            //Get settings that are always portal scoped
+            RequiredAADGroup = GetScopedSetting(false, portalId, Service + "_RequiredAADGroup", "");
+
             // Loads the scoped settings
             APIKey = GetScopedSetting(Service + "_ApiKey", portalId, "");
             APISecret = GetScopedSetting(Service + "_ApiSecret", portalId, "");
@@ -103,11 +106,14 @@ namespace DotNetNuke.Authentication.Azure.Components
         [SortOrder(14)]
         public bool UseGlobalSettings { get; set; }
         [SortOrder(15)]
-        public string RedirectUri { get; set; }
+        public string RequiredAADGroup { get; set; }
 
         [SortOrder(17)]
-        public bool UsernamePrefixEnabled { get; set; }
+        public string RedirectUri { get; set; }
+
         [SortOrder(18)]
+        public bool UsernamePrefixEnabled { get; set; }
+        [SortOrder(19)]
         public bool GroupNamePrefixEnabled { get; set; }
 
 
@@ -132,8 +138,13 @@ namespace DotNetNuke.Authentication.Azure.Components
         {
             HostController.Instance.Update(config.Service + "_UseGlobalSettings", config.UseGlobalSettings.ToString(),
                 true);
+
+            //update settings that are always portal scoped
+            UpdateScopedSetting(false, config.PortalID, config.Service + "_RequiredAADGroup", config.RequiredAADGroup);
+            
+            //Update scoped settings
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_ApiKey", config.APIKey);
-            UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_ApiSecret", config.APISecret);
+            UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_ApiSecret", config.APISecret);            
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_RedirectUri", config.RedirectUri);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_TenantId", config.TenantId);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_AutoRedirect", config.AutoRedirect.ToString());

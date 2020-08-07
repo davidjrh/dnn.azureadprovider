@@ -35,6 +35,8 @@ namespace DotNetNuke.Authentication.Azure.Services
         public string ApiKey { get; set; }
         [DataMember(Name = "apiSecret")]
         public string ApiSecret { get; set; }
+        [DataMember(Name = "requiredAADGroup")]
+        public string RequiredAADGroup { get; set; }
         [DataMember(Name = "redirectUri")]
         public string RedirectUri { get; set; }
         [DataMember(Name = "autoRedirect")]
@@ -73,6 +75,7 @@ namespace DotNetNuke.Authentication.Azure.Services
                 TenantId = config.TenantId,
                 ApiKey = config.APIKey,
                 ApiSecret = config.APISecret,
+                RequiredAADGroup = config.RequiredAADGroup,
                 RedirectUri = config.RedirectUri,
                 AutoRedirect = config.AutoRedirect,
                 AadAppClientId = config.AADApplicationId,
@@ -97,6 +100,7 @@ namespace DotNetNuke.Authentication.Azure.Services
                 TenantId = settings.TenantId,
                 APIKey = settings.ApiKey,
                 APISecret = settings.ApiSecret,
+                RequiredAADGroup = settings.RequiredAADGroup,
                 RedirectUri = settings.RedirectUri,
                 AutoRedirect = settings.AutoRedirect,
                 Enabled = settings.Enabled,

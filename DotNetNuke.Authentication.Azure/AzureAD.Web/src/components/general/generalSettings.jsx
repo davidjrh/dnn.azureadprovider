@@ -44,6 +44,7 @@ class GeneralSettings extends Component {
             autoRedirect: (key === "AutoRedirect") ? !props.autoRedirect : props.autoRedirect,
             apiKey: (key === "AppId") ? event.target.value : props.apiKey,
             apiSecret: (key === "AppSecret") ? event.target.value : props.apiSecret,
+            requiredAADGroup: (key === "RequiredAADGroup") ? event.target.value: props.requiredAADGroup,
             redirectUri: (key === "RedirectUri") ? event.target.value: props.redirectUri,            
             tenantId: (key === "TenantId") ? event.target.value : props.tenantId
         }));
@@ -63,6 +64,7 @@ class GeneralSettings extends Component {
             autoRedirect: props.autoRedirect,
             apiKey: props.apiKey,
             apiSecret: props.apiSecret,
+            requiredAADGroup: props.requiredAADGroup,
             redirectUri: props.redirectUri,            
             tenantId: props.tenantId
         }, () => {
@@ -101,6 +103,19 @@ class GeneralSettings extends Component {
                         value={this.props.useGlobalSettings}
                         tooltipMessage={resx.get("lblUseGlobalSettings.Help")}
                         onChange={this.onSettingChange.bind(this, "UseGlobalSettings")} />
+                </GridCell>
+                <GridCell columnSize={50}>
+                    <div className="editor-row">
+                        <SingleLineInputWithError
+                            withLabel={true}
+                            label={resx.get("lblRequiredAADGroup")}
+                            enabled={true}
+                            tooltipMessage={resx.get("lblRequiredAADGroup.Help")}
+                            errorMessage=""
+                            value={this.props.requiredAADGroup}
+                            onChange={this.onSettingChange.bind(this, "RequiredAADGroup")}
+                        />
+                    </div>
                 </GridCell>
                 <GridCell columnSize={100} className="directory-section">
                     <GridCell columnSize={50}>
@@ -189,6 +204,7 @@ GeneralSettings.propTypes = {
     dispatch: PropTypes.func.isRequired,
     enabled: PropTypes.bool,
     useGlobalSettings: PropTypes.bool,    
+    requiredAADGroup: PropTypes.string,
     autoRedirect: PropTypes.bool,
     apiKey: PropTypes.string,
     apiSecret: PropTypes.string,
@@ -200,7 +216,8 @@ GeneralSettings.propTypes = {
 function mapStateToProps(state) {
     return {
         enabled: state.settings.enabled,
-        useGlobalSettings: state.settings.useGlobalSettings,        
+        useGlobalSettings: state.settings.useGlobalSettings,
+        requiredAADGroup: state.settings.requiredAADGroup,
         autoRedirect: state.settings.autoRedirect,
         apiKey: state.settings.apiKey,
         apiSecret: state.settings.apiSecret,
