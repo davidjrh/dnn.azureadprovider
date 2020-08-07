@@ -357,6 +357,12 @@
   <data name="lblProfileSyncEnabled.Text" xml:space="preserve">
     <value>Profile Sync</value>
   </data>
+  <data name="lblRequiredAADGroup.Help" xml:space="preserve">
+    <value>If specified, the user must have the matching Azure AD Group in order to authenticate to this portal. This setting is portal specific even if Use Global Settings is on.</value>
+  </data>
+  <data name="lblRequiredAADGroup.Text" xml:space="preserve">
+    <value>Required Azure AD Group</value>
+  </data>
   <data name="lblRedirectUri.Help" xml:space="preserve">
     <value>If specified, the redirect uri after a successful login. By default (blank), the user will be redirected to the page originating the login redirection.</value>
   </data>

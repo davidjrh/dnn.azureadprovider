@@ -3,6 +3,7 @@
  (
      'Azure_APIKey'
    , 'Azure_APISecret'
+   , 'Azure_RequiredAADGroup'
    , 'Azure_RedirectUri'
    , 'Azure_TenantId'
    , 'Azure_AutoRedirect'
@@ -26,6 +27,7 @@ DELETE {databaseOwner}[{objectQualifier}HostSettings]
  (
      'Azure_APIKey'
    , 'Azure_APISecret'
+   , 'Azure_RequiredAADGroup'
    , 'Azure_RedirectUri'
    , 'Azure_TenantId'
    , 'Azure_AutoRedirect'

@@ -36,6 +36,7 @@ using System.Web;
 using System.Web.Script.Serialization;
 using DotNetNuke.Authentication.Azure.Common;
 using DotNetNuke.Authentication.Azure.Components.Graph;
+using DotNetNuke.Authentication.Azure.Components.Graph.Models;
 using DotNetNuke.Authentication.Azure.Components.Models;
 using DotNetNuke.Authentication.Azure.Data;
 using DotNetNuke.Common;
@@ -49,6 +50,7 @@ using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Authentication.OAuth;
 using DotNetNuke.Services.FileSystem;
+using log4net.Repository;
 using static DotNetNuke.Services.Authentication.AuthenticationLoginBase;
 
 #endregion
@@ -84,6 +86,24 @@ namespace DotNetNuke.Authentication.Azure.Components
                 return _graphClient;
             }
         }
+
+        private GraphList<Group> _AADGroups;
+        private GraphList<Group> AADGroups
+        {
+            get
+            {
+                if(_AADGroups == null)
+                {
+                    if(JwtIdToken == null)
+                    {
+                        throw new Exception("Jwt Token does not exist");
+                    }
+                    _AADGroups = GraphClient.GetUserGroups(JwtIdToken.Claims.First(c => c.Type == "oid").Value);
+                }
+                return _AADGroups;
+            }
+        }
+
         private readonly AzureConfig Settings;
 
         private List<ProfileMapping> _customClaimsMappings;
@@ -528,31 +548,69 @@ namespace DotNetNuke.Authentication.Azure.Components
                 }
                 throw new MissingFieldException($"Can't find '{userIdClaim}' claim on token, needed to identify the user");
             }
+            
 
             var usernamePrefixEnabled = bool.Parse(AzureConfig.GetSetting(AzureConfig.ServiceName, "UsernamePrefixEnabled", portalSettings.PortalId, "true"));
             var usernameToFind = usernamePrefixEnabled ? $"azure-{userClaim.Value}" : userClaim.Value;
-            var userInfo = UserController.GetUserByName(portalSettings.PortalId, usernameToFind);
-            // If user doesn't exist on current portal, AuthenticateUser() will create it. 
-            // Otherwise, AuthenticateUser will perform a Response.Redirect, so we have to sinchronize the roles before that, to avoid the ThreadAbortException caused by the Response.Redirect
-            if (userInfo == null)
+
+            var requiredAADGroup = Settings.RequiredAADGroup;// AzureConfig.GetScopedSetting(false, portalSettings.PortalId, Service + "_RequiredAADGroup", "");
+            if (!string.IsNullOrWhiteSpace(requiredAADGroup))
             {
-                base.AuthenticateUser(user, portalSettings, IPAddress, addCustomProperties, onAuthenticated);
-                if (IsCurrentUserAuthorized())
+                var AADGroup = AADGroups.Values.FirstOrDefault(x => x.DisplayName == requiredAADGroup);
+                if (AADGroup == null)
                 {
-                    userInfo = UserController.GetUserByName(portalSettings.PortalId, usernameToFind);
-                    if (userInfo == null)
+                    throw new SecurityTokenException($"The logged in user {usernameToFind} does not have the required Azure AD Group {requiredAADGroup} for portal {portalSettings.PortalId}");
+                }
+            }
+
+            var userInfoCurrentPortal = UserController.GetUserByName(portalSettings.PortalId, usernameToFind);
+            var userInfo = UserController.GetUserByName(usernameToFind);
+
+            // If user doesn't exist on current portal, determine if the user exist on other portals
+            // Otherwise, if the user does exist on this portal, AuthenticateUser will perform a Response.Redirect, so we have to sinchronize the roles before that, to avoid the ThreadAbortException caused by the Response.Redirect
+            if (userInfoCurrentPortal == null)
+            {
+                //If the user doesn't exist on any portal AuthenticateUser() will create the user
+                //Otherwise, if the user exist on a portal but not the current portal and the appropriate settings are enabled add the user to this portal
+                if (userInfo == null)
+                {                    
+                    base.AuthenticateUser(user, portalSettings, IPAddress, addCustomProperties, onAuthenticated);
+                    if (IsCurrentUserAuthorized())
+                    {
+                        userInfoCurrentPortal = UserController.GetUserByName(portalSettings.PortalId, usernameToFind);
+                        UpdateUserAndRoles(userInfoCurrentPortal);
+                        MarkUserAsAad(userInfoCurrentPortal);
+                    }
+                }
+                else
+                {
+                    //Only add user to current portal if UserGlobalSeetings is true (same Azure AD for all portals)
+                    //Otherwise, throw security exception
+                    if(Settings.UseGlobalSettings)
+                    {
+                        UserController.AddUserPortal(portalSettings.PortalId, userInfo.UserID);
+                        UserController.ApproveUser(userInfo); //Mark user as approved on this portal and give autoassign roles
+
+                        //Add Azure AD roles before AuthenticateUser() to avoid ThreadAbortException caused by Response.Redirect
+                        if(IsCurrentUserAuthorized())
+                        {
+                            userInfoCurrentPortal = UserController.GetUserByName(portalSettings.PortalId, usernameToFind);
+                            UpdateUserAndRoles(userInfoCurrentPortal);
+                            MarkUserAsAad(userInfoCurrentPortal);
+                        }
+                        base.AuthenticateUser(user, portalSettings, IPAddress, addCustomProperties, onAuthenticated);
+                    }
+                    else
                     {
                         throw new SecurityTokenException($"The logged in user {usernameToFind} does not belong to PortalId {portalSettings.PortalId}");
                     }
-                    UpdateUserAndRoles(userInfo);
-                    MarkUserAsAad(userInfo);
                 }
             }
             else
             {
                 if (IsCurrentUserAuthorized())
                 {
-                    UpdateUserAndRoles(userInfo);
+                    UpdateUserAndRoles(userInfoCurrentPortal);
                 }
                 base.AuthenticateUser(user, portalSettings, IPAddress, addCustomProperties, onAuthenticated);
             }
@@ -693,16 +751,17 @@ namespace DotNetNuke.Authentication.Azure.Components
             {
                 var syncOnlyMappedRoles = (CustomRoleMappings != null && CustomRoleMappings.Count > 0);
 
-                var aadGroups = GraphClient.GetUserGroups(aadUserId);
 
-                if (aadGroups != null && aadGroups.Values != null)
+                if (AADGroups != null && AADGroups.Values != null)
                 {
                     var groupPrefix = PrefixServiceToGroupName ? $"{Service}-" : "";
-                    var groups = aadGroups.Values;
+                    //Create a copy so if the original is used elsewhere it still contains everything from the Graph Client
+                    var groups = AADGroups.Values.ToList(); 
+                    
                     if (syncOnlyMappedRoles)
                     {
                         groupPrefix = "";
-                        var aadRoles = CustomRoleMappings.Select(rm => rm.AadRoleName);
+                        var aadRoles = CustomRoleMappings.Select(rm => rm.AadRoleName);                        
                         groups.RemoveAll(x => !aadRoles.Contains(x.DisplayName));
                     }
 
