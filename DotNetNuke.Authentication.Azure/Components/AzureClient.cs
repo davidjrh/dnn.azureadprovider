@@ -740,7 +740,7 @@ namespace DotNetNuke.Authentication.Azure.Components
                         if (dnnRole == null)
                         {
                             // Create role
-                            var roleId = AddRole($"{groupPrefix}{group.DisplayName}", group.Description, true);
+                            var roleId = AddRole(roleToAssign, group.Description, true);
                             dnnRole = RoleController.Instance.GetRoleById(PortalSettings.Current.PortalId, roleId);
                             // Add user to Role
                             RoleController.Instance.AddUserRole(PortalSettings.Current.PortalId,
@@ -748,8 +748,8 @@ namespace DotNetNuke.Authentication.Azure.Components
                                                                 roleId,
                                                                 RoleStatus.Approved,
                                                                 false,
-                                                                group.CreatedDateTime.HasValue ? group.CreatedDateTime.Value.DateTime : DotNetNuke.Common.Utilities.Null.NullDate,
-                                                                DotNetNuke.Common.Utilities.Null.NullDate);
+                                                                group.CreatedDateTime.HasValue ? group.CreatedDateTime.Value.DateTime : Null.NullDate,
+                                                                group.DeletedDateTime.HasValue ? group.DeletedDateTime.Value.DateTime : Null.NullDate);
                         }
                         else
                         {
@@ -759,10 +759,10 @@ namespace DotNetNuke.Authentication.Azure.Components
                                 RoleController.Instance.AddUserRole(PortalSettings.Current.PortalId,
                                                                     userInfo.UserID,
                                                                     dnnRole.RoleID,
-                                                                    Security.Roles.RoleStatus.Approved,
+                                                                    RoleStatus.Approved,
                                                                     false,
-                                                                    group.CreatedDateTime.HasValue ? group.CreatedDateTime.Value.DateTime : DateTime.Today,
-                                                                    DotNetNuke.Common.Utilities.Null.NullDate);
+                                                                    group.CreatedDateTime.HasValue ? group.CreatedDateTime.Value.DateTime : Null.NullDate,
+                                                                    group.DeletedDateTime.HasValue ? group.DeletedDateTime.Value.DateTime : Null.NullDate);
                             }
                         }
                     }
