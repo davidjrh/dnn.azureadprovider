@@ -151,13 +151,20 @@ namespace DotNetNuke.Authentication.Azure.ScheduledTasks
 
                         foreach (var aadGroup in groups)
                         {
-                            var dnnRole = RoleController.Instance.GetRoleByName(portalId, $"{groupPrefix}{aadGroup.DisplayName}");
+                            var displayName = $"{groupPrefix}{aadGroup.DisplayName}";
+                            var mapping = customRoleMappings?.FirstOrDefault(x => x.AadRoleName == aadGroup.DisplayName);
+                            if (mapping != null)
+                            {
+                                displayName = mapping.DnnRoleName;
+                            }
+                            
+                            var dnnRole = RoleController.Instance.GetRoleByName(portalId, displayName);
                             if (dnnRole == null)
                             {
                                 try
                                 {
                                     // Create role
-                                    var roleId = AddRole(portalId, $"{groupPrefix}{aadGroup.DisplayName}", aadGroup.Description, true);
+                                    var roleId = AddRole(portalId, displayName, aadGroup.Description, true);
                                     groupsCreated++;
                                 }
                                 catch (Exception ex)
@@ -188,7 +195,10 @@ namespace DotNetNuke.Authentication.Azure.ScheduledTasks
                 foreach (var dnnRole in dnnAadRoles)
                 {
                     if (allaadGroups.Count == 0
-                        || allaadGroups.FirstOrDefault(x => x.DisplayName == (dnnRole.RoleName.StartsWith("Azure-") ? dnnRole.RoleName.Substring("Azure-".Length) : dnnRole.RoleName)) == null)
+                        || allaadGroups.FirstOrDefault(x => x.DisplayName == 
+                            (settings.GroupNamePrefixEnabled 
+                                ? dnnRole.RoleName.Substring("Azure-".Length) 
+                                : dnnRole.RoleName)) == null)
                     {
                         try
                         {

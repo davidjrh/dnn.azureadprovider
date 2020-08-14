@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Configuration;
 using System.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
@@ -693,7 +694,13 @@ namespace DotNetNuke.Authentication.Azure.Components
             {
                 var syncOnlyMappedRoles = (CustomRoleMappings != null && CustomRoleMappings.Count > 0);
 
-                var aadGroups = GraphClient.GetUserGroups(aadUserId);
+                var query = "";
+                var filter = ConfigurationManager.AppSettings["AzureAD.GetUserGroups.Filter"];
+                if (!string.IsNullOrEmpty(filter))
+                {
+                    query = $"$filter={filter}";
+                }
+                var aadGroups = GraphClient.GetUserGroups(aadUserId, query);
 
                 if (aadGroups != null && aadGroups.Values != null)
                 {

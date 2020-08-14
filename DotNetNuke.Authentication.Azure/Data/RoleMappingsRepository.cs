@@ -41,17 +41,19 @@ namespace DotNetNuke.Authentication.Azure.Data
             return result;
         }
 
-        public void UpdateRoleMapping(string dnnRoleName, string aadRoleName, int portalId)
+        public void UpdateRoleMapping(string originalDnnRoleName, string dnnRoleName, string aadRoleName, int portalId)
         {
+            Requires.NotNullOrEmpty("OriginalDnnRoleName", originalDnnRoleName);
             Requires.NotNullOrEmpty("DnnRoleName", dnnRoleName);
             Requires.NotNullOrEmpty("AadRoleName", aadRoleName);
 
-            var roleMapping = GetRoleMapping(dnnRoleName, portalId);
+            var roleMapping = GetRoleMapping(originalDnnRoleName, portalId);
             if (roleMapping == null)
             {
-                throw new ArgumentException($"Role mapping '{dnnRoleName}' not found in portal {portalId}");
+                throw new ArgumentException($"Role mapping '{originalDnnRoleName}' not found in portal {portalId}");
             }
 
+            roleMapping.DnnRoleName = dnnRoleName;
             roleMapping.AadRoleName = aadRoleName;
             roleMapping.PortalId = portalId;
             roleMapping.LastModifiedOnDate = DateTime.UtcNow;

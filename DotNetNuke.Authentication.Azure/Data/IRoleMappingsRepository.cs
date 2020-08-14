@@ -7,7 +7,7 @@ namespace DotNetNuke.Authentication.Azure.Data
     {
         IQueryable<RoleMapping> GetRoleMappings(int portalId);
         RoleMapping GetRoleMapping(string dnnRoleName, int portalId);
-        void UpdateRoleMapping(string dnnRoleName, string aadRoleName, int portalId);
+        void UpdateRoleMapping(string originalDnnRoleName, string dnnRoleName, string aadRoleName, int portalId);
         void InsertRoleMapping(string dnnRoleName, string aadRoleName, int portalId);
         void DeleteRoleMapping(string dnnRoleName, int portalId);
     }

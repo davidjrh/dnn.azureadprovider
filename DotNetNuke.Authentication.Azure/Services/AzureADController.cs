@@ -277,7 +277,7 @@ namespace DotNetNuke.Authentication.Azure.Services
                     var roleMapping = RoleMappingsRepository.Instance.GetRoleMapping(input.originalDnnRoleName, GetCalculatedPortalId());
                     if (roleMapping != null)
                     {
-                        RoleMappingsRepository.Instance.UpdateRoleMapping(roleMapping.DnnRoleName, input.mappingDetail.AadRoleName, GetCalculatedPortalId());
+                        RoleMappingsRepository.Instance.UpdateRoleMapping(roleMapping.DnnRoleName, input.mappingDetail.DnnRoleName, input.mappingDetail.AadRoleName, GetCalculatedPortalId());
                     }
                     else
                     {

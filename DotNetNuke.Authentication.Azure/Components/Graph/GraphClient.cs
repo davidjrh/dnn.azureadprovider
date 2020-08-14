@@ -102,10 +102,9 @@ namespace DotNetNuke.Authentication.Azure.Components.Graph
             return JsonConvert.DeserializeObject<GraphList<Group>>(result);
         }
 
-        public GraphList<Group> GetUserGroups(string userId)
+        public GraphList<Group> GetUserGroups(string userId, string query = "")
         {
-            var result = SendAADGraphRequest($"/users/{userId}/memberOf");
-            //var result = await SendGraphGetRequest($"/users/{userId}/memberOf?$select=displayName,description", null);
+            var result = SendAADGraphRequest($"/users/{userId}/memberOf", query);
             return JsonConvert.DeserializeObject<GraphList<Group>>(result);
         }
 
