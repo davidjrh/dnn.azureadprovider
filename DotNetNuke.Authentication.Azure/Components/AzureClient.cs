@@ -619,6 +619,10 @@ namespace DotNetNuke.Authentication.Azure.Components
                     new QueryParameter("response_type", "code"),
                     new QueryParameter("response_mode", "query"),
                 };
+                if (!string.IsNullOrEmpty(APIResource))
+                {
+                    parameters.Add(new QueryParameter("resource", APIResource));
+                }
 
                 HttpContext.Current.Response.Redirect(AuthorizationEndpoint + "?" + parameters.ToNormalizedString(), false);
                 HttpContext.Current.Response.Flush();

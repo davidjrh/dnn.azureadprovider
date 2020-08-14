@@ -235,7 +235,7 @@
     <Error Condition="!Exists('..\DotNetNuke.Authentication.Azure\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\DotNetNuke.Authentication.Azure\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetDir)$(ProjectName).* c:\websites\dnn950.dnndev.me\bin /Y</PostBuildEvent>
+    <PostBuildEvent>copy $(TargetDir)$(ProjectName).* c:\websites\intelequia.dnndev.me\bin /Y</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\.build\ModulePackage.Targets" />
   <Target Name="AfterBuild" DependsOnTargets="PackageModule">
