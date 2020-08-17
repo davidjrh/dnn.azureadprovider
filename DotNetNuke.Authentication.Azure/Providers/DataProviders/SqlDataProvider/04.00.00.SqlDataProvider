@@ -52,7 +52,7 @@ BEGIN
 		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
 
 	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_UserMappings] ([DnnPropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
-		 SELECT 'Id', 'unique_name', PortalID, -1, GETDATE(), -1, GETDATE()
+		 SELECT 'Id', 'upn', PortalID, -1, GETDATE(), -1, GETDATE()
 		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
 
 	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_UserMappings] ([DnnPropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
@@ -68,7 +68,7 @@ BEGIN
 		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
 
 	INSERT INTO {databaseOwner}[{objectQualifier}AzureAD_UserMappings] ([DnnPropertyName],[AadClaimName],[PortalId],[CreatedByUserId],[CreatedOnDate],[LastModifiedByUserId],[LastModifiedOnDate])
-		 SELECT 'Email', 'unique_name', PortalId, -1, GETDATE(), -1, GETDATE()
+		 SELECT 'Email', 'upn', PortalId, -1, GETDATE(), -1, GETDATE()
 		   FROM (Select PortalId FROM {databaseOwner}[{objectQualifier}Portals] UNION SELECT PortalId = -1) p
 END
 GO

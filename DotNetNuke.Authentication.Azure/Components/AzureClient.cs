@@ -361,7 +361,8 @@ namespace DotNetNuke.Authentication.Azure.Components
             var claim = claims.FirstOrDefault(x => x.Type == claimName)?.Value;
             if (string.IsNullOrEmpty(claim))
             {
-                throw new ApplicationException($"Claim '{claimName}' was not found on the token.");
+                var sclaims = claims.Select(x => x.Type).Aggregate("", (current, next) => current + ", " + next);
+                throw new ApplicationException($"Claim '{claimName}' was not found on the token. Available claims are: {sclaims}");
             }
         }
 
