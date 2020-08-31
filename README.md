@@ -9,6 +9,7 @@
 - [Installation and configuration guide](#installation-and-configuration-guide)
   - [Azure Active Directory setup](#AAD-setup)
   - [DNN Provider installation and configuration](#provider-configuration)
+  - [Claim mappings](docs/mappings.md)
 - [Known issues](#known-issues)
 
 <a name="overview"></a>
