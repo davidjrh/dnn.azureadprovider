@@ -699,18 +699,26 @@ namespace DotNetNuke.Authentication.Azure.Components
             {
                 var syncOnlyMappedRoles = (CustomRoleMappings != null && CustomRoleMappings.Count > 0);
 
-                var query = "";
-                var filter = ConfigurationManager.AppSettings["AzureAD.GetUserGroups.Filter"];
-                if (!string.IsNullOrEmpty(filter))
-                {
-                    query = $"$filter={filter}";
-                }
-                var aadGroups = GraphClient.GetUserGroups(aadUserId, query);
-
+                var aadGroups = GraphClient.GetUserGroups(aadUserId);
                 if (aadGroups != null && aadGroups.Values != null)
                 {
                     var groupPrefix = PrefixServiceToGroupName ? $"{Service}-" : "";
                     var groups = aadGroups.Values;
+
+                    var filter = ConfigurationManager.AppSettings["AzureAD.GetUserGroups.Filter"];
+                    if (!string.IsNullOrEmpty(filter))
+                    {
+                        var onlyGroups = filter.Split(';');
+                        var g = new List<Graph.Models.Group>();
+                        foreach (var f in onlyGroups)
+                        {
+                            var r = groups.Where(x => x.DisplayName.StartsWith(f));
+                            if (r.Count() > 0)
+                                g.AddRange(r);
+                        }
+                        groups = g;
+                    }
+
                     if (syncOnlyMappedRoles)
                     {
                         groupPrefix = "";

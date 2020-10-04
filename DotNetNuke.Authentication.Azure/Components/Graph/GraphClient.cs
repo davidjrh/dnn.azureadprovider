@@ -104,8 +104,26 @@ namespace DotNetNuke.Authentication.Azure.Components.Graph
 
         public GraphList<Group> GetUserGroups(string userId, string query = "")
         {
-            var result = SendAADGraphRequest($"/users/{userId}/memberOf", query);
-            return JsonConvert.DeserializeObject<GraphList<Group>>(result);
+            var g = new GraphList<Group>()
+            {
+                Values = new List<Group>()
+            };
+            
+            var result = SendAADGraphRequest($"/users/{userId}/memberOf", query);            
+            var groups = JsonConvert.DeserializeObject<GraphList<Group>>(result);
+            if (groups?.Values != null)
+            {
+                g.Values.AddRange(groups.Values);
+            }            
+            while (!string.IsNullOrEmpty(groups?.ODataNextLink)) {
+                groups = GetNextGroups(groups.ODataNextLink);
+                if (groups?.Values != null && groups.Values.Count > 0)
+                {
+                    g.Values.AddRange(groups.Values);
+                }
+            }
+            g.ODataNextLink = groups?.ODataNextLink;
+            return g;
         }
 
         public GraphList<User> GetGroupMembers(string groupId)
