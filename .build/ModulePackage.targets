@@ -54,7 +54,7 @@
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Microsoft.IdentityModel.Clients.ActiveDirectory.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Microsoft.IdentityModel.Protocols.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
-    <Copy SourceFiles="$(MSBuildDnnBinPath)\System.IdentityModel.Tokens.Jwt.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\System.IdentityModel.Tokens.Jwt.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>   
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Microsoft.IdentityModel.Tokens.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Microsoft.IdentityModel.Logging.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Microsoft.IdentityModel.JsonWebTokens.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
