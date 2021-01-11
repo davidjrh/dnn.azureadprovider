@@ -60,11 +60,12 @@ namespace DotNetNuke.Authentication.Azure.Components
     {
         public const string RoleSettingsAadPropertyName = "IdentitySource";
         public const string RoleSettingsAadPropertyValue = "Azure";
+        public const string DefaultScopes = "email openid profile";
 
-        private const string TokenEndpointPattern = "https://login.microsoftonline.com/{0}/oauth2/token";
+        private const string TokenEndpointPattern = "https://login.microsoftonline.com/{0}/oauth2/v2.0/token";
         private const string LogoutEndpointPattern =
             "https://login.microsoftonline.com/{0}/oauth2/logout?post_logout_redirect_uri={1}";
-        private const string AuthorizationEndpointPattern = "https://login.microsoftonline.com/{0}/oauth2/authorize";
+        private const string AuthorizationEndpointPattern = "https://login.microsoftonline.com/{0}/oauth2/v2.0/authorize";
         private const string GraphEndpointPattern = "https://graph.windows.net/{0}";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AzureClient));
@@ -261,8 +262,8 @@ namespace DotNetNuke.Authentication.Azure.Components
 
             if (string.IsNullOrEmpty(Settings.APIResource) && string.IsNullOrEmpty(Settings.Scopes))
             {
-                Scope = Settings.APIKey;
-                APIResource = Settings.APIKey;
+                Scope = DefaultScopes;
+                APIResource = "";
             }
             else
             {
@@ -588,7 +589,7 @@ namespace DotNetNuke.Authentication.Azure.Components
 
         private void UpdateUserAndRoles(UserInfo userInfo)
         {
-            if (!userInfo.Membership.Approved && IsCurrentUserAuthorized())
+            if (Settings.AutoAuthorize && !userInfo.Membership.Approved && IsCurrentUserAuthorized())
             {
                 userInfo.Membership.Approved = true; // Delegate approval on Auth Provider
                 UserController.UpdateUser(userInfo.PortalID, userInfo);
@@ -620,10 +621,10 @@ namespace DotNetNuke.Authentication.Azure.Components
                     new QueryParameter("response_type", "code"),
                     new QueryParameter("response_mode", "query"),
                 };
-                if (!string.IsNullOrEmpty(APIResource))
-                {
-                    parameters.Add(new QueryParameter("resource", APIResource));
-                }
+                //if (!string.IsNullOrEmpty(APIResource))
+                //{
+                //    parameters.Add(new QueryParameter("resource", APIResource));
+                //}
 
                 HttpContext.Current.Response.Redirect(AuthorizationEndpoint + "?" + parameters.ToNormalizedString(), false);
                 HttpContext.Current.Response.Flush();
@@ -809,10 +810,6 @@ namespace DotNetNuke.Authentication.Azure.Components
 
                         userInfo.Profile.Photo = profilePictureInfo.FileId.ToString();
                     }
-                    else
-                    {
-                        userInfo.Profile.Photo = "";
-                    }
                     if (saveUserInfo)
                     {
                         UserController.UpdateUser(userInfo.PortalID, userInfo);
@@ -846,7 +843,8 @@ namespace DotNetNuke.Authentication.Azure.Components
                 {
                     new QueryParameter("grant_type", "authorization_code"),
                     new QueryParameter("client_id", APIKey),
-                    new QueryParameter("scope", Scope),
+                    new QueryParameter("client_secret", HttpContext.Current.Server.UrlEncode(APISecret)),
+                    new QueryParameter("scope", HttpContext.Current.Server.UrlEncode(Scope)),
                     new QueryParameter("code", VerificationCode),
                     new QueryParameter("redirect_uri", HttpContext.Current.Server.UrlEncode(CallbackUri.ToString()))
                 };
@@ -875,13 +873,13 @@ namespace DotNetNuke.Authentication.Azure.Components
                 request.ContentType = "application/x-www-form-urlencoded";
                 request.ContentLength = byteArray.Length;
 
-                if (!String.IsNullOrEmpty(OAuthHeaderCode))
-                {
-                    byte[] API64 = Encoding.UTF8.GetBytes(APIKey + ":" + APISecret);
-                    string Api64Encoded = System.Convert.ToBase64String(API64);
-                    //Authentication providers needing an "Authorization: Basic/bearer base64(clientID:clientSecret)" header. OAuthHeaderCode might be: Basic/Bearer/empty.
-                    request.Headers.Add("Authorization: " + OAuthHeaderCode + " " + Api64Encoded);
-                }
+                //if (!String.IsNullOrEmpty(OAuthHeaderCode))
+                //{
+                //    byte[] API64 = Encoding.UTF8.GetBytes(APIKey + ":" + APISecret);
+                //    string Api64Encoded = System.Convert.ToBase64String(API64);
+                //    //Authentication providers needing an "Authorization: Basic/bearer base64(clientID:clientSecret)" header. OAuthHeaderCode might be: Basic/Bearer/empty.
+                //    request.Headers.Add("Authorization: " + OAuthHeaderCode + " " + Api64Encoded);
+                //}
 
                 if (!String.IsNullOrEmpty(contentParameters))
                 {

@@ -61,6 +61,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             Scopes = GetScopedSetting(Service + "_Scopes", portalId, "");
             UsernamePrefixEnabled = bool.Parse(GetScopedSetting(Service + "_UsernamePrefixEnabled", portalId, "true"));
             GroupNamePrefixEnabled = bool.Parse(GetScopedSetting(Service + "_GroupNamePrefixEnabled", portalId, "true"));
+            AutoAuthorize = bool.Parse(GetScopedSetting(Service + "_AutoAuthorize", portalId, "true"));
         }
 
         public static string GetSetting(string service, string key, int portalId, string defaultValue)
@@ -109,6 +110,8 @@ namespace DotNetNuke.Authentication.Azure.Components
         public bool UsernamePrefixEnabled { get; set; }
         [SortOrder(18)]
         public bool GroupNamePrefixEnabled { get; set; }
+        [SortOrder(19)]
+        public bool AutoAuthorize { get; set; }
 
 
         private static string GetCacheKey(string service, int portalId)
@@ -148,6 +151,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_Scopes", config.Scopes);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_UsernamePrefixEnabled", config.UsernamePrefixEnabled.ToString());
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_GroupNamePrefixEnabled", config.GroupNamePrefixEnabled.ToString());
+            UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_AutoAuthorize", config.AutoAuthorize.ToString());
 
             UpdateConfig((OAuthConfigBase)config);
 

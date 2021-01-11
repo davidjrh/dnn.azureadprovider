@@ -63,6 +63,9 @@ namespace DotNetNuke.Authentication.Azure.Services
         public bool UsernamePrefixEnabled { get; set; }
         [DataMember(Name = "groupNamePrefixEnabled")]
         public bool GroupNamePrefixEnabled { get; set; }
+        [DataMember(Name = "autoAuthorize")]
+        public bool AutoAuthorize { get; set; }
+
 
 
         public static AzureADProviderSettings LoadSettings(string service, int portalId)
@@ -86,7 +89,8 @@ namespace DotNetNuke.Authentication.Azure.Services
                 ApiResource = config.APIResource,
                 Scopes = config.Scopes,
                 UsernamePrefixEnabled = config.UsernamePrefixEnabled,
-                GroupNamePrefixEnabled = config.GroupNamePrefixEnabled
+                GroupNamePrefixEnabled = config.GroupNamePrefixEnabled,
+                AutoAuthorize = config.AutoAuthorize
             };
         }
 
@@ -119,7 +123,8 @@ namespace DotNetNuke.Authentication.Azure.Services
                 APIResource = settings.ApiResource + (!string.IsNullOrEmpty(settings.ApiResource.Trim()) && !settings.ApiResource.EndsWith("/") ? "/" : ""),
                 Scopes = settings.Scopes,
                 UsernamePrefixEnabled = settings.UsernamePrefixEnabled,
-                GroupNamePrefixEnabled = settings.GroupNamePrefixEnabled
+                GroupNamePrefixEnabled = settings.GroupNamePrefixEnabled,
+                AutoAuthorize = settings.AutoAuthorize
             };
 
             AzureConfig.UpdateConfig(config);
