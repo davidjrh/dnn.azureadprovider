@@ -1,4 +1,5 @@
 ﻿using DotNetNuke.Authentication.Azure.Components.Graph.Models;
+using DotNetNuke.Instrumentation;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Newtonsoft.Json;
 using System;
@@ -28,6 +29,8 @@ namespace DotNetNuke.Authentication.Azure.Components.Graph
             beta,
             latest
         }
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(GraphClient));
 
         #region Properties
         private string ClientId { get; set; }
@@ -159,8 +162,12 @@ namespace DotNetNuke.Authentication.Azure.Components.Graph
                 var result = SendGraphRequest("/users/" + userId + "/photo", apiVersion: GraphApiVersion.beta);
                 return JsonConvert.DeserializeObject<ProfilePictureMetadata>(result);
             }
-            catch (WebException)
+            catch (WebException ex)
             {
+                if (Logger.IsDebugEnabled)
+                {
+                    Logger.Debug(ex.Message, ex);
+                }
                 // When the user doesn't have profile picture, the request throws a WebException
                 return null;
             }
@@ -173,8 +180,12 @@ namespace DotNetNuke.Authentication.Azure.Components.Graph
                 var metadata = GetUserProfilePictureMetadata(userId);
                 return SendGraphBinaryRequest("/users/" + userId + "/photo/$value", null, GraphApiVersion.beta);
             }
-            catch (WebException)
+            catch (WebException ex)
             {
+                if (Logger.IsDebugEnabled)
+                {
+                    Logger.Debug(ex.Message, ex);
+                }
                 // When the user doesn't have profile picture, the request throws a WebException
                 return null;
             }
