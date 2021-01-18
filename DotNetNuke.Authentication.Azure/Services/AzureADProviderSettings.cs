@@ -78,6 +78,7 @@ namespace DotNetNuke.Authentication.Azure.Services
                 ApiSecret = config.APISecret,
                 RedirectUri = config.RedirectUri,
                 AutoRedirect = config.AutoRedirect,
+                AutoAuthorize = config.AutoAuthorize,
                 AadAppClientId = config.AADApplicationId,
                 AadAppSecret = config.AADApplicationKey,
                 Enabled = config.Enabled,
@@ -89,8 +90,7 @@ namespace DotNetNuke.Authentication.Azure.Services
                 ApiResource = config.APIResource,
                 Scopes = config.Scopes,
                 UsernamePrefixEnabled = config.UsernamePrefixEnabled,
-                GroupNamePrefixEnabled = config.GroupNamePrefixEnabled,
-                AutoAuthorize = config.AutoAuthorize
+                GroupNamePrefixEnabled = config.GroupNamePrefixEnabled                
             };
         }
 
@@ -103,6 +103,7 @@ namespace DotNetNuke.Authentication.Azure.Services
                 APISecret = settings.ApiSecret,
                 RedirectUri = settings.RedirectUri,
                 AutoRedirect = settings.AutoRedirect,
+                AutoAuthorize = settings.AutoAuthorize,
                 Enabled = settings.Enabled,
                 UseGlobalSettings = settings.UseGlobalSettings
             };
@@ -123,8 +124,7 @@ namespace DotNetNuke.Authentication.Azure.Services
                 APIResource = settings.ApiResource + (!string.IsNullOrEmpty(settings.ApiResource.Trim()) && !settings.ApiResource.EndsWith("/") ? "/" : ""),
                 Scopes = settings.Scopes,
                 UsernamePrefixEnabled = settings.UsernamePrefixEnabled,
-                GroupNamePrefixEnabled = settings.GroupNamePrefixEnabled,
-                AutoAuthorize = settings.AutoAuthorize
+                GroupNamePrefixEnabled = settings.GroupNamePrefixEnabled
             };
 
             AzureConfig.UpdateConfig(config);
