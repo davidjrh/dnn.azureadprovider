@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.Web;
 using DotNetNuke.Authentication.Azure.Components;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Authentication.OAuth;
@@ -41,6 +42,7 @@ namespace DotNetNuke.Authentication.Azure
     public partial class Login : OAuthLoginBase
     {
         private ILog _logger = LogManager.GetLogger(typeof(Login));
+        private AzureConfig config;
         protected override string AuthSystemApplicationName => AzureConfig.ServiceName;
 
         public override bool SupportsRegistration => true;
@@ -68,7 +70,7 @@ namespace DotNetNuke.Authentication.Azure
             loginItem.Visible = (Mode == AuthMode.Login);
             registerItem.Visible = (Mode == AuthMode.Register);
 
-            var config = new AzureConfig(AzureConfig.ServiceName, PortalId);
+            config = new AzureConfig(AzureConfig.ServiceName, PortalId);
             var hasVerificationCode = ((AzureClient)OAuthClient).IsCurrentService() && OAuthClient.HaveVerificationCode();
             if ((config.AutoRedirect && Request["legacy"] != "1") || hasVerificationCode)
                 loginButton_Click(null, null);
@@ -81,14 +83,28 @@ namespace DotNetNuke.Authentication.Azure
                 var errorMessage = Localization.GetString("LoginError", LocalResourceFile);
                 errorMessage = string.Format(errorMessage, Request["error"], Request["error_description"]);
                 _logger.Error(errorMessage);
-                UI.Skins.Skin.AddModuleMessage(this, errorMessage, ModuleMessage.ModuleMessageType.RedError);
+                if (string.IsNullOrEmpty(config.OnErrorUri))
+                {
+                    UI.Skins.Skin.AddModuleMessage(this, errorMessage, ModuleMessage.ModuleMessageType.RedError);
+                }
+                else
+                {
+                    Response.Redirect($"{config.OnErrorUri}?error={Request["error"]}&error_description={HttpContext.Current.Server.UrlEncode(Request["error_description"])}");
+                }
             }           
             else
             {
                 AuthorisationResult result = OAuthClient.Authorize();
                 if (result == AuthorisationResult.Denied)
                 {
-                    UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
+                    if (string.IsNullOrEmpty(config.OnErrorUri))
+                    {
+                        UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
+                    }
+                    else
+                    {
+                        Response.Redirect($"{config.OnErrorUri}?error=Denied&error_description={HttpContext.Current.Server.UrlEncode(Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile))}");
+                    }
                 }
             }
         }

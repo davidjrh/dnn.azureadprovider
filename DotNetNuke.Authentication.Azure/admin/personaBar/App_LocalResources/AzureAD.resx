@@ -363,6 +363,12 @@
   <data name="lblRedirectUri.Text" xml:space="preserve">
     <value>Redirect Uri</value>
   </data>
+  <data name="lblOnErrorUri.Help" xml:space="preserve">
+    <value>If specified, when an Azure AD auth error happens the user is redirected to the url instead of showing the default DNN login page.</value>
+  </data>
+  <data name="lblOnErrorUri.Text" xml:space="preserve">
+    <value>On Auth Error Uri</value>
+  </data>
   <data name="lblRolesMapping.Text" xml:space="preserve">
     <value>ROLES MAPPING</value>
   </data>

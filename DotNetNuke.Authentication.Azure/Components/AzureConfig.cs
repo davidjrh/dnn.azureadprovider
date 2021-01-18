@@ -48,6 +48,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             APIKey = GetScopedSetting(Service + "_ApiKey", portalId, "");
             APISecret = GetScopedSetting(Service + "_ApiSecret", portalId, "");
             RedirectUri = GetScopedSetting(Service + "_RedirectUri", portalId, "");
+            OnErrorUri = GetScopedSetting(Service + "_OnErrorUri", portalId, "");
             TenantId = GetScopedSetting(Service + "_TenantId", portalId, "");
             AutoRedirect = bool.Parse(GetScopedSetting(Service + "_AutoRedirect", portalId, "false"));
             Enabled = bool.Parse(GetScopedSetting(Service + "_Enabled", portalId, "false"));
@@ -112,6 +113,8 @@ namespace DotNetNuke.Authentication.Azure.Components
         public bool GroupNamePrefixEnabled { get; set; }
         [SortOrder(19)]
         public bool AutoAuthorize { get; set; }
+        [SortOrder(20)]
+        public string OnErrorUri { get; set; }
 
 
         private static string GetCacheKey(string service, int portalId)
@@ -138,6 +141,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_ApiKey", config.APIKey);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_ApiSecret", config.APISecret);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_RedirectUri", config.RedirectUri);
+            UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_OnErrorUri", config.OnErrorUri);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_TenantId", config.TenantId);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_AutoRedirect", config.AutoRedirect.ToString());
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_Enabled", config.Enabled.ToString());

@@ -45,7 +45,8 @@ class GeneralSettings extends Component {
             autoAuthorize: (key === "AutoAuthorize") ? !props.autoAuthorize : props.autoAuthorize,
             apiKey: (key === "AppId") ? event.target.value : props.apiKey,
             apiSecret: (key === "AppSecret") ? event.target.value : props.apiSecret,
-            redirectUri: (key === "RedirectUri") ? event.target.value: props.redirectUri,            
+            redirectUri: (key === "RedirectUri") ? event.target.value: props.redirectUri,
+            onErrorUri: (key === "OnErrorUri") ? event.target.value: props.onErrorUri,
             tenantId: (key === "TenantId") ? event.target.value : props.tenantId
         }));
     }
@@ -65,7 +66,8 @@ class GeneralSettings extends Component {
             autoAuthorize: props.autoAuthorize,
             apiKey: props.apiKey,
             apiSecret: props.apiSecret,
-            redirectUri: props.redirectUri,            
+            redirectUri: props.redirectUri,
+            onErrorUri: props.onErrorUri,
             tenantId: props.tenantId
         }, () => {
             utils.utilities.notify(resx.get("SettingsUpdateSuccess"));
@@ -169,6 +171,19 @@ class GeneralSettings extends Component {
                             />
                         </div>
                     </GridCell>
+                    <GridCell columnSize={50}>
+                        <div className="editor-row">                        
+                            <SingleLineInputWithError
+                                withLabel={true}
+                                label={resx.get("lblOnErrorUri")}
+                                enabled={true}
+                                tooltipMessage={resx.get("lblOnErrorUri.Help")}
+                                errorMessage=""
+                                value={this.props.onErrorUri}
+                                onChange={this.onSettingChange.bind(this, "OnErrorUri")}
+                            />
+                        </div>
+                    </GridCell>                    
                 </GridCell>
                 <GridCell columnSize={100}>
                     <div className="buttons-box">
@@ -202,6 +217,7 @@ GeneralSettings.propTypes = {
     apiKey: PropTypes.string,
     apiSecret: PropTypes.string,
     redirectUri: PropTypes.string,    
+    onErrorUri: PropTypes.string,    
     tenantId: PropTypes.string
 };
 
@@ -215,6 +231,7 @@ function mapStateToProps(state) {
         apiKey: state.settings.apiKey,
         apiSecret: state.settings.apiSecret,
         redirectUri: state.settings.redirectUri,
+        onErrorUri: state.settings.onErrorUri,
         tenantId: state.settings.tenantId
     };
 }

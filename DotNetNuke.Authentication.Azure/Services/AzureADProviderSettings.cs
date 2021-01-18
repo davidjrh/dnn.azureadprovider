@@ -37,6 +37,8 @@ namespace DotNetNuke.Authentication.Azure.Services
         public string ApiSecret { get; set; }
         [DataMember(Name = "redirectUri")]
         public string RedirectUri { get; set; }
+        [DataMember(Name = "onErrorUri")]
+        public string OnErrorUri { get; set; }
         [DataMember(Name = "autoRedirect")]
         public bool AutoRedirect { get; set; }
         [DataMember(Name = "enabled")]
@@ -77,6 +79,7 @@ namespace DotNetNuke.Authentication.Azure.Services
                 ApiKey = config.APIKey,
                 ApiSecret = config.APISecret,
                 RedirectUri = config.RedirectUri,
+                OnErrorUri = config.OnErrorUri,
                 AutoRedirect = config.AutoRedirect,
                 AutoAuthorize = config.AutoAuthorize,
                 AadAppClientId = config.AADApplicationId,
@@ -102,6 +105,7 @@ namespace DotNetNuke.Authentication.Azure.Services
                 APIKey = settings.ApiKey,
                 APISecret = settings.ApiSecret,
                 RedirectUri = settings.RedirectUri,
+                OnErrorUri = settings.OnErrorUri,
                 AutoRedirect = settings.AutoRedirect,
                 AutoAuthorize = settings.AutoAuthorize,
                 Enabled = settings.Enabled,
