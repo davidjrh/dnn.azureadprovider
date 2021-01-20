@@ -444,7 +444,7 @@
   <data name="lblAutoAuthorize.Help" xml:space="preserve">
     <value>If enabled, automatically authorize users after login independently of the portal user registration settings</value>
   </data>
-  <data name="lblAutoAuthorize.Text1" xml:space="preserve">
+  <data name="lblAutoAuthorize.Text" xml:space="preserve">
     <value>Auto-Authorize Users After Login</value>
   </data>
 </root>
