@@ -243,6 +243,8 @@ namespace DotNetNuke.Authentication.Azure.Components
         }
 
 
+        public string RedirectUrl { get; set; }
+
 
         public AzureClient(int portalId, AuthMode mode) 
             : base(portalId, mode, AzureConfig.ServiceName)
@@ -616,15 +618,13 @@ namespace DotNetNuke.Authentication.Azure.Components
                     new QueryParameter("redirect_uri", HttpContext.Current.Server.UrlEncode(CallbackUri.ToString())),
                     new QueryParameter("state", HttpContext.Current.Server.UrlEncode(new State() {
                         PortalId = Settings.PortalID,
-                        Culture = PortalSettings.Current.CultureCode
+                        Culture = PortalSettings.Current.CultureCode,
+                        RedirectUrl = HttpContext.Current.Request["returnurl"]
                     }.ToString())),
                     new QueryParameter("response_type", "code"),
                     new QueryParameter("response_mode", "query"),
                 };
-                //if (!string.IsNullOrEmpty(APIResource))
-                //{
-                //    parameters.Add(new QueryParameter("resource", APIResource));
-                //}
+
 
                 HttpContext.Current.Response.Redirect(AuthorizationEndpoint + "?" + parameters.ToNormalizedString(), false);
                 HttpContext.Current.Response.Flush();
@@ -634,6 +634,16 @@ namespace DotNetNuke.Authentication.Azure.Components
             ExchangeCodeForToken();
 
             SaveTokenCookie(string.IsNullOrEmpty(AuthToken));
+            
+            if (!string.IsNullOrEmpty(AuthToken) && !string.IsNullOrEmpty(HttpContext.Current.Request["state"]))
+            {
+                var state = new State(HttpContext.Current.Request["state"]);
+                if (!string.IsNullOrEmpty(state.RedirectUrl))
+                {
+                    this.RedirectUrl = state.RedirectUrl;
+                }
+            }
+
             return string.IsNullOrEmpty(AuthToken) ? AuthorisationResult.Denied : AuthorisationResult.Authorized;
         }
 

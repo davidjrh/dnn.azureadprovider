@@ -106,6 +106,12 @@ namespace DotNetNuke.Authentication.Azure
                         Response.Redirect($"{config.OnErrorUri}?error=Denied&error_description={HttpContext.Current.Server.UrlEncode(Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile))}");
                     }
                 }
+                else
+                {
+                    if (!string.IsNullOrEmpty(((AzureClient)OAuthClient).RedirectUrl)) {
+                        RedirectURL = ((AzureClient)OAuthClient).RedirectUrl;
+                    }                    
+                }
             }
         }
     }
