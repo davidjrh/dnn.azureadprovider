@@ -14,9 +14,9 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("359f70d0-c64a-4a4b-9e36-1be85aa8058b")]
 
-[assembly: AssemblyCompany("Intelequia Software Solutions")]
+[assembly: AssemblyCompany("Intelequia")]
 [assembly: AssemblyProduct("DNN Azure Active Directory Provider")]
-[assembly: AssemblyCopyright("Copyright © 2019")]
+[assembly: AssemblyCopyright("Copyright © 2021")]
 [assembly: AssemblyTrademark("")]
 
 // Version information for an assembly consists of the following four values:
@@ -28,6 +28,6 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("4.0.3.0")]
-[assembly: AssemblyFileVersion("4.0.3.0")]
+[assembly: AssemblyVersion("4.0.4.0")]
+[assembly: AssemblyFileVersion("4.0.4.0")]
 
