@@ -77,11 +77,12 @@ From the command line, the following command must be executed:
 From the comman line, enter the `<RepoRoot>\DotNetNuke.Authentication.Azure\AzureAD.Web` and run the following commands:
 ```
   npm install -g webpack
+  npm install -g webpack-cli
   npm install
 ```
 
 ### Build the module
-Now you can build the solution by opening the RedisCachingProvider.sln file on Visual Studio 2017. Building the solution in "Release", will generate the React bundle and package it all together with the installation zip file, created under the "\releases" folder.
+Now you can build the solution by opening the DotNetNuke.Authentication.Azure.sln file on Visual Studio 2017. Building the solution in "Release", will generate the React bundle and package it all together with the installation zip file, created under the "\releases" folder.
 
 On the Visual Studio output window you should see something like this:
 ```
