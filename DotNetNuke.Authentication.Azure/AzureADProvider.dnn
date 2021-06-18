@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="AzureADProvider" type="Auth_System" version="04.00.04">
+    <package name="AzureADProvider" type="Auth_System" version="04.00.05">
       <friendlyName>DNN Azure Active Directory Provider</friendlyName>
       <description>
         The DNN Azure Active Directory Provider is an Authentication provider for DNN Platform that uses Azure Active Directory OAuth2 authentication to authenticate users.

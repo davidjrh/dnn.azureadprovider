@@ -3,6 +3,12 @@
 <p style="margin: 0"><strong>About the DNN Azure Active Directory Authorization Provider</strong></p>
 
 
+<p style="margin: 0"><b>Version 04.00.05</b></p>
+<p style="margin: 0">
+# Bug fixes
+* Fixed error on AuthorizationEndpoint redirect when autoredirect is not enabled
+</p>
+
 <p style="margin: 0"><b>Version 04.00.04</b></p>
 <p style="margin: 0">
 # Enhancements
