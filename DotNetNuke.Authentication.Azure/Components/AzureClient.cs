@@ -627,7 +627,6 @@ namespace DotNetNuke.Authentication.Azure.Components
 
 
                 HttpContext.Current.Response.Redirect(AuthorizationEndpoint + "?" + parameters.ToNormalizedString(), false);
-                HttpContext.Current.Response.Flush();
                 return AuthorisationResult.RequestingCode;
             }
 
