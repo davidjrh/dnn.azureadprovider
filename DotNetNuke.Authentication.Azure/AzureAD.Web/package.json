@@ -18,7 +18,8 @@
     "Office 365"
   ],
   "scripts": {
-    "build": "set NODE_ENV=production&&webpack -p",
+    "build": "set NODE_ENV=production&&webpack -p --config webpack.config.js",
+    "build-test": "SET NODE_ENV=production&& webpack --mode=production",
     "webpack": "webpack-dev-server -d --port 8080 --hot --inline --content-base dist/ --history-api-fallback",
     "analyze": "set NODE_ENV=production&&webpack -p --json | webpack-bundle-size-analyzer"
   },
@@ -28,6 +29,7 @@
     "@babel/plugin-transform-object-assign": "^7.0.0",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
+    "@webpack-cli/serve": "^1.5.2",
     "babel-core": "^6.26.3",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.6",
@@ -68,13 +70,14 @@
     "user-home": "^2.0.0",
     "webpack": "^4.31.0",
     "webpack-bundle-size-analyzer": "^3.0.0",
-    "webpack-cli": "^3.3.2",
+    "webpack-cli": "^4.3.0",
     "webpack-core": "^0.6.9",
     "webpack-dev-server": "^3.1.14",
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "@dnnsoftware/dnn-react-common": "^2.1.2"
+    "@dnnsoftware/dnn-react-common": "^2.1.2",
+    "npm": "^7.24.1"
   },
   "peerDependencies": {
     "prop-types": "^15.6.2",

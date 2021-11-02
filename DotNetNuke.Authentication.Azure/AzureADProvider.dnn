@@ -63,6 +63,14 @@
               <path>bin</path>
               <name>Microsoft.IdentityModel.JsonWebTokens.dll</name>
             </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.Graph.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.Graph.Core.dll</name>
+            </assembly>
           </assemblies>
         </component>
         <component type="ResourceFile">

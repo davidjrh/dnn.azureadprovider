@@ -50,6 +50,7 @@ using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Authentication.OAuth;
 using DotNetNuke.Services.FileSystem;
+using Microsoft.Graph;
 using static DotNetNuke.Services.Authentication.AuthenticationLoginBase;
 
 #endregion
@@ -69,8 +70,9 @@ namespace DotNetNuke.Authentication.Azure.Components
         private const string GraphEndpointPattern = "https://graph.windows.net/{0}";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AzureClient));
-        private GraphClient _graphClient;
-        private GraphClient GraphClient
+
+        private MicrosoftGraphClient _graphClient;
+        private MicrosoftGraphClient GraphClient
         {
             get
             {
@@ -81,11 +83,12 @@ namespace DotNetNuke.Authentication.Azure.Components
                         throw new Exception("AAD application ID or key are not valid");
                     }
 
-                    _graphClient = new GraphClient(Settings.AADApplicationId, Settings.AADApplicationKey, Settings.TenantId);
+                    _graphClient = new MicrosoftGraphClient(Settings.AADApplicationId, Settings.AADApplicationKey, Settings.TenantId);
                 }
                 return _graphClient;
             }
         }
+
         private readonly AzureConfig Settings;
 
         private List<ProfileMapping> _customClaimsMappings;
@@ -709,22 +712,34 @@ namespace DotNetNuke.Authentication.Azure.Components
             {
                 var syncOnlyMappedRoles = (CustomRoleMappings != null && CustomRoleMappings.Count > 0);
 
-                var aadGroups = GraphClient.GetUserGroups(aadUserId);
-                if (aadGroups != null && aadGroups.Values != null)
+                var aadGroups = GraphClient.GetUserGroupsAsync(aadUserId).Result;
+
+
+                if (aadGroups != null && aadGroups.CurrentPage != null && aadGroups.CurrentPage.Count > 0 /*aadGroups.Values != null*/)
                 {
                     var groupPrefix = PrefixServiceToGroupName ? $"{Service}-" : "";
-                    var groups = aadGroups.Values;
+
+                    var groups = new List<Group>();
 
                     var filter = ConfigurationManager.AppSettings["AzureAD.GetUserGroups.Filter"];
                     if (!string.IsNullOrEmpty(filter))
                     {
                         var onlyGroups = filter.Split(';');
-                        var g = new List<Graph.Models.Group>();
+                        var g = new List<Group>();
                         foreach (var f in onlyGroups)
                         {
-                            var r = groups.Where(x => x.DisplayName.StartsWith(f));
+                            var r = aadGroups.Where(x => x.ODataType == "#microsoft.graph.group").ToList().Where(y => ((Group)y).DisplayName.StartsWith(f));
+                            //var r = groups.Where(x => x.DisplayName.StartsWith(f));
+                            /*if (r.Count() > 0)
+                                g.AddRange(r);*/
+
                             if (r.Count() > 0)
-                                g.AddRange(r);
+                            {
+                                foreach(var gr in r)
+                                {
+                                    g.Add((Group)gr);
+                                }
+                            }
                         }
                         groups = g;
                     }
@@ -799,6 +814,7 @@ namespace DotNetNuke.Authentication.Azure.Components
 
         private void UpdateUserProfilePicture(string aadUserId, UserInfo userInfo, bool saveUserInfo = false)
         {
+            /*
             if (!Settings.ProfileSyncEnabled)
             {
                 return;
@@ -829,6 +845,8 @@ namespace DotNetNuke.Authentication.Azure.Components
             {
                 Logger.Warn($"Error while synchronizing user profile picture from user {aadUserId}", e);
             }
+
+            */
         }
 
         private static string GetExtensionFromMediaContentType(string contentType)
@@ -882,13 +900,6 @@ namespace DotNetNuke.Authentication.Azure.Components
                 request.ContentType = "application/x-www-form-urlencoded";
                 request.ContentLength = byteArray.Length;
 
-                //if (!String.IsNullOrEmpty(OAuthHeaderCode))
-                //{
-                //    byte[] API64 = Encoding.UTF8.GetBytes(APIKey + ":" + APISecret);
-                //    string Api64Encoded = System.Convert.ToBase64String(API64);
-                //    //Authentication providers needing an "Authorization: Basic/bearer base64(clientID:clientSecret)" header. OAuthHeaderCode might be: Basic/Bearer/empty.
-                //    request.Headers.Add("Authorization: " + OAuthHeaderCode + " " + Api64Encoded);
-                //}
 
                 if (!String.IsNullOrEmpty(contentParameters))
                 {
