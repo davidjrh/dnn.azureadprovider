@@ -131,7 +131,7 @@ namespace DotNetNuke.Authentication.Azure.ScheduledTasks
                 var allaadGroups = new List<Microsoft.Graph.Group>();
                 if (aadGroups != null)
                 {
-                    var groupPrefix = settings.GroupNamePrefixEnabled ? "Azure-" : "";
+                    var groupPrefix = settings.GroupNamePrefixEnabled ? $"{AzureConfig.ServiceName}-" : "";
                     while (aadGroups != null && aadGroups.Count > 0)
                     {
                         var groups = aadGroups.CurrentPage.ToList();
@@ -188,13 +188,13 @@ namespace DotNetNuke.Authentication.Azure.ScheduledTasks
                     if (allaadGroups.Count == 0
                         || allaadGroups.FirstOrDefault(x => x.DisplayName == 
                             (settings.GroupNamePrefixEnabled 
-                                ? dnnRole.RoleName.Substring("Azure-".Length) 
+                                ? dnnRole.RoleName.Substring($"{AzureConfig.ServiceName}-".Length) 
                                 : dnnRole.RoleName)) == null)
                     {
                         try
                         {
                             RoleController.Instance.DeleteRole(dnnRole);
-                            // This is a workaround to a bug in DNN where RoleSettings is not deleted when a role is deleted
+                            // This is a workaround due to a bug in DNN where RoleSettings are not deleted when a role is deleted
                             DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, $"DELETE {DotNetNuke.Data.DataProvider.Instance().DatabaseOwner}{DotNetNuke.Data.DataProvider.Instance().ObjectQualifier}RoleSettings WHERE RoleID = @0", dnnRole.RoleID);
                             groupsDeleted++;
                         }
