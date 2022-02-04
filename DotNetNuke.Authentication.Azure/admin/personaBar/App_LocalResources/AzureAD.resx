@@ -447,4 +447,7 @@
   <data name="lblAutoAuthorize.Text" xml:space="preserve">
     <value>Auto-Authorize Users After Login</value>
   </data>
+  <data name="lblAadRoleName.Help" xml:space="preserve">
+    <value>The Azure AD Role name to map</value>
+  </data>
 </root>
