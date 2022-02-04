@@ -535,7 +535,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             }
 
             var usernamePrefixEnabled = bool.Parse(AzureConfig.GetSetting(AzureConfig.ServiceName, "UsernamePrefixEnabled", portalSettings.PortalId, "true"));
-            var usernameToFind = usernamePrefixEnabled ? $"azure-{userClaim.Value}" : userClaim.Value;
+            var usernameToFind = usernamePrefixEnabled ? $"{AzureConfig.ServiceName}-{userClaim.Value}" : userClaim.Value;
             var userInfo = UserController.GetUserByName(portalSettings.PortalId, usernameToFind);
             // If user doesn't exist on current portal, AuthenticateUser() will create it. 
             // Otherwise, AuthenticateUser will perform a Response.Redirect, so we have to sinchronize the roles before that, to avoid the ThreadAbortException caused by the Response.Redirect

@@ -228,7 +228,7 @@ namespace DotNetNuke.Authentication.Azure.Components
         private static UserInfo GetOrCreateCachedUserInfo(JwtSecurityToken jwt, PortalSettings portalSettings, System.Security.Claims.Claim userClaim)
         {
             var usernamePrefixEnabled = bool.Parse(AzureConfig.GetSetting(AzureConfig.ServiceName, "UsernamePrefixEnabled", portalSettings.PortalId, "true"));
-            var usernameToFind = usernamePrefixEnabled ? $"azure-{userClaim.Value}" : userClaim.Value;
+            var usernameToFind = usernamePrefixEnabled ? $"{AzureConfig.ServiceName}-{userClaim.Value}" : userClaim.Value;
             var userInfo = UserController.GetUserByName(portalSettings.PortalId, usernameToFind);
             var tokenKey = ComputeSha256Hash(jwt.RawData);
             var cache = DotNetNuke.Services.Cache.CachingProvider.Instance();
