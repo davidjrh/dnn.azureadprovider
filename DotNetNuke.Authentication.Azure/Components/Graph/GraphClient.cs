@@ -1,168 +1,195 @@
-﻿using DotNetNuke.Authentication.Azure.Components.Graph.Models;
-using DotNetNuke.Instrumentation;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using Newtonsoft.Json;
+﻿using DotNetNuke.Instrumentation;
+using Microsoft.Graph;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
+using System.Configuration;
+using System.IO;
 using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DotNetNuke.Authentication.Azure.Components.Graph
 {
     public class GraphClient
     {
-        private const string aadInstance = "https://login.microsoftonline.com/";
-        private const string aadGraphResourceId = "https://graph.windows.net/";
-        private const string aadGraphEndpoint = "https://graph.windows.net/";
-        private const string aadGraphVersion = "api-version=1.6";
-        private const string msGraphResourceId = "https://graph.microsoft.com/";
-        private const string msGraphEndpoint = "https://graph.microsoft.com/";
-        private const string msGraphVersion = "1.0";
-
-        private enum GraphApiVersion
-        {
-            beta,
-            latest
-        }
-
+        private static string[] Scopes = new[] { "https://graph.microsoft.com/.default" };
+        private const string UserMembersToRetrieve = "id,displayName,surname,givenName,mail,mailNickname,otherMails,signInNames,userIdentities,identities,issuer,userPrincipalName,country,city,userType,accountEnabled,telephoneNumber,additionalData";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(GraphClient));
 
-        #region Properties
-        private string ClientId { get; set; }
-        private string ClientSecret { get; set; }
-        private string Tenant { get; set; }
-        private AuthenticationContext AuthContext { get; set; }
-        private ClientCredential Credential { get; set; }
-        #endregion
+        private readonly IConfidentialClientApplication _app;
 
-        #region Constructors
+        // Required for Advanced Queries
+        private readonly QueryOption OdataCount = new QueryOption("$count", "true");
+        // Required for Advanced Queries
+        private readonly HeaderOption EventualConsistency = new HeaderOption("ConsistencyLevel", "eventual");
+
         public GraphClient(string clientId, string clientSecret, string tenant)
         {
-            // The client_id, client_secret, and tenant are pulled in from the App.config file
-            ClientId = clientId;
-            ClientSecret = clientSecret;
-            Tenant = tenant;
-
-            // The AuthenticationContext is ADAL's primary class, in which you indicate the direcotry to use.
-            AuthContext = new AuthenticationContext(aadInstance + tenant);
-
-            // The ClientCredential is where you pass in your client_id and client_secret, which are 
-            // provided to Azure AD in order to receive an access_token using the app's identity.
-            Credential = new ClientCredential(clientId, clientSecret);
+            _app = ConfidentialClientApplicationBuilder
+                    .Create(clientId)
+                    .WithClientSecret(clientSecret)
+                    .WithAuthority(new Uri("https://login.microsoftonline.com/" + tenant))
+                    .Build();
         }
-        #endregion
-        
+
+        // Gets a Graph client configured with
+        // the specified scopes
+        private GraphServiceClient GetGraphClient()
+        {
+            return GraphServiceClientFactory.GetAuthenticatedGraphClient(async () =>
+                {
+                    var token = await GetTokenAsync(_app);
+                    return token;
+                }
+            );
+        }
+
+        private async Task<string> GetTokenAsync(IConfidentialClientApplication app)
+        {
+            string[] ResourceIds = Scopes;
+            try
+            {                
+                var result = app.AcquireTokenForClient(ResourceIds).ExecuteSync();
+                await Task.CompletedTask;
+                return result.AccessToken;
+            }
+            catch (MsalClientException ex)
+            {
+                Logger.Error(ex);
+                throw;                
+            }
+        }
+
+        private void AddAdvancedOptions(IBaseRequest request)
+        {
+            request.QueryOptions.Add(OdataCount);
+            request.Headers.Add(EventualConsistency);
+        }
+
+        private string GetCustomUserExtensions()
+        {
+            return ConfigurationManager.AppSettings["AzureAD.CustomUserExtensions"];
+            //return string.Join(',', _options.CustomUserAttributes.Split(',').Select(x => GetExtensionAttributeName(x)));
+        }
+
         public User GetUser(string objectId)
         {
-            var result = SendAADGraphRequest("/users/" + objectId);
-            return JsonConvert.DeserializeObject<User>(result);
+            var graphClient = GetGraphClient();
+            return graphClient.Users[objectId]
+                .Request()
+                .Select($"{UserMembersToRetrieve}{GetCustomUserExtensions()}")
+                .GetSync();
         }
 
-        public GraphList<User> GetAllUsers(string query)
+        public IGraphServiceUsersCollectionPage GetAllUsers(string search = "")
         {
-            var result = SendAADGraphRequest("/users", query);
-            return JsonConvert.DeserializeObject<GraphList<User>>(result);
+            string filter = ConfigurationManager.AppSettings["AzureAD.GetAllUsers.Filter"];
+            if (!string.IsNullOrEmpty(search))
+            {
+                if (!string.IsNullOrEmpty(filter))
+                {
+                    filter += " and ";
+                }
+                filter += $"startswith(displayName, '{search}')";
+            }
+            var graphClient = GetGraphClient();
+            var request = graphClient.Users.Request()
+                .Select($"{UserMembersToRetrieve}{GetCustomUserExtensions()}")
+                .Filter(filter)
+                .OrderBy("displayName");
+            AddAdvancedOptions(request);
+            return request.GetSync();
         }
-
-        public GraphList<User> GetNextUsers(string nextLink)
-        {
-            var result = SendAADGraphRequest("/" + nextLink);
-            return JsonConvert.DeserializeObject<GraphList<User>>(result);
-        }   
 
         public void DeleteUser(string objectId)
         {
-            _ = SendAADGraphRequest("/users/" + objectId, httpMethod: HttpMethod.Delete);
+            var graphClient = GetGraphClient();
+            graphClient.Users[objectId].Request().DeleteSync();
         }
 
-        public User AddUser(NewUser newUser)
+        public User AddUser(User newUser)
         {
-            var body = JsonConvert.SerializeObject(newUser);
-            var result = SendAADGraphRequest("/users", body: body, httpMethod: HttpMethod.Post);
-            return JsonConvert.DeserializeObject<User>(result);
-        }
-
-        public void UpdateUser(User user)
-        {
-            var body = JsonConvert.SerializeObject(user);
-            _ = SendAADGraphRequest("/users/" + user.ObjectId, body: body, httpMethod: new HttpMethod("PATCH"));
-        }
-
-        public GraphList<Group> GetAllGroups(string query)
-        {
-            var result = SendAADGraphRequest("/groups", query);
-            return JsonConvert.DeserializeObject<GraphList<Group>>(result);
-        }
-
-        public GraphList<Group> GetNextGroups(string nextLink)
-        {
-            var result = SendAADGraphRequest("/" + nextLink);
-            return JsonConvert.DeserializeObject<GraphList<Group>>(result);
-        }
-
-        public GraphList<Group> GetUserGroups(string userId, string query = "")
-        {
-            var g = new GraphList<Group>()
+            if (newUser.AdditionalData == null)
             {
-                Values = new List<Group>()
-            };
-            
-            var result = SendAADGraphRequest($"/users/{userId}/memberOf", query);            
-            var groups = JsonConvert.DeserializeObject<GraphList<Group>>(result);
-            if (groups?.Values != null)
-            {
-                g.Values.AddRange(groups.Values);
-            }            
-            while (!string.IsNullOrEmpty(groups?.ODataNextLink)) {
-                groups = GetNextGroups(groups.ODataNextLink);
-                if (groups?.Values != null && groups.Values.Count > 0)
-                {
-                    g.Values.AddRange(groups.Values);
-                }
+                newUser.AdditionalData = new Dictionary<string, object>();
             }
-            g.ODataNextLink = groups?.ODataNextLink;
-            return g;
+
+            var graphClient = GetGraphClient();
+            return graphClient.Users.Request()
+                .AddSync(newUser);
         }
 
-        public GraphList<User> GetGroupMembers(string groupId)
+        public User UpdateUser(User user)
         {
-            var result = SendAADGraphRequest($"/groups/{groupId}/members");
-            return JsonConvert.DeserializeObject<GraphList<User>>(result);
+            var graphClient = GetGraphClient();
+            return graphClient.Users[user.Id].Request()
+                .UpdateSync(user);
         }
 
-        public string GetAADObjectReference(string objectId)
+        public IGraphServiceGroupsCollectionPage GetAllGroups(string search = "")
         {
-            return aadGraphEndpoint + Tenant + "/directoryObjects/" + objectId;
+            string filter = ConfigurationManager.AppSettings["AzureAD.GetAllGroups.Filter"];
+            if (!string.IsNullOrEmpty(search))
+            {
+                if (!string.IsNullOrEmpty(filter))
+                {
+                    filter += " and ";
+                }
+                filter += $"startswith(displayName, '{search}')";
+            }
+            var graphClient = GetGraphClient();
+            var request = graphClient.Groups.Request()
+                .Filter(filter)
+                .OrderBy("displayName");
+            AddAdvancedOptions(request);
+            return request.GetSync();
         }
-        public string GetObjectReference(string objectId)
+
+        public IUserMemberOfCollectionWithReferencesPage GetUserGroups(string userId)
         {
-            return msGraphEndpoint + msGraphVersion + "/directoryObjects/" + objectId;
+            var graphClient = GetGraphClient();
+            return graphClient
+                .Users[userId]
+                .MemberOf
+                .Request()
+                .GetSync();
+        }
+
+        public IGroupTransitiveMembersCollectionWithReferencesPage GetGroupMembers(string groupId)
+        {
+            var graphClient = GetGraphClient();
+
+            return graphClient.Groups[groupId].TransitiveMembers.Request()
+                .Select($"{UserMembersToRetrieve},{GetCustomUserExtensions()}")
+                .OrderBy("displayName")                
+                .GetSync();
         }
 
         public void AddGroupMember(string groupId, string userId)
         {
-            var body = "{'url':'" + GetAADObjectReference(userId) + "'}";
-            _ = SendAADGraphRequest($"/groups/{groupId}/$links/members", body: body, httpMethod: HttpMethod.Post);
+            var user = GetUser(userId);
+            AddGroupMember(groupId, user);
+        }
+        public void AddGroupMember(string groupId, User user)
+        {
+            var graphClient = GetGraphClient();
+            graphClient.Groups[groupId].Members.References.Request().AddSync(user);
         }
 
         public void RemoveGroupMember(string groupId, string userId)
         {
-            var result = SendAADGraphRequest($"/groups/{groupId}/$links/members/{userId}", httpMethod: HttpMethod.Delete);
+            var graphClient = GetGraphClient();
+            graphClient.Groups[groupId].Members[userId].Reference.Request().DeleteSync();
         }
 
-        public ProfilePictureMetadata GetUserProfilePictureMetadata(string userId)
+        public ProfilePhoto GetUserProfilePictureMetadata(string userId)
         {
             try
             {
-                var result = SendGraphRequest("/users/" + userId + "/photo", apiVersion: GraphApiVersion.beta);
-                return JsonConvert.DeserializeObject<ProfilePictureMetadata>(result);
+                var graphClient = GetGraphClient();
+                return graphClient.Users[userId].Photo.Request().GetSync(); 
             }
-            catch (WebException ex)
+            catch (Exception ex)
             {
                 if (Logger.IsDebugEnabled)
                 {
@@ -177,8 +204,13 @@ namespace DotNetNuke.Authentication.Azure.Components.Graph
         {
             try
             {
-                var metadata = GetUserProfilePictureMetadata(userId);
-                return SendGraphBinaryRequest("/users/" + userId + "/photo/$value", null, GraphApiVersion.beta);
+                var graphClient = GetGraphClient();
+                var stream = graphClient.Users[userId].Photo.Content.Request().GetSync(); 
+                using (var memoryStream = new MemoryStream())
+                {
+                    stream.CopyTo(memoryStream);
+                    return memoryStream.ToArray();
+                }
             }
             catch (WebException ex)
             {
@@ -186,136 +218,9 @@ namespace DotNetNuke.Authentication.Azure.Components.Graph
                 {
                     Logger.Debug(ex.Message, ex);
                 }
-                // When the user doesn't have profile picture, the request throws a WebException
+                // When the user doesn't have profile picture or the API permission
+                // User.Read.All for Type Application has not been consent
                 return null;
-            }
-        }
-
-        public GraphList<Models.Application> GetApplications(string query)
-        {
-            var result = SendAADGraphRequest("/applications", query);
-            return JsonConvert.DeserializeObject<GraphList<Models.Application>>(result);
-        }
-
-        public Extension RegisterExtension(string appObjectId, Extension extension)
-        {
-            var body = JsonConvert.SerializeObject(extension);
-            var result = SendAADGraphRequest("/applications/" + appObjectId + "/extensionProperties", body: body, httpMethod: HttpMethod.Post);
-            return JsonConvert.DeserializeObject<Extension>(result);
-        }
-
-        public void UnregisterExtension(string appObjectId, string extensionObjectId)
-        {
-            _ = SendAADGraphRequest("/applications/" + appObjectId + "/extensionProperties/" + extensionObjectId, httpMethod: HttpMethod.Delete);
-        }
-
-        public GraphList<Extension> GetExtensions(string appObjectId)
-        {
-            var result = SendAADGraphRequest("/applications/" + appObjectId + "/extensionProperties");
-            return JsonConvert.DeserializeObject<GraphList<Extension>>(result);
-        }
-
-        public Models.Application GetB2CExtensionApplication()
-        {
-            return GetApplications("$filter=startswith(displayName, 'b2c-extensions-app')").Values?.FirstOrDefault();
-        }
-
-        private string SendAADGraphRequest(string api, string query = null, string body = null, HttpMethod httpMethod = null)
-        {
-            // First, use ADAL to acquire a token using the app's identity (the credential)
-            // The first parameter is the resource we want an access_token for; in this case, the Graph API.
-            var result = AuthContext.AcquireTokenAsync(aadGraphResourceId, Credential).Result;
-
-            // For B2C user managment, be sure to use the 1.6 Graph API version.
-            using (var http = new HttpClient())
-            {
-                var url = aadGraphEndpoint + Tenant + api + (api.Contains("?") ? "&" : "?") + aadGraphVersion;
-                if (!string.IsNullOrEmpty(query))
-                {
-                    url += "&" + query;
-                }
-
-                // Append the access token for the Graph API to the Authorization header of the request, using the Bearer scheme.
-                var request = new HttpRequestMessage(httpMethod ?? HttpMethod.Get, url);
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", result.AccessToken);
-                if (!string.IsNullOrEmpty(body))
-                {
-                    request.Content = new StringContent(body, Encoding.UTF8, "application/json");
-                }
-                var response = http.SendAsync(request).Result;
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = response.Content.ReadAsStringAsync().Result;
-                    var formatted = JsonConvert.DeserializeObject(error);
-                    throw new WebException("Error Calling the Graph API: \n" + JsonConvert.SerializeObject(formatted, Formatting.Indented));
-                }
-                return response.Content.ReadAsStringAsync().Result;
-            }
-        }
-
-        private string SendGraphRequest(string api, string query = null, string body = null, GraphApiVersion apiVersion = GraphApiVersion.latest, HttpMethod httpMethod = null)
-        {
-            // First, use ADAL to acquire a token using the app's identity (the credential)
-            // The first parameter is the resource we want an access_token for; in this case, the Graph API.
-            var result = AuthContext.AcquireTokenAsync(msGraphResourceId, Credential).Result;
-
-            // For B2C user managment, be sure to use the 1.6 Graph API version.
-            using (var http = new HttpClient())
-            {
-                var url = msGraphEndpoint + (apiVersion == GraphApiVersion.latest ? msGraphVersion : "beta") + api;
-                if (!string.IsNullOrEmpty(query))
-                {
-                    url += "&" + query;
-                }
-
-                // Append the access token for the Graph API to the Authorization header of the request, using the Bearer scheme.
-                var request = new HttpRequestMessage(httpMethod ?? HttpMethod.Get, url);
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", result.AccessToken);
-                if (!string.IsNullOrEmpty(body))
-                {
-                    request.Content = new StringContent(body, Encoding.UTF8, "application/json");
-                }
-                var response = http.SendAsync(request).Result;
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = response.Content.ReadAsStringAsync().Result;
-                    var formatted = JsonConvert.DeserializeObject(error);
-                    throw new WebException("Error Calling the Graph API: \n" + JsonConvert.SerializeObject(formatted, Formatting.Indented));
-                }
-                return response.Content.ReadAsStringAsync().Result;
-            }
-        }
-
-        private byte[] SendGraphBinaryRequest(string api, string query, GraphApiVersion apiVersion = GraphApiVersion.latest, HttpMethod httpMethod = null)
-        {
-            // First, use ADAL to acquire a token using the app's identity (the credential)
-            // The first parameter is the resource we want an access_token for; in this case, the Graph API.
-            var result = AuthContext.AcquireTokenAsync(msGraphResourceId, Credential).Result;
-
-            // For B2C user managment, be sure to use the 1.6 Graph API version.
-            using (var http = new HttpClient())
-            {
-                var url = msGraphEndpoint + (apiVersion == GraphApiVersion.latest ? msGraphVersion : "beta") + api;
-                if (!string.IsNullOrEmpty(query))
-                {
-                    url += "&" + query;
-                }
-
-                // Append the access token for the Graph API to the Authorization header of the request, using the Bearer scheme.
-                var request = new HttpRequestMessage(httpMethod ?? HttpMethod.Get, url);
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", result.AccessToken);
-                var response = http.SendAsync(request).Result;
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = response.Content.ReadAsStringAsync().Result;
-                    var formatted = JsonConvert.DeserializeObject(error);
-                    throw new WebException("Error Calling the Graph API: \n" + JsonConvert.SerializeObject(formatted, Formatting.Indented));
-                }
-
-                return response.Content.ReadAsByteArrayAsync().Result;
             }
         }
     }

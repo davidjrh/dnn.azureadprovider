@@ -126,21 +126,15 @@ namespace DotNetNuke.Authentication.Azure.ScheduledTasks
                 }
 
                 var graphClient = new GraphClient(settings.AADApplicationId, settings.AADApplicationKey, settings.TenantId);
-                var query = "$orderby=displayName";
-                var filter = ConfigurationManager.AppSettings["AzureAD.GetAllGroups.Filter"];
-                if (!string.IsNullOrEmpty(filter))
-                {
-                    query = $"$filter={filter}";
-                }
                 // Add roles from AAD 
-                var aadGroups = graphClient.GetAllGroups(query);
-                var allaadGroups = new List<Components.Graph.Models.Group>();
-                if (aadGroups != null && aadGroups.Values != null)
+                var aadGroups = graphClient.GetAllGroups();
+                var allaadGroups = new List<Microsoft.Graph.Group>();
+                if (aadGroups != null)
                 {
                     var groupPrefix = settings.GroupNamePrefixEnabled ? "Azure-" : "";
-                    while (aadGroups.Values.Count > 0)
+                    while (aadGroups != null && aadGroups.Count > 0)
                     {
-                        var groups = aadGroups.Values;
+                        var groups = aadGroups.CurrentPage.ToList();
                         allaadGroups.AddRange(groups);
                         if (customRoleMappings != null && customRoleMappings.Count > 0)
                         {
@@ -174,10 +168,7 @@ namespace DotNetNuke.Authentication.Azure.ScheduledTasks
                                 }
                             }
                         }
-
-                        if (string.IsNullOrEmpty(aadGroups.ODataNextLink))
-                            break;
-                        aadGroups = graphClient.GetNextGroups(aadGroups.ODataNextLink);
+                        aadGroups = aadGroups.NextPageRequest?.GetSync();
                     }                    
                 }
                 // Let's remove DNN roles imported from B2C that no longer exists in AAD
