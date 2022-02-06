@@ -713,7 +713,7 @@ namespace DotNetNuke.Authentication.Azure.Components
                 if (aadGroups != null)
                 {
                     var groupPrefix = PrefixServiceToGroupName ? $"{Service}-" : "";
-                    while (aadGroups.Count > 0)
+                    while (aadGroups != null && aadGroups.Count > 0)
                     {
                         var groups = aadGroups.CurrentPage.OfType<Microsoft.Graph.Group>().ToList();
 
