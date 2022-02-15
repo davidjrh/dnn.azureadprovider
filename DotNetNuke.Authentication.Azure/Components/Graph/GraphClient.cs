@@ -77,7 +77,7 @@ namespace DotNetNuke.Authentication.Azure.Components.Graph
             var graphClient = GetGraphClient();
             return graphClient.Users[objectId]
                 .Request()
-                .Select($"{UserMembersToRetrieve}{GetCustomUserExtensions()}")
+                .Select($"{UserMembersToRetrieve},{GetCustomUserExtensions()}")
                 .GetSync();
         }
 
@@ -94,7 +94,7 @@ namespace DotNetNuke.Authentication.Azure.Components.Graph
             }
             var graphClient = GetGraphClient();
             var request = graphClient.Users.Request()
-                .Select($"{UserMembersToRetrieve}{GetCustomUserExtensions()}")
+                .Select($"{UserMembersToRetrieve},{GetCustomUserExtensions()}")
                 .Filter(filter)
                 .OrderBy("displayName");
             AddAdvancedOptions(request);
@@ -160,7 +160,7 @@ namespace DotNetNuke.Authentication.Azure.Components.Graph
             var graphClient = GetGraphClient();
 
             return graphClient.Groups[groupId].TransitiveMembers.Request()
-                .Select($"{UserMembersToRetrieve},{GetCustomUserExtensions()}")
+                .Select($"{UserMembersToRetrieve},,{GetCustomUserExtensions()}")
                 .OrderBy("displayName")                
                 .GetSync();
         }
