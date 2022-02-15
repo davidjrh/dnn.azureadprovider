@@ -791,7 +791,7 @@ namespace DotNetNuke.Authentication.Azure.Components
                                 }
                             }
                         }
-                        aadGroups = aadGroups.NextPageRequest.GetSync();
+                        aadGroups = aadGroups.NextPageRequest?.GetSync();
                     }
                 }
             }
