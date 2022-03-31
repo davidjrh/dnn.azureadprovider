@@ -142,7 +142,7 @@
     <value>You must specify the Azure Tenant ID</value>
   </data>
   <data name="lblTenantId.Help" xml:space="preserve">
-    <value>Azure Active Directory tenant ID (Directory ID)</value>
+    <value>Azure Active Directory tenant ID (Directory ID). For single-tenant apps, this can be: the guid of your directory; the directory name in the format mycompany.onmicrosoft.com; the default custom domain name being used in the tenant, i.e. mycompany.com. For multi-tenant scenarios, type "common" to allow the provider to use the common endpoint authorization url.</value>
   </data>
   <data name="lblTenantId.Text" xml:space="preserve">
     <value>Tenant ID</value>
