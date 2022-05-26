@@ -663,7 +663,7 @@ namespace DotNetNuke.Authentication.Azure.Components
                 authTokenCookie.Values[OAuthTokenKey] = AuthToken;
             }
             authTokenCookie.Expires = expireCookie ? DateTime.Now.AddYears(-30) : DateTime.Now.Add(AuthTokenExpiry);
-            HttpContext.Current.Response.SetCookie(authTokenCookie);
+            HttpContext.Current.Response.Cookies.Add(authTokenCookie);
         }
 
         private List<string> GetDnnAadRoles()
