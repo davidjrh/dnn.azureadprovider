@@ -869,7 +869,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             else
             {
                 JwtIdToken = new JwtSecurityToken(AuthToken);
-                AuthTokenExpiry = JwtIdToken.ValidTo.TimeOfDay;
+                AuthTokenExpiry = (JwtIdToken.ValidTo - DateTime.UtcNow).Subtract(new TimeSpan(0, 5, 0));
             }
         }
 
