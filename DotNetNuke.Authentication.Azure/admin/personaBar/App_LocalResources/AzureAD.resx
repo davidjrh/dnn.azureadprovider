@@ -363,6 +363,9 @@
   <data name="lblRedirectUri.Text" xml:space="preserve">
     <value>Redirect Uri</value>
   </data>
+  <data name="lblRedirectUri.Error" xml:space="preserve">
+    <value>You must specify a full, valid HTTPS or localhost URL</value>
+  </data>
   <data name="lblOnErrorUri.Help" xml:space="preserve">
     <value>If specified, when an Azure AD auth error happens the user is redirected to the url instead of showing the default DNN login page.</value>
   </data>
