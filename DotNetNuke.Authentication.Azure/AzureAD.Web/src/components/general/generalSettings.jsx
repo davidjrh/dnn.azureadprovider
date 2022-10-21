@@ -16,7 +16,8 @@ class GeneralSettings extends Component {
             error: {
                 appId: false,
                 appSecret: false,
-                tenantId: false
+                tenantId: false,
+                redirectUri: false,
             }
         };
     }
@@ -33,6 +34,19 @@ class GeneralSettings extends Component {
         state.error["appId"] = (nextProps.apiKey === "");
         state.error["appSecret"] = (nextProps.apiSecret === "");
         state.error["tenantId"] = (nextProps.tenantId === "");
+        state.error["redirectUri"] = (nextProps.redirectUri !== "" && !this.isValidAzureAdUrl(nextProps.redirectUri));
+    }
+
+    isValidAzureAdUrl(string) {
+        let url;
+
+        try {
+            url = new URL(string);
+        } catch (err) {
+            return false;
+        }
+
+        return url.protocol === "https:" || url.host === "localhost";
     }
 
     onSettingChange(key, event) {
@@ -165,8 +179,10 @@ class GeneralSettings extends Component {
                                 label={resx.get("lblRedirectUri")}
                                 enabled={true}
                                 tooltipMessage={resx.get("lblRedirectUri.Help")}
-                                errorMessage=""
+                                error={this.state.error.redirectUri}
+                                errorMessage={resx.get("lblRedirectUri.Error")}
                                 value={this.props.redirectUri}
+                                autocomplete="off"
                                 onChange={this.onSettingChange.bind(this, "RedirectUri")}
                             />
                         </div>
@@ -195,7 +211,7 @@ class GeneralSettings extends Component {
                             {resx.get("Cancel")}
                         </Button>
                         <Button
-                            disabled={this.state.error.appId || this.state.error.appSecret || this.state.error.tenantId}
+                            disabled={this.state.error.appId || this.state.error.appSecret || this.state.error.tenantId || this.state.error.redirectUri}
                             type="primary"
                             onClick={this.onClickSave.bind(this)}
                         >
