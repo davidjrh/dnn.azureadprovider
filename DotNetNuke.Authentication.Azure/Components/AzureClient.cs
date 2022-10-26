@@ -340,8 +340,6 @@ namespace DotNetNuke.Authentication.Azure.Components
                 return null;
             }
             var claims = JwtIdToken.Claims.ToArray();
-            EnsureClaimExists(claims, FirstNameClaimName);
-            EnsureClaimExists(claims, LastNameClaimName);
             EnsureClaimExists(claims, DisplayNameClaimName);
             EnsureClaimExists(claims, EmailClaimName);
             EnsureClaimExists(claims, UserIdClaim);
@@ -355,7 +353,19 @@ namespace DotNetNuke.Authentication.Azure.Components
                 Email = claims.FirstOrDefault(x => x.Type == EmailClaimName)?.Value,
                 Id = claims.FirstOrDefault(x => x.Type == UserIdClaim).Value
             };
-            user.AzureDisplayName = $"{user.AzureFirstName} {user.AzureLastName}";
+            // If no first name, try and get it from the display name.
+            if (string.IsNullOrEmpty(user.AzureFirstName))
+            {
+                user.AzureFirstName = user.AzureDisplayName.Split(' ')
+                    .First();
+            }
+            // If no last name, try and get it from the display name.
+            if (string.IsNullOrEmpty(user.AzureLastName))
+            {
+                user.AzureLastName = user.AzureDisplayName.Split(' ')
+                    .Skip(1)
+                    .Aggregate("", (current, next) => current + " " + next);
+            }
             return user;
         }
 
