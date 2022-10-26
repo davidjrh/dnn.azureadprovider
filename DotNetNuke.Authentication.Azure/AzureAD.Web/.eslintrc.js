@@ -1,7 +1,6 @@
 module.exports = {
     "plugins": [
-        "react",
-        "spellcheck"
+        "react"
     ],
     "env": {
         "browser": true,
@@ -10,37 +9,22 @@ module.exports = {
     "extends": ["eslint:recommended", "plugin:react/recommended"],
     "settings": {
         "react": {
-          "version": "16"
+            "version": "16"
         }
-    },     
-    "parserOptions": {
+    },
+    "parserOptions": {        
         "ecmaFeatures": {
-            "jsx": true,
-            "arrowFunctions": true,
-            "blockBindings": true,
-            "classes": true,
-            "defaultParams": true,
-            "destructuring": true,
-            "forOf": true,
-            "generators": true,
-            "modules": true,
-            "objectLiteralComputedProperties": true,
-            "regexUFlag": true,
-            "regexYFlag": true,
-            "spread": true,
-            "superInFunctions": false,
-            "templateStrings": true            
+            "jsx": true
         },
         "ecmaVersion": 2018,
         "sourceType": "module"
-    },           
+    },        
     "globals": {
         "__": false,
         "Promise": false,
         "VERSION": false
     },
-    "rules": {
-    
+    "rules": {   
       "semi": "error",
       "no-var": "error",
       "quotes": ["warn", "double" ],
