@@ -453,4 +453,10 @@
   <data name="lblAadRoleName.Help" xml:space="preserve">
     <value>The Azure AD Role name to map</value>
   </data>
+  <data name="TabSynchronization" xml:space="preserve">
+    <value>Synchronization</value>
+  </data>
+  <data name="TabMore" xml:space="preserve">
+    <value>More</value>
+  </data>
 </root>

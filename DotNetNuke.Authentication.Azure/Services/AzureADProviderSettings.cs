@@ -67,6 +67,8 @@ namespace DotNetNuke.Authentication.Azure.Services
         public bool GroupNamePrefixEnabled { get; set; }
         [DataMember(Name = "autoAuthorize")]
         public bool AutoAuthorize { get; set; }
+        [DataMember(Name = "authorizationCodePrompt")]
+        public string AuthorizationCodePrompt { set; get; }
 
 
 
@@ -93,7 +95,8 @@ namespace DotNetNuke.Authentication.Azure.Services
                 ApiResource = config.APIResource,
                 Scopes = config.Scopes,
                 UsernamePrefixEnabled = config.UsernamePrefixEnabled,
-                GroupNamePrefixEnabled = config.GroupNamePrefixEnabled                
+                GroupNamePrefixEnabled = config.GroupNamePrefixEnabled,
+                AuthorizationCodePrompt = config.AuthorizationCodePrompt,
             };
         }
 
@@ -128,7 +131,8 @@ namespace DotNetNuke.Authentication.Azure.Services
                 APIResource = settings.ApiResource + (!string.IsNullOrEmpty(settings.ApiResource.Trim()) && !settings.ApiResource.EndsWith("/") ? "/" : ""),
                 Scopes = settings.Scopes,
                 UsernamePrefixEnabled = settings.UsernamePrefixEnabled,
-                GroupNamePrefixEnabled = settings.GroupNamePrefixEnabled
+                GroupNamePrefixEnabled = settings.GroupNamePrefixEnabled,
+                AuthorizationCodePrompt = settings.AuthorizationCodePrompt
             };
 
             AzureConfig.UpdateConfig(config);

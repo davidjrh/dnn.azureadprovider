@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { GridSystem, GridCell, Switch, SingleLineInputWithError, Button, InputGroup}  from "@dnnsoftware/dnn-react-common";
+import { GridSystem, GridCell, Switch, SingleLineInputWithError, Button, InputGroup, Dropdown}  from "@dnnsoftware/dnn-react-common";
 import SettingsActions from "../../actions/settings";
 import resx from "../../resources";
 import "./syncSettings.less";
@@ -149,6 +149,14 @@ class SyncSettings extends Component {
                             </div>
                         </GridCell> 
                     </GridSystem>
+                </InputGroup>
+                <InputGroup>
+                    <Dropdown options={[
+                        { label: "login", value: "login", tooltipMessage: "Forces the user to enter their credentials on that request, negating single-sign on." },
+                        { label: "none",  value: "none", tooltipMessage: "Forces the user to enter their credentials on that request, negating single-sign on." },
+                        { label: "consent", value: "consent", tooltipMessage: "Forces the user to enter their credentials on that request, negating single-sign on." },
+                        { label: "select_account",  value: "select_account", tooltipMessage: "Forces the user to enter their credentials on that request, negating single-sign on." },
+                    ]} />
                 </InputGroup>
                 <InputGroup>
                     <h1 className={"sectionLabel spacer"}>{resx.get("lblTokenValidation")}</h1>
