@@ -459,4 +459,10 @@
   <data name="TabMore" xml:space="preserve">
     <value>More</value>
   </data>
+  <data name="lblAuthenticationCodePrompt.Help" xml:space="preserve">
+    <value>Indicates the type of user interaction that is required.</value>
+  </data>
+  <data name="lblAuthenticationCodePrompt.Text" xml:space="preserve">
+    <value>Authentication Code Prompt</value>
+  </data>
 </root>

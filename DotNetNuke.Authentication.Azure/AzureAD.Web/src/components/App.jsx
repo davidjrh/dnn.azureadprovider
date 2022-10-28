@@ -23,7 +23,7 @@ class App extends Component {
     }
     onSelectSubTab(index) {
         this.props.dispatch(SettingsActions.switchMappingSubTab(index));
-    }    
+    }
     render() {
         return (
             <div id="AzureADAppContainer">

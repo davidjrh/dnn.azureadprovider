@@ -49,7 +49,8 @@ class SyncSettings extends Component {
             apiResource: (key === "apiResource") ? event.target.value : props.apiResource,
             scopes: (key === "scopes") ? event.target.value : props.scopes,
             usernamePrefixEnabled: (key === "usernamePrefixEnabled") ? !props.usernamePrefixEnabled : props.usernamePrefixEnabled,
-            groupNamePrefixEnabled: (key === "groupNamePrefixEnabled") ? !props.groupNamePrefixEnabled : props.groupNamePrefixEnabled
+            groupNamePrefixEnabled: (key === "groupNamePrefixEnabled") ? !props.groupNamePrefixEnabled : props.groupNamePrefixEnabled,
+            authorizationCodePrompt: (key === "authorizationCodePrompt") ? event.target.value : props.authorizationCodePrompt
         }));
     }    
 
@@ -71,7 +72,8 @@ class SyncSettings extends Component {
             apiResource: props.apiResource,
             scopes: props.scopes,
             usernamePrefixEnabled: props.usernamePrefixEnabled,
-            groupNamePrefixEnabled: props.groupNamePrefixEnabled
+            groupNamePrefixEnabled: props.groupNamePrefixEnabled,
+            authorizationCodePrompt: props.authorizationCodePrompt
         }, () => {
             utils.utilities.notify(resx.get("SettingsUpdateSuccess"));
             this.setState({
@@ -149,14 +151,6 @@ class SyncSettings extends Component {
                             </div>
                         </GridCell> 
                     </GridSystem>
-                </InputGroup>
-                <InputGroup>
-                    <Dropdown options={[
-                        { label: "login", value: "login", tooltipMessage: "Forces the user to enter their credentials on that request, negating single-sign on." },
-                        { label: "none",  value: "none", tooltipMessage: "Forces the user to enter their credentials on that request, negating single-sign on." },
-                        { label: "consent", value: "consent", tooltipMessage: "Forces the user to enter their credentials on that request, negating single-sign on." },
-                        { label: "select_account",  value: "select_account", tooltipMessage: "Forces the user to enter their credentials on that request, negating single-sign on." },
-                    ]} />
                 </InputGroup>
                 <InputGroup>
                     <h1 className={"sectionLabel spacer"}>{resx.get("lblTokenValidation")}</h1>
@@ -242,7 +236,8 @@ SyncSettings.propTypes = {
     apiResource: PropTypes.string,
     scopes: PropTypes.string,
     usernamePrefixEnabled: PropTypes.bool,
-    groupNamePrefixEnabled: PropTypes.bool
+    groupNamePrefixEnabled: PropTypes.bool,
+    authorizationCodePrompt: PropTypes.string
 };
 
 
@@ -257,7 +252,8 @@ function mapStateToProps(state) {
         apiResource: state.settings.apiResource,
         scopes: state.settings.scopes,
         usernamePrefixEnabled: state.settings.usernamePrefixEnabled,
-        groupNamePrefixEnabled: state.settings.groupNamePrefixEnabled
+        groupNamePrefixEnabled: state.settings.groupNamePrefixEnabled,
+        authorizationCodePrompt: state.settings.authorizationCodePrompt
     };
 }
 export default connect(mapStateToProps)(SyncSettings);

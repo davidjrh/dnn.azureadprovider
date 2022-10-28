@@ -96,7 +96,7 @@ namespace DotNetNuke.Authentication.Azure.Services
                 Scopes = config.Scopes,
                 UsernamePrefixEnabled = config.UsernamePrefixEnabled,
                 GroupNamePrefixEnabled = config.GroupNamePrefixEnabled,
-                AuthorizationCodePrompt = config.AuthorizationCodePrompt,
+                AuthorizationCodePrompt = config.AuthorizationCodePrompt
             };
         }
 
