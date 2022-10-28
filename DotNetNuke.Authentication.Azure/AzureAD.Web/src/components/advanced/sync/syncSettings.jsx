@@ -44,9 +44,9 @@ class SyncSettings extends Component {
             aadAppSecret: (key === "AadAppSecret") ? event.target.value : props.aadAppSecret,
             roleSyncEnabled: (key === "roleSyncEnabled") ? !props.roleSyncEnabled : props.roleSyncEnabled,
             profileSyncEnabled: (key === "profileSyncEnabled") ? !props.profileSyncEnabled : props.profileSyncEnabled,
+            apiResource: (key === "apiResource") ? event.target.value : props.apiResource,
             usernamePrefixEnabled: (key === "usernamePrefixEnabled") ? !props.usernamePrefixEnabled : props.usernamePrefixEnabled,
-            groupNamePrefixEnabled: (key === "groupNamePrefixEnabled") ? !props.groupNamePrefixEnabled : props.groupNamePrefixEnabled,
-            authorizationCodePrompt: (key === "authorizationCodePrompt") ? event.target.value : props.authorizationCodePrompt
+            groupNamePrefixEnabled: (key === "groupNamePrefixEnabled") ? !props.groupNamePrefixEnabled : props.groupNamePrefixEnabled
         }));
     }    
 
@@ -63,9 +63,9 @@ class SyncSettings extends Component {
             aadAppSecret: props.aadAppSecret,
             roleSyncEnabled: props.roleSyncEnabled,
             profileSyncEnabled: props.profileSyncEnabled,
+            apiResource: props.apiResource,
             usernamePrefixEnabled: props.usernamePrefixEnabled,
-            groupNamePrefixEnabled: props.groupNamePrefixEnabled,
-            authorizationCodePrompt: props.authorizationCodePrompt
+            groupNamePrefixEnabled: props.groupNamePrefixEnabled
         }, () => {
             utils.utilities.notify(resx.get("SettingsUpdateSuccess"));
             this.setState({
@@ -151,11 +151,12 @@ class SyncSettings extends Component {
                                 {resx.get("Cancel")}
                             </Button>
                             <Button
+                                disabled={this.state.error.aadAppClientId || this.state.error.aadAppSecret }
                                 type="primary"
                                 onClick={this.onClickSave.bind(this)}>
                                 {resx.get("SaveSettings")}
-                            </Button>
-                        </div>
+                            </Button>                        
+                        </div>                    
                     </GridCell>  
                 </InputGroup>
             </div>
@@ -169,9 +170,9 @@ SyncSettings.propTypes = {
     aadAppSecret: PropTypes.string,
     roleSyncEnabled: PropTypes.bool,
     profileSyncEnabled: PropTypes.bool,
+    apiResource: PropTypes.string,
     usernamePrefixEnabled: PropTypes.bool,
-    groupNamePrefixEnabled: PropTypes.bool,
-    authorizationCodePrompt: PropTypes.string
+    groupNamePrefixEnabled: PropTypes.bool
 };
 
 
@@ -181,10 +182,9 @@ function mapStateToProps(state) {
         aadAppSecret: state.settings.aadAppSecret,
         roleSyncEnabled: state.settings.roleSyncEnabled,
         profileSyncEnabled: state.settings.profileSyncEnabled,
+        apiResource: state.settings.apiResource,
         usernamePrefixEnabled: state.settings.usernamePrefixEnabled,
-        groupNamePrefixEnabled: state.settings.groupNamePrefixEnabled,
-        authorizationCodePrompt: state.settings.authorizationCodePrompt
+        groupNamePrefixEnabled: state.settings.groupNamePrefixEnabled
     };
 }
-
 export default connect(mapStateToProps)(SyncSettings);

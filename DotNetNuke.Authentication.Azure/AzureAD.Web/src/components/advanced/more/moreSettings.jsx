@@ -35,8 +35,7 @@ class MoreSettings extends Component {
             jwtAudiences: (key === "jwtAudiences") ? event.target.value : props.jwtAudiences,
             jwtAuthEnabled: (key === "jwtAuthEnabled") ? !props.jwtAuthEnabled : props.jwtAuthEnabled,
             apiResource: (key === "apiResource") ? event.target.value : props.apiResource,
-            scopes: (key === "scopes") ? event.target.value : props.scopes,
-            authorizationCodePrompt: (key === "authorizationCodePrompt") ? event.target.value : props.authorizationCodePrompt,
+            scopes: (key === "scopes") ? event.target.value : props.scopes
         }));
     }    
 
@@ -52,8 +51,7 @@ class MoreSettings extends Component {
             jwtAudiences: props.jwtAudiences,
             jwtAuthEnabled: props.jwtAuthEnabled,
             apiResource: props.apiResource,
-            scopes: props.scopes,
-            authorizationCodePrompt: props.authorizationCodePrompt,
+            scopes: props.scopes
         }, () => {
             utils.utilities.notify(resx.get("SettingsUpdateSuccess"));
             this.setState({
@@ -144,8 +142,7 @@ MoreSettings.propTypes = {
     jwtAudiences: PropTypes.string,
     jwtAuthEnabled: PropTypes.bool,
     apiResource: PropTypes.string,
-    scopes: PropTypes.string,
-    authorizationCodePrompt: PropTypes.string,
+    scopes: PropTypes.string
 };
 
 
@@ -154,8 +151,7 @@ function mapStateToProps(state) {
         jwtAudiences: state.settings.jwtAudiences,
         jwtAuthEnabled: state.settings.jwtAuthEnabled,
         apiResource: state.settings.apiResource,
-        scopes: state.settings.scopes,
-        authorizationCodePrompt: state.settings.authorizationCodePrompt
+        scopes: state.settings.scopes
     };
 }
 
