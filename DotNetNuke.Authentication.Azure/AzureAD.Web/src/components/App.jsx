@@ -45,7 +45,7 @@ class App extends Component {
                                 type="secondary">
                                 <SyncSettings />
                                 <MoreSettings />
-                            </Tabs>;
+                            </Tabs>
                             <Tabs onSelect={this.onSelectSubTab.bind(this) }
                                 selectedIndex={this.props.selectedMappingSubTab}
                                 tabHeaders={[
@@ -56,7 +56,7 @@ class App extends Component {
                                 <UserMappings />
                                 <ProfileMappings />
                                 <RoleMappings />
-                            </Tabs>;
+                            </Tabs>
                         </Tabs>                        
                     </PersonaBarPageBody>
                 </PersonaBarPage>

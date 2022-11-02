@@ -49,6 +49,8 @@ const settingsActions = {
                         scopes: data.scopes,
                         usernamePrefixEnabled: data.usernamePrefixEnabled,
                         groupNamePrefixEnabled: data.groupNamePrefixEnabled,
+                        authorizationCodePrompt: data.authorizationCodePrompt,
+                        domainHint: data.domainHint,
                         clientModified: false
                     }
                 });
@@ -120,6 +122,8 @@ const settingsActions = {
                     scopes: settings.scopes,
                     usernamePrefixEnabled: settings.usernamePrefixEnabled,
                     groupNamePrefixEnabled: settings.groupNamePrefixEnabled,
+                    authorizationCodePrompt: settings.authorizationCodePrompt,
+                    domainHint: settings.domainHint,
                     clientModified: true
                 }
             });

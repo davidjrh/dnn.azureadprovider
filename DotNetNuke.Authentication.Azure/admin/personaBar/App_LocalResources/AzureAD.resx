@@ -453,16 +453,22 @@
   <data name="lblAadRoleName.Help" xml:space="preserve">
     <value>The Azure AD Role name to map</value>
   </data>
-  <data name="TabSynchronization" xml:space="preserve">
+  <data name="TabSynchronization.Text" xml:space="preserve">
     <value>Synchronization</value>
   </data>
-  <data name="TabMore" xml:space="preserve">
+  <data name="TabMore.Text" xml:space="preserve">
     <value>More</value>
   </data>
-  <data name="lblAuthenticationCodePrompt.Help" xml:space="preserve">
+  <data name="lblAuthorizationCodePrompt.Help" xml:space="preserve">
     <value>Indicates the type of user interaction that is required.</value>
   </data>
-  <data name="lblAuthenticationCodePrompt.Text" xml:space="preserve">
-    <value>Authentication Code Prompt</value>
+  <data name="lblAuthorizationCodePrompt.Text" xml:space="preserve">
+    <value>Authorization Code Prompt</value>
+  </data>
+  <data name="lblDomainHint.Text" xml:space="preserve">
+    <value>Domain Hint</value>
+  </data>
+  <data name="lblDomainHint.Help" xml:space="preserve">
+    <value>If included, the app skips the email-based discovery process that user goes through on the sign-in page, leading to a slightly more streamlined user experience. For example, sending them to their federated identity provider. Apps can use this parameter during reauthentication, by extracting the tid from a previous sign-in.</value>
   </data>
 </root>

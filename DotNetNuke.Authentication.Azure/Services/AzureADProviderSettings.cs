@@ -69,6 +69,8 @@ namespace DotNetNuke.Authentication.Azure.Services
         public bool AutoAuthorize { get; set; }
         [DataMember(Name = "authorizationCodePrompt")]
         public string AuthorizationCodePrompt { set; get; }
+        [DataMember(Name = "domainHint")]
+        public string DomainHint { get; set; }
 
 
 
@@ -96,7 +98,8 @@ namespace DotNetNuke.Authentication.Azure.Services
                 Scopes = config.Scopes,
                 UsernamePrefixEnabled = config.UsernamePrefixEnabled,
                 GroupNamePrefixEnabled = config.GroupNamePrefixEnabled,
-                AuthorizationCodePrompt = config.AuthorizationCodePrompt
+                AuthorizationCodePrompt = config.AuthorizationCodePrompt,
+                DomainHint = config.DomainHint
             };
         }
 
@@ -132,7 +135,8 @@ namespace DotNetNuke.Authentication.Azure.Services
                 Scopes = settings.Scopes,
                 UsernamePrefixEnabled = settings.UsernamePrefixEnabled,
                 GroupNamePrefixEnabled = settings.GroupNamePrefixEnabled,
-                AuthorizationCodePrompt = settings.AuthorizationCodePrompt
+                AuthorizationCodePrompt = settings.AuthorizationCodePrompt,
+                DomainHint = settings.DomainHint
             };
 
             AzureConfig.UpdateConfig(config);

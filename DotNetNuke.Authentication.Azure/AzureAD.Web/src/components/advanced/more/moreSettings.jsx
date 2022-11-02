@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { GridSystem, GridCell, Switch, SingleLineInputWithError, Button, InputGroup} from "@dnnsoftware/dnn-react-common";
+import { GridSystem, GridCell, Switch, SingleLineInputWithError, Button, InputGroup, Dropdown} from "@dnnsoftware/dnn-react-common";
 import SettingsActions from "../../../actions/settings";
 import resx from "../../../resources";
 import "../advancedSettings.less";
@@ -35,7 +35,9 @@ class MoreSettings extends Component {
             jwtAudiences: (key === "jwtAudiences") ? event.target.value : props.jwtAudiences,
             jwtAuthEnabled: (key === "jwtAuthEnabled") ? !props.jwtAuthEnabled : props.jwtAuthEnabled,
             apiResource: (key === "apiResource") ? event.target.value : props.apiResource,
-            scopes: (key === "scopes") ? event.target.value : props.scopes
+            scopes: (key === "scopes") ? event.target.value : props.scopes,
+            authorizationCodePrompt: (key === "authorizationCodePrompt") ? event.value : props.authorizationCodePrompt,
+            domainHint: (key === "domainHint") ? event.target.value : props.domainHint
         }));
     }    
 
@@ -51,7 +53,9 @@ class MoreSettings extends Component {
             jwtAudiences: props.jwtAudiences,
             jwtAuthEnabled: props.jwtAuthEnabled,
             apiResource: props.apiResource,
-            scopes: props.scopes
+            scopes: props.scopes,
+            authorizationCodePrompt: props.authorizationCodePrompt,
+            domainHint: props.domainHint
         }, () => {
             utils.utilities.notify(resx.get("SettingsUpdateSuccess"));
             this.setState({
@@ -118,7 +122,33 @@ class MoreSettings extends Component {
                         </GridCell> 
                     </GridSystem>
                 </InputGroup>
-                <InputGroup>         
+                <InputGroup>
+                    <h1 className={"sectionLabel"}>{resx.get("lblAuthorizationCodePrompt")}</h1>
+                    <p>{resx.get("lblAuthorizationCodePrompt.Help")}</p>
+                    <GridSystem numberOfColumns={2}>
+                        <GridCell>
+                            <Dropdown 
+                                options={[
+                                    { label: "login", value: "login" },
+                                    { label: "none", value: "none" },
+                                    { label: "consent", value: "consent" },
+                                    { label: "select_account", value: "select_account" },
+                                ]}
+                                label={this.props.authorizationCodePrompt}
+                                onSelect={this.onSettingChange.bind(this, "authorizationCodePrompt")} />
+                        </GridCell>
+                        <GridCell columnSize={100}>
+                            <SingleLineInputWithError
+                                withLabel={true}
+                                label={resx.get("lblDomainHint")}
+                                enabled={true}
+                                tooltipMessage={resx.get("lblDomainHint.Help")}
+                                value={this.props.domainHint}
+                                onChange={this.onSettingChange.bind(this, "domainHint")} />
+                        </GridCell>
+                    </GridSystem>
+                </InputGroup>
+                <InputGroup>
                     <GridCell columnSize={100}>
                         <div className="buttons-box">
                             <Button disabled={false} type="secondary" onClick={this.onClickCancel.bind(this)}>
@@ -142,7 +172,9 @@ MoreSettings.propTypes = {
     jwtAudiences: PropTypes.string,
     jwtAuthEnabled: PropTypes.bool,
     apiResource: PropTypes.string,
-    scopes: PropTypes.string
+    scopes: PropTypes.string,
+    authorizationCodePrompt: PropTypes.string,
+    domainHint: PropTypes.string
 };
 
 
@@ -151,7 +183,9 @@ function mapStateToProps(state) {
         jwtAudiences: state.settings.jwtAudiences,
         jwtAuthEnabled: state.settings.jwtAuthEnabled,
         apiResource: state.settings.apiResource,
-        scopes: state.settings.scopes
+        scopes: state.settings.scopes,
+        authorizationCodePrompt: state.settings.authorizationCodePrompt,
+        domainHint: state.settings.domainHint
     };
 }
 

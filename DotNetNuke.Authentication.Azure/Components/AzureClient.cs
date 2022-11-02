@@ -633,7 +633,8 @@ namespace DotNetNuke.Authentication.Azure.Components
                     }.ToString())),
                     new QueryParameter("response_type", "code"),
                     new QueryParameter("response_mode", "query"),
-                    new QueryParameter("prompt", Settings.AuthorizationCodePrompt)
+                    new QueryParameter("prompt", Settings.AuthorizationCodePrompt),
+                    new QueryParameter("domain_hint", Settings.DomainHint)
                 };
 
 

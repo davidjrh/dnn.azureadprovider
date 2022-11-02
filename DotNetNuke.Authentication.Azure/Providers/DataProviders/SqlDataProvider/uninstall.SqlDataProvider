@@ -20,6 +20,7 @@
    , 'Azure_UsernamePrefixEnabled'
    , 'Azure_GroupNamePrefixEnabled'
    , 'Azure_AuthorizationCodePrompt'
+   , 'Azure_DomainHint'
    , 'AzureB2C_UserGlobalSettings'
  )
 GO
@@ -46,6 +47,7 @@ DELETE {databaseOwner}[{objectQualifier}HostSettings]
    , 'Azure_UsernamePrefixEnabled'
    , 'Azure_GroupNamePrefixEnabled'
    , 'Azure_AuthorizationCodePrompt'
+   , 'Azure_DomainHint'
    , 'AzureB2C_UserGlobalSettings'
  )
 GO
