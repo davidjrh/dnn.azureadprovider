@@ -63,7 +63,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             UsernamePrefixEnabled = bool.Parse(GetScopedSetting(Service + "_UsernamePrefixEnabled", portalId, "true"));
             GroupNamePrefixEnabled = bool.Parse(GetScopedSetting(Service + "_GroupNamePrefixEnabled", portalId, "true"));
             AutoAuthorize = bool.Parse(GetScopedSetting(Service + "_AutoAuthorize", portalId, "true"));
-            AuthorizationCodePrompt = GetScopedSetting(Service + "_AuthorizationCodePrompt", portalId, "login");
+            AuthorizationCodePrompt = GetScopedSetting(Service + "_AuthorizationCodePrompt", portalId, "");
             DomainHint = GetScopedSetting(Service + "_DomainHint", portalId, "");
         }
 

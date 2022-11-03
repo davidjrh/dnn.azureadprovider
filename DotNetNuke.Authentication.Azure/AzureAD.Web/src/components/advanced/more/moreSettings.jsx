@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { GridSystem, GridCell, Switch, SingleLineInputWithError, Button, InputGroup, Dropdown} from "@dnnsoftware/dnn-react-common";
+import { GridSystem, GridCell, Switch, SingleLineInputWithError, Button, InputGroup, DropdownWithError} from "@dnnsoftware/dnn-react-common";
 import SettingsActions from "../../../actions/settings";
 import resx from "../../../resources";
 import "../advancedSettings.less";
@@ -123,27 +123,27 @@ class MoreSettings extends Component {
                     </GridSystem>
                 </InputGroup>
                 <InputGroup>
-                    <h1 className={"sectionLabel"}>{resx.get("lblAuthorizationCodePrompt")}</h1>
-                    <p>{resx.get("lblAuthorizationCodePrompt.Help")}</p>
+                    <h1 className={"sectionLabel"}>{resx.get("lblAuthorizationCode")}</h1>
                     <GridSystem numberOfColumns={2}>
                         <GridCell>
-                            <Dropdown 
+                            <DropdownWithError
                                 options={[
-                                    { label: "login", value: "login" },
-                                    { label: "none", value: "none" },
-                                    { label: "consent", value: "consent" },
-                                    { label: "select_account", value: "select_account" },
+                                    { label: resx.get("lblPromptBlank"), value: resx.get("PromptBlank") },
+                                    { label: resx.get("lblPromptLogin"), value: resx.get("PromptLogin") },
+                                    { label: resx.get("lblPromptNone"), value: resx.get("PromptNone") },
+                                    { label: resx.get("lblPromptConsent"), value: resx.get("PromptConsent") },
+                                    { label: resx.get("lblPromptSelectAccount"), value: resx.get("PromptSelectAccount") },
                                 ]}
-                                label={this.props.authorizationCodePrompt}
+                                label={resx.get("lblAuthorizationCodePrompt")}
+                                value={this.props.authorizationCodePrompt}
+                                tooltipMessage={resx.get("lblAuthorizationCodePrompt.Help")}
                                 onSelect={this.onSettingChange.bind(this, "authorizationCodePrompt")} />
                         </GridCell>
-                        <GridCell columnSize={100}>
+                        <GridCell>
                             <SingleLineInputWithError
-                                withLabel={true}
-                                label={resx.get("lblDomainHint")}
-                                enabled={true}
-                                tooltipMessage={resx.get("lblDomainHint.Help")}
+                                label={resx.get("lblAuthorizationCodeDomainHint")}
                                 value={this.props.domainHint}
+                                tooltipMessage={resx.get("lblAuthorizationCodeDomainHint.Help")}
                                 onChange={this.onSettingChange.bind(this, "domainHint")} />
                         </GridCell>
                     </GridSystem>

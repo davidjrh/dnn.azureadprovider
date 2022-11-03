@@ -459,16 +459,57 @@
   <data name="TabMore.Text" xml:space="preserve">
     <value>More</value>
   </data>
-  <data name="lblAuthorizationCodePrompt.Help" xml:space="preserve">
-    <value>Indicates the type of user interaction that is required.</value>
+  <data name="lblAuthorizationCode.Text" xml:space="preserve">
+    <value>Authorization Code</value>
   </data>
   <data name="lblAuthorizationCodePrompt.Text" xml:space="preserve">
-    <value>Authorization Code Prompt</value>
+    <value>Prompt</value>
   </data>
-  <data name="lblDomainHint.Text" xml:space="preserve">
+  <data name="lblAuthorizationCodePrompt.Help" xml:space="preserve">
+    <value>Indicates the type of user interaction that is required.
+&lt;br/&gt;
+- prompt=login forces the user to enter their credentials on that request, negating single-sign on.
+&lt;br/&gt;
+- prompt=none is the opposite. It ensures that the user isn't presented with any interactive prompt. If the request can't be completed silently by using single-sign on, the Microsoft identity platform returns an interaction_required error.
+&lt;br/&gt;
+- prompt=consent triggers the OAuth consent dialog after the user signs in, asking the user to grant permissions to the app.
+&lt;br/&gt;
+- prompt=select_account interrupts single sign-on providing account selection experience listing all the accounts either in session or any remembered account or an option to choose to use a different account altogether.</value>
+  </data>
+  <data name="lblAuthorizationCodeDomainHint.Text" xml:space="preserve">
     <value>Domain Hint</value>
   </data>
-  <data name="lblDomainHint.Help" xml:space="preserve">
-    <value>If included, the app skips the email-based discovery process that user goes through on the sign-in page, leading to a slightly more streamlined user experience. For example, sending them to their federated identity provider. Apps can use this parameter during reauthentication, by extracting the tid from a previous sign-in.</value>
+  <data name="lblAuthorizationCodeDomainHint.Help" xml:space="preserve">
+    <value>If included, the app skips the email-based discovery process that user goes through on the sign-in page, leading to a slightly more streamlined user experience.</value>
+  </data>
+  <data name="lblPromptBlank" xml:space="preserve">
+    <value>""</value>
+  </data>
+  <data name="lblPromptLogin" xml:space="preserve">
+    <value>login</value>
+  </data>
+  <data name="lblPromptNone" xml:space="preserve">
+    <value>none</value>
+  </data>
+  <data name="lblPromptConsent" xml:space="preserve">
+    <value>consent</value>
+  </data>
+  <data name="lblPromptSelectAccount" xml:space="preserve">
+    <value>select_account</value>
+  </data>
+  <data name="PromptBlank" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PromptLogin" xml:space="preserve">
+    <value>login</value>
+  </data>
+  <data name="PromptNone" xml:space="preserve">
+    <value>none</value>
+  </data>
+  <data name="PromptConsent" xml:space="preserve">
+    <value>consent</value>
+  </data>
+  <data name="PromptSelectAccount" xml:space="preserve">
+    <value>select_account</value>
   </data>
 </root>
