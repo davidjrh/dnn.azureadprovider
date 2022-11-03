@@ -407,15 +407,15 @@ namespace DotNetNuke.Authentication.Azure.Services
             }
         }
 
-        // POST: api/RedisCaching/UpdateGeneralSettings
+        // POST: api/RedisCaching/UpdateAdvancedSyncSettings
         /// <summary>
-        /// Updates the general settings
+        /// Updates the synchronization settings
         /// </summary>
         /// <param name="settings"></param>
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage UpdateAdvancedSettings(AzureADProviderSettings settings)
+        public HttpResponseMessage UpdateAdvancedSyncSettings(AzureADProviderSettings settings)
         {
             try
             {
@@ -425,7 +425,35 @@ namespace DotNetNuke.Authentication.Azure.Services
                     if (config.UseGlobalSettings || config.UseGlobalSettings != settings.UseGlobalSettings)
                         return Request.CreateResponse(HttpStatusCode.Forbidden, "Only super users can change this setting");
                 }
-                AzureADProviderSettings.SaveAdvancedSettings(AzureConfig.ServiceName, PortalId, settings);
+                AzureADProviderSettings.SaveAdvancedSyncSettings(AzureConfig.ServiceName, PortalId, settings);
+                return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex);
+            }
+        }
+
+        // POST: api/RedisCaching/UpdateAdvancedMoreSettings
+        /// <summary>
+        /// Updates the settings in the More subtab of the Advanced Settings tab
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public HttpResponseMessage UpdateAdvancedMoreSettings(AzureADProviderSettings settings)
+        {
+            try
+            {
+                if (!UserInfo.IsSuperUser)
+                {
+                    var config = new AzureConfig(AzureConfig.ServiceName, PortalId);
+                    if (config.UseGlobalSettings || config.UseGlobalSettings != settings.UseGlobalSettings)
+                        return Request.CreateResponse(HttpStatusCode.Forbidden, "Only super users can change this setting");
+                }
+                AzureADProviderSettings.SaveAdvancedMoreSettings(AzureConfig.ServiceName, PortalId, settings);
                 return Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
             }
             catch (Exception ex)

@@ -49,7 +49,7 @@ class MoreSettings extends Component {
         event.preventDefault();
         let {props} = this;
 
-        props.dispatch(SettingsActions.updateAdvancedSettings({
+        props.dispatch(SettingsActions.updateAdvancedMoreSettings({
             jwtAudiences: props.jwtAudiences,
             jwtAuthEnabled: props.jwtAuthEnabled,
             apiResource: props.apiResource,

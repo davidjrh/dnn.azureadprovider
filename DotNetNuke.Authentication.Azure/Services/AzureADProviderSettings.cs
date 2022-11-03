@@ -121,20 +121,29 @@ namespace DotNetNuke.Authentication.Azure.Services
             AzureConfig.UpdateConfig(config);
         }
 
-        public static void SaveAdvancedSettings(string service, int portalId, AzureADProviderSettings settings)
+        public static void SaveAdvancedSyncSettings(string service, int portalId, AzureADProviderSettings settings)
         {
             var config = new AzureConfig(service, portalId)
             {
                 AADApplicationId = settings.AadAppClientId,
                 AADApplicationKey = settings.AadAppSecret,
-                JwtAudiences = settings.JwtAudiences,
                 RoleSyncEnabled = settings.RoleSyncEnabled,
                 ProfileSyncEnabled = settings.ProfileSyncEnabled,
+                UsernamePrefixEnabled = settings.UsernamePrefixEnabled,
+                GroupNamePrefixEnabled = settings.GroupNamePrefixEnabled,
+
+            };
+
+            AzureConfig.UpdateConfig(config);
+        }
+        public static void SaveAdvancedMoreSettings(string service, int portalId, AzureADProviderSettings settings)
+        {
+            var config = new AzureConfig(service, portalId)
+            {
+                JwtAudiences = settings.JwtAudiences,
                 JwtAuthEnabled = settings.JwtAuthEnabled,
                 APIResource = settings.ApiResource + (!string.IsNullOrEmpty(settings.ApiResource.Trim()) && !settings.ApiResource.EndsWith("/") ? "/" : ""),
                 Scopes = settings.Scopes,
-                UsernamePrefixEnabled = settings.UsernamePrefixEnabled,
-                GroupNamePrefixEnabled = settings.GroupNamePrefixEnabled,
                 AuthorizationCodePrompt = settings.AuthorizationCodePrompt,
                 DomainHint = settings.DomainHint
             };
