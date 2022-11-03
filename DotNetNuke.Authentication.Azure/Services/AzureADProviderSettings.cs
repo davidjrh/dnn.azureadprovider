@@ -130,8 +130,7 @@ namespace DotNetNuke.Authentication.Azure.Services
                 RoleSyncEnabled = settings.RoleSyncEnabled,
                 ProfileSyncEnabled = settings.ProfileSyncEnabled,
                 UsernamePrefixEnabled = settings.UsernamePrefixEnabled,
-                GroupNamePrefixEnabled = settings.GroupNamePrefixEnabled,
-
+                GroupNamePrefixEnabled = settings.GroupNamePrefixEnabled
             };
 
             AzureConfig.UpdateConfig(config);
