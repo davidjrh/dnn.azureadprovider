@@ -49,6 +49,8 @@ const settingsActions = {
                         scopes: data.scopes,
                         usernamePrefixEnabled: data.usernamePrefixEnabled,
                         groupNamePrefixEnabled: data.groupNamePrefixEnabled,
+                        authorizationCodePrompt: data.authorizationCodePrompt,
+                        domainHint: data.domainHint,
                         clientModified: false
                     }
                 });
@@ -77,9 +79,9 @@ const settingsActions = {
             });
         };
     },
-    updateAdvancedSettings(payload, callback, failureCallback) {
+    updateAdvancedSyncSettings(payload, callback, failureCallback) {
         return (dispatch) => {
-            ApplicationService.updateAdvancedSettings(payload, data => {
+            ApplicationService.updateAdvancedSyncSettings(payload, data => {
                 dispatch({
                     type: ActionTypes.UPDATED_SETTINGS,
                     data: {
@@ -95,7 +97,26 @@ const settingsActions = {
                 }
             });
         };
-    },        
+    },
+    updateAdvancedMoreSettings(payload, callback, failureCallback) {
+        return (dispatch) => {
+            ApplicationService.updateAdvancedMoreSettings(payload, data => {
+                dispatch({
+                    type: ActionTypes.UPDATED_SETTINGS,
+                    data: {
+                        clientModified: false
+                    }
+                });
+                if (callback) {
+                    callback(data);
+                }
+            }, data => {
+                if (failureCallback) {
+                    failureCallback(data);
+                }
+            });
+        };
+    }, 
     settingsClientModified(settings) {
         return (dispatch) => {
             dispatch({
@@ -120,6 +141,8 @@ const settingsActions = {
                     scopes: settings.scopes,
                     usernamePrefixEnabled: settings.usernamePrefixEnabled,
                     groupNamePrefixEnabled: settings.groupNamePrefixEnabled,
+                    authorizationCodePrompt: settings.authorizationCodePrompt,
+                    domainHint: settings.domainHint,
                     clientModified: true
                 }
             });

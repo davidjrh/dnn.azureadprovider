@@ -72,7 +72,7 @@ namespace DotNetNuke.Authentication.Azure
 
             config = new AzureConfig(AzureConfig.ServiceName, PortalId);
             var hasVerificationCode = ((AzureClient)OAuthClient).IsCurrentService() && OAuthClient.HaveVerificationCode();
-            if ((config.AutoRedirect && Request["legacy"] != "1") || hasVerificationCode)
+            if ((config.AutoRedirect && Request["legacy"] != "1") || hasVerificationCode || !string.IsNullOrEmpty(Request["error"]))
                 loginButton_Click(null, null);
         }
 

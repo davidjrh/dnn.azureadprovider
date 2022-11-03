@@ -67,6 +67,10 @@ namespace DotNetNuke.Authentication.Azure.Services
         public bool GroupNamePrefixEnabled { get; set; }
         [DataMember(Name = "autoAuthorize")]
         public bool AutoAuthorize { get; set; }
+        [DataMember(Name = "authorizationCodePrompt")]
+        public string AuthorizationCodePrompt { set; get; }
+        [DataMember(Name = "domainHint")]
+        public string DomainHint { get; set; }
 
 
 
@@ -93,7 +97,9 @@ namespace DotNetNuke.Authentication.Azure.Services
                 ApiResource = config.APIResource,
                 Scopes = config.Scopes,
                 UsernamePrefixEnabled = config.UsernamePrefixEnabled,
-                GroupNamePrefixEnabled = config.GroupNamePrefixEnabled                
+                GroupNamePrefixEnabled = config.GroupNamePrefixEnabled,
+                AuthorizationCodePrompt = config.AuthorizationCodePrompt,
+                DomainHint = config.DomainHint
             };
         }
 
@@ -115,20 +121,30 @@ namespace DotNetNuke.Authentication.Azure.Services
             AzureConfig.UpdateConfig(config);
         }
 
-        public static void SaveAdvancedSettings(string service, int portalId, AzureADProviderSettings settings)
+        public static void SaveAdvancedSyncSettings(string service, int portalId, AzureADProviderSettings settings)
         {
             var config = new AzureConfig(service, portalId)
             {
                 AADApplicationId = settings.AadAppClientId,
                 AADApplicationKey = settings.AadAppSecret,
-                JwtAudiences = settings.JwtAudiences,
                 RoleSyncEnabled = settings.RoleSyncEnabled,
                 ProfileSyncEnabled = settings.ProfileSyncEnabled,
+                UsernamePrefixEnabled = settings.UsernamePrefixEnabled,
+                GroupNamePrefixEnabled = settings.GroupNamePrefixEnabled
+            };
+
+            AzureConfig.UpdateConfig(config);
+        }
+        public static void SaveAdvancedMoreSettings(string service, int portalId, AzureADProviderSettings settings)
+        {
+            var config = new AzureConfig(service, portalId)
+            {
+                JwtAudiences = settings.JwtAudiences,
                 JwtAuthEnabled = settings.JwtAuthEnabled,
                 APIResource = settings.ApiResource + (!string.IsNullOrEmpty(settings.ApiResource.Trim()) && !settings.ApiResource.EndsWith("/") ? "/" : ""),
                 Scopes = settings.Scopes,
-                UsernamePrefixEnabled = settings.UsernamePrefixEnabled,
-                GroupNamePrefixEnabled = settings.GroupNamePrefixEnabled
+                AuthorizationCodePrompt = settings.AuthorizationCodePrompt,
+                DomainHint = settings.DomainHint
             };
 
             AzureConfig.UpdateConfig(config);

@@ -16,9 +16,14 @@ class ApplicationService {
         sf.post("UpdateGeneralSettings", payload, callback, failureCallback);
     }    
 
-    updateAdvancedSettings(payload, callback, failureCallback) {
+    updateAdvancedSyncSettings(payload, callback, failureCallback) {
         const sf = this.getServiceFramework("AzureAD");        
-        sf.post("UpdateAdvancedSettings", payload, callback, failureCallback);
+        sf.post("UpdateAdvancedSyncSettings", payload, callback, failureCallback);
+    }
+
+    updateAdvancedMoreSettings(payload, callback, failureCallback) {
+        const sf = this.getServiceFramework("AzureAD");        
+        sf.post("UpdateAdvancedMoreSettings", payload, callback, failureCallback);
     }
 
     updateProfileMapping(payload, callback, failureCallback) {
