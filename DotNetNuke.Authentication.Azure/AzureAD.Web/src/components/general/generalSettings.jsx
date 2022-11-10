@@ -1,7 +1,7 @@
 import React, {Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { GridCell, Switch, SingleLineInputWithError, Button } from "@dnnsoftware/dnn-react-common";
+import { GridCell, Switch, SingleLineInputWithError, Button, RadioButtons, Label, FileUpload } from "@dnnsoftware/dnn-react-common";
 import SettingsActions from "../../actions/settings";
 import resx from "../../resources";
 import utils from "../../utils";
@@ -13,6 +13,7 @@ class GeneralSettings extends Component {
         super();
 
         this.state = {
+            certUploadMode: false,
             error: {
                 appId: false,
                 appSecret: false,
@@ -52,16 +53,24 @@ class GeneralSettings extends Component {
     onSettingChange(key, event) {
         let {props} = this;
 
+        console.log("event: " + event);
+        console.log("event.value: " + event.value);
+
         props.dispatch(SettingsActions.settingsClientModified({
             enabled: (key === "AADProviderEnabled") ? !props.enabled : props.enabled,
-            useGlobalSettings: (key === "UseGlobalSettings") ? !props.useGlobalSettings : props.useGlobalSettings,            
+            useGlobalSettings: (key === "UseGlobalSettings") ? !props.useGlobalSettings : props.useGlobalSettings,
             autoRedirect: (key === "AutoRedirect") ? !props.autoRedirect : props.autoRedirect,
             autoAuthorize: (key === "AutoAuthorize") ? !props.autoAuthorize : props.autoAuthorize,
             apiKey: (key === "AppId") ? event.target.value : props.apiKey,
             apiSecret: (key === "AppSecret") ? event.target.value : props.apiSecret,
             redirectUri: (key === "RedirectUri") ? event.target.value: props.redirectUri,
             onErrorUri: (key === "OnErrorUri") ? event.target.value: props.onErrorUri,
-            tenantId: (key === "TenantId") ? event.target.value : props.tenantId
+            tenantId: (key === "TenantId") ? event.target.value : props.tenantId,
+            authenticationMode: (key === "AuthenticationMode") ? event : props.authenticationMode,
+            certificateThumbprint: (key === "CertificateThumbprint") ? event.target.value : props.certificateThumbprint,
+            certificateFile: (key === "CertificateFile") ? event.target.value : props.certificateFile,
+            certificatePassword: (key === "CertificatePassword") ? event.target.value : props.certificatePassword,
+            validationCode: (key === "ValidationCode") ? event.target.value : props.validationCode
         }));
     }
 
@@ -82,7 +91,12 @@ class GeneralSettings extends Component {
             apiSecret: props.apiSecret,
             redirectUri: props.redirectUri,
             onErrorUri: props.onErrorUri,
-            tenantId: props.tenantId
+            tenantId: props.tenantId,
+            authenticationMode: props.authenticationMode,
+            certificateThumbprint: props.certificateThumbprint,
+            certificateFile: props.certificateFile,
+            certificatePassword: props.certificatePassword,
+            validationCode: props.validationCode
         }, () => {
             utils.utilities.notify(resx.get("SettingsUpdateSuccess"));
             this.setState({
@@ -91,6 +105,10 @@ class GeneralSettings extends Component {
         }, () => {
             utils.utilities.notifyError(resx.get("SettingsError"));
         }));
+    }
+
+    switchCertUploadMode() {
+        this.setState({certUploadMode: !this.state.certUploadMode});
     }
 
     render() {
@@ -161,34 +179,63 @@ class GeneralSettings extends Component {
                         <div className="editor-row">
                             <SingleLineInputWithError
                                 withLabel={true}
+                                label={resx.get("lblRedirectUri")}
+                                enabled={true}
+                                error={this.state.error.redirectUri}
+                                errorMessage={resx.get("lblRedirectUri.Error")}
+                                tooltipMessage={resx.get("lblRedirectUri.Help")}
+                                value={this.props.redirectUri}
+                                autocomplete="off"
+                                onChange={this.onSettingChange.bind(this, "RedirectUri")} />
+                        </div>
+                    </GridCell>
+                </GridCell>
+                <GridCell columnSize={100}>
+                    <GridCell columnSize={25}>
+                        <Label
+                            label={resx.get("Authentication Mode")}
+                            tooltipMessage={"This is a tooltip message"}
+                            style={{ width: "145px" }}
+                            tooltipStyle={{ float: "right" }}
+                        />
+                    </GridCell>
+                    <GridCell columnSize={75}>
+                        <RadioButtons
+                            value={this.props.authenticationMode}
+                            options={[
+                                { label: resx.get("lblAuthenticationModeSecret"), value: "secret" },
+                                { label: resx.get("lblAuthenticationModeCertificate"), value: "certificate" }
+                            ]}
+                            onChange={this.onSettingChange.bind(this, "AuthenticationMode")}
+                        />
+                    </GridCell>
+                </GridCell>
+                <GridCell columnSize={100}>
+                    <GridCell columnSize={50}>
+                        <div className="editor-row">
+                            {this.props.authenticationMode === "secret" ? <SingleLineInputWithError
+                                withLabel={true}
                                 label={resx.get("lblAppSecret")}
                                 type="password"
-                                enabled={true}
                                 error={this.state.error.appSecret}
                                 errorMessage={resx.get("lblAppSecret.Error")}
                                 tooltipMessage={resx.get("lblAppSecret.Help")}
                                 value={this.props.apiSecret}
                                 autocomplete="off"
-                                onChange={this.onSettingChange.bind(this, "AppSecret")} />
-                        </div>
-                    </GridCell>
-                    <GridCell columnSize={50}>
-                        <div className="editor-row">                        
-                            <SingleLineInputWithError
+                                onChange={this.onSettingChange.bind(this, "AppSecret")}
+                            /> : <SingleLineInputWithError
                                 withLabel={true}
-                                label={resx.get("lblRedirectUri")}
-                                enabled={true}
-                                tooltipMessage={resx.get("lblRedirectUri.Help")}
-                                error={this.state.error.redirectUri}
-                                errorMessage={resx.get("lblRedirectUri.Error")}
-                                value={this.props.redirectUri}
+                                label={resx.get("lblCertificateThumbprint")}
+                                value={this.props.certificateThumbprint}
+                                enabled={false}
                                 autocomplete="off"
-                                onChange={this.onSettingChange.bind(this, "RedirectUri")}
-                            />
+                                onChange={this.onSettingChange.bind(this, "CertificateThumbprint")}
+                            />}
+                            {this.props.authenticationMode === "certificate" && !this.state.certUploadMode && <Button onClick={this.switchCertUploadMode.bind(this)}>Upload certificate...</Button>}
                         </div>
                     </GridCell>
                     <GridCell columnSize={50}>
-                        <div className="editor-row">                        
+                        <div className="editor-row">
                             <SingleLineInputWithError
                                 withLabel={true}
                                 label={resx.get("lblOnErrorUri")}
@@ -199,7 +246,63 @@ class GeneralSettings extends Component {
                                 onChange={this.onSettingChange.bind(this, "OnErrorUri")}
                             />
                         </div>
-                    </GridCell>                    
+                    </GridCell>
+                </GridCell>
+                <GridCell columnSize={100}>
+                    <GridCell columnSize={50}>
+                        {this.props.authenticationMode === "certificate" && this.state.certUploadMode && <div className="editor-row">
+                            <Label 
+                                label={resx.get("lblCertificateFile")} 
+                                tooltipMessage={"This is a tooltip message"}
+                                style={{ width: "118px" }}
+                                tooltipStyle={{ float: "right" }}/>
+                            <FileUpload
+                                utils={utils}
+                                portalId={0}
+                                selectedFile={null}
+                                folderName={"Portals/0"}
+                                validationCode={this.props.validationCode}
+                                onSelectFile={this.onSettingChange.bind(this, "ValidationCode") }
+                                fileFormats={["image/png", "image/jpg", "image/jpeg", "image/bmp", "image/gif", "image/jpeg", "image/svg+xml"]}
+                                browseButtonText={"Browse"}
+                                uploadButtonText={"Upload"}
+                                linkButtonText={"Link"}
+                                defaultText={"Drag"}
+                                onDragOverText={"DragOver"}
+                                uploadFailedText={"Upload failed"}
+                                wrongFormatText={"Wrong format"}
+                                imageText={"Default image title"}
+                                linkInputTitleText={"Link input title"}
+                                linkInputPlaceholderText={"Link Input place holder"}
+                                linkInputActionText={"Link Input Action Text"}
+                                uploadCompleteText={"Upload complete"}
+                                uploadingText={"Uploading..."}
+                                uploadDefaultText={"Upload"}
+                                browseActionText={"Browse action"}
+                                notSpecifiedText={"Not specified"}
+                                searchFilesPlaceHolderText={"Search files"}
+                                searchFoldersPlaceHolderText={"Search folders"}
+                                fileText={"File"}
+                                folderText={"Folder"}                            
+                            />
+                            <SingleLineInputWithError
+                                withLabel={true}
+                                label={resx.get("lblCertificatePassword")}
+                                value={this.props.certificatePassword}
+                                type="password"
+                                autocomplete="off"
+                                tooltipMessage={"This is a tooltip message"}
+                                onChange={this.onSettingChange.bind(this, "CertificatePassword")}
+                            />
+                            <Button>
+                                {resx.get("lblCertificateUpload")}
+                            </Button>
+                            <Button
+                                onClick={this.switchCertUploadMode.bind(this)} >
+                                {resx.get("lblCertificateCancel")}
+                            </Button>
+                        </div>}
+                    </GridCell>
                 </GridCell>
                 <GridCell columnSize={100}>
                     <div className="buttons-box">
@@ -234,7 +337,12 @@ GeneralSettings.propTypes = {
     apiSecret: PropTypes.string,
     redirectUri: PropTypes.string,    
     onErrorUri: PropTypes.string,    
-    tenantId: PropTypes.string
+    tenantId: PropTypes.string,
+    authenticationMode: PropTypes.string,
+    certificateThumbprint: PropTypes.string,
+    certificateFile: PropTypes.string,
+    certificatePassword: PropTypes.string,
+    validationCode: PropTypes.string
 };
 
 
@@ -248,7 +356,12 @@ function mapStateToProps(state) {
         apiSecret: state.settings.apiSecret,
         redirectUri: state.settings.redirectUri,
         onErrorUri: state.settings.onErrorUri,
-        tenantId: state.settings.tenantId
+        tenantId: state.settings.tenantId,
+        authenticationMode: state.settings.authenticationMode,
+        certificateThumbprint: state.settings.certificateThumbprint,
+        certificateFile: state.settings.certificateFile,
+        certificatePassword: state.settings.certificatePassword,
+        validationCode: state.settings.validationCode
     };
 }
 

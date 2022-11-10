@@ -27,7 +27,12 @@ export default function settings(state = {
                 usernamePrefixEnabled: action.data.usernamePrefixEnabled,
                 groupNamePrefixEnabled: action.data.groupNamePrefixEnabled,
                 authorizationCodePrompt: action.data.authorizationCodePrompt,
-                domainHint: action.data.domainHint
+                domainHint: action.data.domainHint,
+                authenticationMode: action.data.authenticationMode,
+                certificateThumbprint: action.data.certificateThumbprint,
+                certificateFile: action.data.certificateFile,
+                certificatePassword: action.data.certificatePassword,
+                validationCode: action.data.validationCode
             };
         case ActionTypes.SETTINGS_CLIENT_MODIFIED:
             return { ...state,
@@ -52,7 +57,13 @@ export default function settings(state = {
                 usernamePrefixEnabled: action.data.usernamePrefixEnabled,
                 groupNamePrefixEnabled: action.data.groupNamePrefixEnabled,
                 authorizationCodePrompt: action.data.authorizationCodePrompt,
-                domainHint: action.data.domainHint
+                domainHint: action.data.domainHint,
+                authenticationMode: action.data.authenticationMode,
+                certificateThumbprint: action.data.certificateThumbprint,
+                certificateFile: action.data.certificateFile,
+                certificatePassword: action.data.certificatePassword,
+                validationCode: action.data.validationCode
+
             };
         case ActionTypes.UPDATED_SETTINGS:
             return { ...state,

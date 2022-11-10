@@ -21,8 +21,11 @@
 
 #endregion
 
+using System.Runtime;
 using System.Runtime.Serialization;
 using DotNetNuke.Authentication.Azure.Components;
+using DotNetNuke.Authentication.Azure.Components.Models;
+using DotNetNuke.Web.UI.WebControls;
 
 namespace DotNetNuke.Authentication.Azure.Services
 {
@@ -71,6 +74,16 @@ namespace DotNetNuke.Authentication.Azure.Services
         public string AuthorizationCodePrompt { set; get; }
         [DataMember(Name = "domainHint")]
         public string DomainHint { get; set; }
+        [DataMember(Name = "authenticationMode")]
+        public string AuthenticationMode { get; set; }
+        [DataMember(Name = "certificateThumbprint")]
+        public string CertificateThumbprint { get; set; }
+        [DataMember(Name = "certificateFile")]
+        public string CertificateFile { get; set; }
+        [DataMember(Name = "certificatePassword")]
+        public string CertificatePassword { get; set; }
+        [DataMember(Name = "validationCode")]
+        public string ValidationCode { get; set; }
 
 
 
@@ -99,7 +112,19 @@ namespace DotNetNuke.Authentication.Azure.Services
                 UsernamePrefixEnabled = config.UsernamePrefixEnabled,
                 GroupNamePrefixEnabled = config.GroupNamePrefixEnabled,
                 AuthorizationCodePrompt = config.AuthorizationCodePrompt,
-                DomainHint = config.DomainHint
+                DomainHint = config.DomainHint,
+                AuthenticationMode = config.AuthenticationMode,
+                CertificateThumbprint = config.CertificateThumbprint,
+                CertificateFile = config.CertificateFile,
+                //CertificateFile = certificate != null ? new FileDto()
+                //{
+                //    fileName = certificate.FileName,
+                //    folderPath = certificate.Folder,
+                //    fileId = certificate.FileId,
+                //    folderId = certificate.FolderId,
+                //},
+                CertificatePassword = config.CertificatePassword,
+                ValidationCode = new DnnFileUploadOptions().ValidationCode
             };
         }
 
@@ -115,7 +140,11 @@ namespace DotNetNuke.Authentication.Azure.Services
                 AutoRedirect = settings.AutoRedirect,
                 AutoAuthorize = settings.AutoAuthorize,
                 Enabled = settings.Enabled,
-                UseGlobalSettings = settings.UseGlobalSettings
+                UseGlobalSettings = settings.UseGlobalSettings,
+                AuthenticationMode = settings.AuthenticationMode,
+                CertificateThumbprint = settings.CertificateThumbprint,
+                CertificateFile = settings.CertificateFile,
+                CertificatePassword = settings.CertificatePassword
             };
 
             AzureConfig.UpdateConfig(config);

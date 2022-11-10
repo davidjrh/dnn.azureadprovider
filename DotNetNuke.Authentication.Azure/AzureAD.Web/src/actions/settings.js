@@ -51,6 +51,11 @@ const settingsActions = {
                         groupNamePrefixEnabled: data.groupNamePrefixEnabled,
                         authorizationCodePrompt: data.authorizationCodePrompt,
                         domainHint: data.domainHint,
+                        authenticationMode: data.authenticationMode,
+                        certificateThumbprint: data.certificateThumbprint,
+                        certificateFile: data.certificateFile,
+                        certificatePassword: data.certificatePassword,
+                        validationCode: data.validationCode,
                         clientModified: false
                     }
                 });
@@ -143,6 +148,11 @@ const settingsActions = {
                     groupNamePrefixEnabled: settings.groupNamePrefixEnabled,
                     authorizationCodePrompt: settings.authorizationCodePrompt,
                     domainHint: settings.domainHint,
+                    authenticationMode: settings.authenticationMode,
+                    certificateThumbprint: data.certificateThumbprint,
+                    certificateFile: data.certificateFile,
+                    certificatePassword: data.certificatePassword,
+                    validationCode: data.validationCode,
                     clientModified: true
                 }
             });

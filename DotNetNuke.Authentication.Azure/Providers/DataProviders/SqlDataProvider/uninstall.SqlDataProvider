@@ -21,6 +21,10 @@
    , 'Azure_GroupNamePrefixEnabled'
    , 'Azure_AuthorizationCodePrompt'
    , 'Azure_DomainHint'
+   , 'Azure_AuthenticationMode'
+   , 'Azure_CertificateThumbprint'
+   , 'Azure_CertificateFile'
+   , 'Azure_CertificatePassword'
    , 'AzureB2C_UserGlobalSettings'
  )
 GO
@@ -48,6 +52,10 @@ DELETE {databaseOwner}[{objectQualifier}HostSettings]
    , 'Azure_GroupNamePrefixEnabled'
    , 'Azure_AuthorizationCodePrompt'
    , 'Azure_DomainHint'
+   , 'Azure_AuthenticationMode'
+   , 'Azure_CertificateThumbprint'
+   , 'Azure_CertificateFile'
+   , 'Azure_CertificatePassword'
    , 'AzureB2C_UserGlobalSettings'
  )
 GO

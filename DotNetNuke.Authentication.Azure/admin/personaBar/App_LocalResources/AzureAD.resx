@@ -512,4 +512,31 @@
   <data name="PromptSelectAccount" xml:space="preserve">
     <value>select_account</value>
   </data>
+  <data name="lblAuthenticationMode" xml:space="preserve">
+    <value>Authentication Mode</value>
+  </data>
+  <data name="lblAuthenticationModeCertificate" xml:space="preserve">
+    <value>Certificate</value>
+  </data>
+  <data name="lblAuthenticationModeSecret" xml:space="preserve">
+    <value>Secret</value>
+  </data>
+  <data name="lblCertificateCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="lblCertificateFile" xml:space="preserve">
+    <value>Certificate (.pfx)</value>
+  </data>
+  <data name="lblCertificatePassword" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="lblCertificateThumbprint" xml:space="preserve">
+    <value>Thumbprint</value>
+  </data>
+  <data name="lblCertificateUpload" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="lblCertificateUploadMode" xml:space="preserve">
+    <value>Upload certificate...</value>
+  </data>
 </root>

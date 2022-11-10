@@ -65,6 +65,10 @@ namespace DotNetNuke.Authentication.Azure.Components
             AutoAuthorize = bool.Parse(GetScopedSetting(Service + "_AutoAuthorize", portalId, "true"));
             AuthorizationCodePrompt = GetScopedSetting(Service + "_AuthorizationCodePrompt", portalId, "");
             DomainHint = GetScopedSetting(Service + "_DomainHint", portalId, "");
+            AuthenticationMode = GetScopedSetting(Service + "_AuthenticationMode", portalId, "secret");
+            CertificateThumbprint = GetScopedSetting(Service + "_CertificateThumbprint", portalId, "");
+            CertificateFile = GetScopedSetting(Service + "_CertificateFile", portalId, "");
+            CertificatePassword = GetScopedSetting(Service + "_CertificatePassword", portalId, "");
         }
 
         public static string GetSetting(string service, string key, int portalId, string defaultValue)
@@ -121,6 +125,14 @@ namespace DotNetNuke.Authentication.Azure.Components
         public string AuthorizationCodePrompt { get; set; }
         [SortOrder(22)]
         public string DomainHint { get; set; }
+        [SortOrder(23)]
+        public string AuthenticationMode { get; set; }
+        [SortOrder(24)]
+        public string CertificateThumbprint { get; set; }
+        [SortOrder(25)]
+        public string CertificateFile { get; set; }
+        [SortOrder(26)]
+        public string CertificatePassword { get; set; }
 
 
         private static string GetCacheKey(string service, int portalId)
@@ -164,6 +176,10 @@ namespace DotNetNuke.Authentication.Azure.Components
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_AutoAuthorize", config.AutoAuthorize.ToString());
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_AuthorizationCodePrompt", config.AuthorizationCodePrompt);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_DomainHint", config.DomainHint);
+            UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_AuthenticationMode", config.AuthenticationMode);
+            UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_CertificateThumbprint", config.CertificateThumbprint);
+            UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_CertificateFile", config.CertificateFile);
+            UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_CertificatePassword", config.CertificatePassword);
 
             UpdateConfig((OAuthConfigBase)config);
 
