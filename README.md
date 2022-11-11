@@ -10,7 +10,12 @@
   - [Azure Active Directory setup](#AAD-setup)
   - [DNN Provider installation and configuration](#provider-configuration)
   - [Claim mappings](docs/mappings.md)
-- [Known issues](#known-issues)
+- [Building the solution](#building-the-solution)
+  - [Requirements](#requirements-1)
+  - [Install package dependencies](#install-package-dependencies)
+  - [Debug the client side app](#debug-the-client-side-app)
+  - [Build the module](#build-the-module)
+- [References](#references)
 
 <a name="overview"></a>
 ## Overview
@@ -65,7 +70,7 @@ The settings page is very straightforward. It only requires three parameters fro
 
 ## Building the solution
 ### Requirements
-* Visual Studio 2017 (download from https://www.visualstudio.com/downloads/)
+* Visual Studio 2022 (download from https://www.visualstudio.com/downloads/)
 * npm package manager (download from https://www.npmjs.com/get-npm)
 
 ### Install package dependencies
@@ -81,13 +86,13 @@ From the comman line, enter the `<RepoRoot>\DotNetNuke.Authentication.Azure\Azur
 To debug the client side, build the module in debug mode and copy the .dll and .pdb files into your site /bin folder (you can tweak the post build event for such purpose). That will try to load the persona bar bundle script from https://localhost:8080. 
 
 The second step is to start the local webpack dev server. To do it, 
-From the comman line, enter the `<RepoRoot>\DotNetNuke.Authentication.Azure\AzureAD.Web` and run the following commands:
+From the command line, enter the `<RepoRoot>\DotNetNuke.Authentication.Azure\AzureAD.Web` and run the following commands:
 ```
   webpack-dev-server
 ```
 
 ### Build the module
-Now you can build the solution by opening the DotNetNuke.Authentication.Azure.sln file on Visual Studio 2017. Building the solution in "Release", will generate the React bundle and package it all together with the installation zip file, created under the "\releases" folder.
+Now you can build the solution by opening the DotNetNuke.Authentication.Azure.sln file on Visual Studio. Building the solution in "Release", will generate the React bundle and package it all together with the installation zip file, created under the "\releases" folder.
 
 On the Visual Studio output window you should see something like this:
 ```
