@@ -32,6 +32,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.Script.Serialization;
@@ -923,6 +924,8 @@ namespace DotNetNuke.Authentication.Azure.Components
             {
                 request.Headers.Add(HttpRequestHeader.Authorization, authHeader);
             }
+            string version = CustomAttributeExtensions.GetCustomAttribute<AssemblyFileVersionAttribute>((Assembly.GetExecutingAssembly()))?.Version;
+            ((HttpWebRequest)request).UserAgent = $"DNN Azure AD Provider (v{version})";
 
             try
             {
