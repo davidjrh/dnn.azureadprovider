@@ -53,6 +53,8 @@ namespace DotNetNuke.Authentication.Azure.Services
         public string JwtAudiences { get; set; }
         [DataMember(Name = "roleSyncEnabled")]
         public bool RoleSyncEnabled { get; set; }
+        [DataMember(Name = "userSyncEnabled")]
+        public bool UserSyncEnabled { get; set; }
         [DataMember(Name = "profileSyncEnabled")]
         public bool ProfileSyncEnabled { get; set; }
         [DataMember(Name = "jwtAuthEnabled")]
@@ -92,6 +94,7 @@ namespace DotNetNuke.Authentication.Azure.Services
                 UseGlobalSettings = config.UseGlobalSettings,
                 JwtAudiences = config.JwtAudiences,
                 RoleSyncEnabled = config.RoleSyncEnabled,
+                UserSyncEnabled = config.UserSyncEnabled,
                 ProfileSyncEnabled = config.ProfileSyncEnabled,
                 JwtAuthEnabled = config.JwtAuthEnabled,
                 ApiResource = config.APIResource,
@@ -128,6 +131,7 @@ namespace DotNetNuke.Authentication.Azure.Services
                 AADApplicationId = settings.AadAppClientId,
                 AADApplicationKey = settings.AadAppSecret,
                 RoleSyncEnabled = settings.RoleSyncEnabled,
+                UserSyncEnabled = settings.UserSyncEnabled,
                 ProfileSyncEnabled = settings.ProfileSyncEnabled,
                 UsernamePrefixEnabled = settings.UsernamePrefixEnabled,
                 GroupNamePrefixEnabled = settings.GroupNamePrefixEnabled

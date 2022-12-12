@@ -512,4 +512,10 @@
   <data name="PromptSelectAccount" xml:space="preserve">
     <value>select_account</value>
   </data>
+  <data name="lblUserSyncEnabled.Help" xml:space="preserve">
+    <value>Enables the user synchronization for this portal</value>
+  </data>
+  <data name="lblUserSyncEnabled.Text" xml:space="preserve">
+    <value>User Sync</value>
+  </data>
 </root>

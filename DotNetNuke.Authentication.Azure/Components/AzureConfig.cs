@@ -56,6 +56,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             AADApplicationKey = GetScopedSetting(Service + "_AADApplicationKey", portalId, "");
             JwtAudiences = GetScopedSetting(Service + "_JwtAudiences", portalId, "");
             RoleSyncEnabled = bool.Parse(GetScopedSetting(Service + "_RoleSyncEnabled", portalId, "false"));
+            UserSyncEnabled = bool.Parse(GetScopedSetting(Service + "_UserSyncEnabled", portalId, "false"));
             ProfileSyncEnabled = bool.Parse(GetScopedSetting(Service + "_ProfileSyncEnabled", portalId, "false"));
             JwtAuthEnabled = bool.Parse(GetScopedSetting(Service + "_JwtAuthEnabled", portalId, "false"));
             APIResource = GetScopedSetting(Service + "_APIResource", portalId, "");
@@ -121,6 +122,9 @@ namespace DotNetNuke.Authentication.Azure.Components
         public string AuthorizationCodePrompt { get; set; }
         [SortOrder(22)]
         public string DomainHint { get; set; }
+        [SortOrder(23)]
+        public bool UserSyncEnabled { get; set; }
+
 
 
         private static string GetCacheKey(string service, int portalId)
@@ -155,6 +159,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_AADApplicationKey", config.AADApplicationKey);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_JwtAudiences", config.JwtAudiences);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_RoleSyncEnabled", config.RoleSyncEnabled.ToString());
+            UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_UserSyncEnabled", config.UserSyncEnabled.ToString());
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_ProfileSyncEnabled", config.ProfileSyncEnabled.ToString());
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_JwtAuthEnabled", config.JwtAuthEnabled.ToString());
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_APIResource", config.APIResource);

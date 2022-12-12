@@ -353,19 +353,18 @@ namespace DotNetNuke.Authentication.Azure.Components
                 Email = claims.FirstOrDefault(x => x.Type == EmailClaimName)?.Value,
                 Id = claims.FirstOrDefault(x => x.Type == UserIdClaim).Value
             };
+
             // If no first name, try and get it from the display name.
             if (string.IsNullOrEmpty(user.AzureFirstName))
             {
-                user.AzureFirstName = user.AzureDisplayName.Split(' ')
-                    .First();
+                user.AzureFirstName = Utils.GetFirstName(user.AzureDisplayName);
             }
             // If no last name, try and get it from the display name.
             if (string.IsNullOrEmpty(user.AzureLastName))
             {
-                user.AzureLastName = user.AzureDisplayName.Split(' ')
-                    .Skip(1)
-                    .Aggregate("", (current, next) => current + " " + next);
+                user.AzureLastName = Utils.GetLastName(user.AzureDisplayName);
             }
+
             return user;
         }
 
@@ -847,7 +846,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             }
         }
 
-        private static string GetExtensionFromMediaContentType(string contentType)
+        internal static string GetExtensionFromMediaContentType(string contentType)
         {
             switch (contentType)
             {

@@ -152,6 +152,19 @@ namespace DotNetNuke.Authentication.Azure.Common
             return (usernameMapping != null) ? usernameMapping.AadClaimName : "sub";
         }
 
+        public static string GetFirstName(string displayName)
+        {
+            return displayName.Split(' ')
+                .First();
+        }
+
+        public static string GetLastName(string displayName)
+        {
+            return displayName.Split(' ')
+                .Skip(1)
+                .Aggregate("", (current, next) => current + " " + next);
+        }
+
     }
 
 }
