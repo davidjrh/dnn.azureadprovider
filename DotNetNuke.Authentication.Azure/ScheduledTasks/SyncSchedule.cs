@@ -11,6 +11,7 @@ using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Scheduling;
+using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -317,6 +318,8 @@ namespace DotNetNuke.Authentication.Azure.ScheduledTasks
             user.Email = eMail;
             user.Profile.FirstName = firstName;
             user.Profile.LastName = lastName;
+
+            AuthenticationController.AddUserAuthentication(user.UserID, AzureConfig.ServiceName, userName);
             UserController.UpdateUser(portalId, user);
             return user;
         }
@@ -421,7 +424,7 @@ namespace DotNetNuke.Authentication.Azure.ScheduledTasks
 
         private string GetPropertyValueByClaimName(Microsoft.Graph.User user, string claimName)
         {
-            switch (claimName)
+            switch (claimName.ToLowerInvariant())
             {
                 case "unique_name":
                 case "upn":
@@ -432,9 +435,10 @@ namespace DotNetNuke.Authentication.Azure.ScheduledTasks
                     return user.Surname;
                 case "name":
                     return user.DisplayName;
+                case "emails":
                 case "email":
                 case "mail":
-                    return user.Mail;
+                    return user.Mail ?? user.OtherMails?.FirstOrDefault();
                 case "oid":
                 case "sub":
                     return user.Id;
