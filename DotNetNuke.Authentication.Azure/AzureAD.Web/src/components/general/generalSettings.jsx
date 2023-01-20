@@ -57,6 +57,7 @@ class GeneralSettings extends Component {
             useGlobalSettings: (key === "UseGlobalSettings") ? !props.useGlobalSettings : props.useGlobalSettings,            
             autoRedirect: (key === "AutoRedirect") ? !props.autoRedirect : props.autoRedirect,
             autoAuthorize: (key === "AutoAuthorize") ? !props.autoAuthorize : props.autoAuthorize,
+            autoMatchExistingUsers: (key === "AutoMatchExistingUsers") ? !props.autoMatchExistingUsers : props.autoMatchExistingUsers,
             apiKey: (key === "AppId") ? event.target.value : props.apiKey,
             apiSecret: (key === "AppSecret") ? event.target.value : props.apiSecret,
             redirectUri: (key === "RedirectUri") ? event.target.value: props.redirectUri,
@@ -78,6 +79,7 @@ class GeneralSettings extends Component {
             useGlobalSettings: props.useGlobalSettings,            
             autoRedirect: props.autoRedirect,
             autoAuthorize: props.autoAuthorize,
+            autoMatchExistingUsers: props.autoMatchExistingUsers,
             apiKey: props.apiKey,
             apiSecret: props.apiSecret,
             redirectUri: props.redirectUri,
@@ -110,6 +112,12 @@ class GeneralSettings extends Component {
                         tooltipMessage={resx.get("lblAutoRedirect.Help")}
                         value={this.props.autoRedirect}
                         onChange={this.onSettingChange.bind(this, "AutoRedirect")} />
+                    <Switch label={resx.get("lblAutoMatchExistingUsers")}
+                        onText=""
+                        offText=""
+                        tooltipMessage={resx.get("lblAutoMatchExistingUsers.Help")}
+                        value={this.props.autoMatchExistingUsers}
+                        onChange={this.onSettingChange.bind(this, "AutoMatchExistingUsers")} />
                 </GridCell>
                 <GridCell columnSize={50}>
                     <div className="logo"></div>
@@ -124,7 +132,7 @@ class GeneralSettings extends Component {
                         offText=""
                         tooltipMessage={resx.get("lblAutoAuthorize.Help")}
                         value={this.props.autoAuthorize}
-                        onChange={this.onSettingChange.bind(this, "AutoAuthorize")} />                        
+                        onChange={this.onSettingChange.bind(this, "AutoAuthorize")} />
                 </GridCell>
                 <GridCell columnSize={100} className="directory-section">
                     <GridCell columnSize={50}>
@@ -230,6 +238,7 @@ GeneralSettings.propTypes = {
     useGlobalSettings: PropTypes.bool,    
     autoRedirect: PropTypes.bool,
     autoAuthorize: PropTypes.bool,
+    autoMatchExistingUsers: PropTypes.bool,
     apiKey: PropTypes.string,
     apiSecret: PropTypes.string,
     redirectUri: PropTypes.string,    
@@ -244,6 +253,7 @@ function mapStateToProps(state) {
         useGlobalSettings: state.settings.useGlobalSettings,        
         autoRedirect: state.settings.autoRedirect,
         autoAuthorize: state.settings.autoAuthorize,
+        autoMatchExistingUsers: state.settings.autoMatchExistingUsers,
         apiKey: state.settings.apiKey,
         apiSecret: state.settings.apiSecret,
         redirectUri: state.settings.redirectUri,

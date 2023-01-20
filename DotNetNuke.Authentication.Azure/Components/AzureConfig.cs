@@ -36,7 +36,7 @@ namespace DotNetNuke.Authentication.Azure.Components
         public const string ServiceName = "Azure";
 
         private const string _cacheKey = "Authentication";
-        
+
         private AzureConfig() : base("", 0)
         { }
         protected internal AzureConfig(string service, int portalId) : base(service, portalId)
@@ -56,6 +56,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             AADApplicationKey = GetScopedSetting(Service + "_AADApplicationKey", portalId, "");
             JwtAudiences = GetScopedSetting(Service + "_JwtAudiences", portalId, "");
             RoleSyncEnabled = bool.Parse(GetScopedSetting(Service + "_RoleSyncEnabled", portalId, "false"));
+            UserSyncEnabled = bool.Parse(GetScopedSetting(Service + "_UserSyncEnabled", portalId, "false"));
             ProfileSyncEnabled = bool.Parse(GetScopedSetting(Service + "_ProfileSyncEnabled", portalId, "false"));
             JwtAuthEnabled = bool.Parse(GetScopedSetting(Service + "_JwtAuthEnabled", portalId, "false"));
             APIResource = GetScopedSetting(Service + "_APIResource", portalId, "");
@@ -63,6 +64,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             UsernamePrefixEnabled = bool.Parse(GetScopedSetting(Service + "_UsernamePrefixEnabled", portalId, "true"));
             GroupNamePrefixEnabled = bool.Parse(GetScopedSetting(Service + "_GroupNamePrefixEnabled", portalId, "true"));
             AutoAuthorize = bool.Parse(GetScopedSetting(Service + "_AutoAuthorize", portalId, "true"));
+            AutoMatchExistingUsers = bool.Parse(GetScopedSetting(Service + "_AutoMatchExistingUsers", portalId, "false"));
             AuthorizationCodePrompt = GetScopedSetting(Service + "_AuthorizationCodePrompt", portalId, "");
             DomainHint = GetScopedSetting(Service + "_DomainHint", portalId, "");
         }
@@ -121,6 +123,11 @@ namespace DotNetNuke.Authentication.Azure.Components
         public string AuthorizationCodePrompt { get; set; }
         [SortOrder(22)]
         public string DomainHint { get; set; }
+        [SortOrder(23)]
+        public bool UserSyncEnabled { get; set; }
+        [SortOrder(24)]
+        public bool AutoMatchExistingUsers { get; set; }
+
 
 
         private static string GetCacheKey(string service, int portalId)
@@ -155,6 +162,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_AADApplicationKey", config.AADApplicationKey);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_JwtAudiences", config.JwtAudiences);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_RoleSyncEnabled", config.RoleSyncEnabled.ToString());
+            UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_UserSyncEnabled", config.UserSyncEnabled.ToString());
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_ProfileSyncEnabled", config.ProfileSyncEnabled.ToString());
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_JwtAuthEnabled", config.JwtAuthEnabled.ToString());
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_APIResource", config.APIResource);
@@ -162,6 +170,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_UsernamePrefixEnabled", config.UsernamePrefixEnabled.ToString());
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_GroupNamePrefixEnabled", config.GroupNamePrefixEnabled.ToString());
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_AutoAuthorize", config.AutoAuthorize.ToString());
+            UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_AutoMatchExistingUsers", config.AutoMatchExistingUsers.ToString());
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_AuthorizationCodePrompt", config.AuthorizationCodePrompt);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_DomainHint", config.DomainHint);
 

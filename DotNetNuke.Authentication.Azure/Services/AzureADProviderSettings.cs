@@ -53,6 +53,8 @@ namespace DotNetNuke.Authentication.Azure.Services
         public string JwtAudiences { get; set; }
         [DataMember(Name = "roleSyncEnabled")]
         public bool RoleSyncEnabled { get; set; }
+        [DataMember(Name = "userSyncEnabled")]
+        public bool UserSyncEnabled { get; set; }
         [DataMember(Name = "profileSyncEnabled")]
         public bool ProfileSyncEnabled { get; set; }
         [DataMember(Name = "jwtAuthEnabled")]
@@ -71,6 +73,8 @@ namespace DotNetNuke.Authentication.Azure.Services
         public string AuthorizationCodePrompt { set; get; }
         [DataMember(Name = "domainHint")]
         public string DomainHint { get; set; }
+        [DataMember(Name = "autoMatchExistingUsers")]
+        public bool AutoMatchExistingUsers { get; set; }
 
 
 
@@ -86,12 +90,14 @@ namespace DotNetNuke.Authentication.Azure.Services
                 OnErrorUri = config.OnErrorUri,
                 AutoRedirect = config.AutoRedirect,
                 AutoAuthorize = config.AutoAuthorize,
+                AutoMatchExistingUsers = config.AutoMatchExistingUsers,
                 AadAppClientId = config.AADApplicationId,
                 AadAppSecret = config.AADApplicationKey,
                 Enabled = config.Enabled,
                 UseGlobalSettings = config.UseGlobalSettings,
                 JwtAudiences = config.JwtAudiences,
                 RoleSyncEnabled = config.RoleSyncEnabled,
+                UserSyncEnabled = config.UserSyncEnabled,
                 ProfileSyncEnabled = config.ProfileSyncEnabled,
                 JwtAuthEnabled = config.JwtAuthEnabled,
                 ApiResource = config.APIResource,
@@ -114,6 +120,7 @@ namespace DotNetNuke.Authentication.Azure.Services
                 OnErrorUri = settings.OnErrorUri,
                 AutoRedirect = settings.AutoRedirect,
                 AutoAuthorize = settings.AutoAuthorize,
+                AutoMatchExistingUsers = settings.AutoMatchExistingUsers,
                 Enabled = settings.Enabled,
                 UseGlobalSettings = settings.UseGlobalSettings
             };
@@ -128,6 +135,7 @@ namespace DotNetNuke.Authentication.Azure.Services
                 AADApplicationId = settings.AadAppClientId,
                 AADApplicationKey = settings.AadAppSecret,
                 RoleSyncEnabled = settings.RoleSyncEnabled,
+                UserSyncEnabled = settings.UserSyncEnabled,
                 ProfileSyncEnabled = settings.ProfileSyncEnabled,
                 UsernamePrefixEnabled = settings.UsernamePrefixEnabled,
                 GroupNamePrefixEnabled = settings.GroupNamePrefixEnabled

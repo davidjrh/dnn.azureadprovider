@@ -32,8 +32,8 @@ class SyncSettings extends Component {
     UNSAFE_componentWillReceiveProps(nextProps) {
         const {state} = this;
 
-        state.error["aadAppClientId"] = ((nextProps.roleSyncEnabled || nextProps.profileSyncEnabled) && nextProps.aadAppClientId === "");
-        state.error["aadAppSecret"] = ((nextProps.roleSyncEnabled || nextProps.profileSyncEnabled) && nextProps.aadAppSecret === "");
+        state.error["aadAppClientId"] = ((nextProps.roleSyncEnabled || nextProps.userSyncEnabled || nextProps.profileSyncEnabled) && nextProps.aadAppClientId === "");
+        state.error["aadAppSecret"] = ((nextProps.roleSyncEnabled || nextProps.userSyncEnabled || nextProps.profileSyncEnabled) && nextProps.aadAppSecret === "");
     }      
 
     onSettingChange(key, event) {
@@ -43,6 +43,7 @@ class SyncSettings extends Component {
             aadAppClientId: (key === "AadAppClientId") ? event.target.value : props.aadAppClientId,
             aadAppSecret: (key === "AadAppSecret") ? event.target.value : props.aadAppSecret,
             roleSyncEnabled: (key === "roleSyncEnabled") ? !props.roleSyncEnabled : props.roleSyncEnabled,
+            userSyncEnabled: (key === "userSyncEnabled") ? !props.userSyncEnabled : props.userSyncEnabled,
             profileSyncEnabled: (key === "profileSyncEnabled") ? !props.profileSyncEnabled : props.profileSyncEnabled,
             usernamePrefixEnabled: (key === "usernamePrefixEnabled") ? !props.usernamePrefixEnabled : props.usernamePrefixEnabled,
             groupNamePrefixEnabled: (key === "groupNamePrefixEnabled") ? !props.groupNamePrefixEnabled : props.groupNamePrefixEnabled
@@ -61,6 +62,7 @@ class SyncSettings extends Component {
             aadAppClientId: props.aadAppClientId,
             aadAppSecret: props.aadAppSecret,
             roleSyncEnabled: props.roleSyncEnabled,
+            userSyncEnabled: props.userSyncEnabled,
             profileSyncEnabled: props.profileSyncEnabled,
             usernamePrefixEnabled: props.usernamePrefixEnabled,
             groupNamePrefixEnabled: props.groupNamePrefixEnabled
@@ -86,11 +88,15 @@ class SyncSettings extends Component {
                             <Switch label={resx.get("lblRoleSyncEnabled")} onText="" offText=""
                                 tooltipMessage={resx.get("lblRoleSyncEnabled.Help")}
                                 value={this.props.roleSyncEnabled}
-                                onChange={this.onSettingChange.bind(this, "roleSyncEnabled")} />            
+                                onChange={this.onSettingChange.bind(this, "roleSyncEnabled")} />
+                            <Switch label={resx.get("lblUserSyncEnabled")} onText="" offText=""
+                                tooltipMessage={resx.get("lblUserSyncEnabled.Help")}
+                                value={this.props.userSyncEnabled}
+                                onChange={this.onSettingChange.bind(this, "userSyncEnabled")} />
                             <Switch label={resx.get("lblProfileSyncEnabled")} onText="" offText=""
                                 tooltipMessage={resx.get("lblProfileSyncEnabled.Help")}
                                 value={this.props.profileSyncEnabled}
-                                onChange={this.onSettingChange.bind(this, "profileSyncEnabled")} />                                                  
+                                onChange={this.onSettingChange.bind(this, "profileSyncEnabled")} />
                         </GridCell>                           
                         <GridCell columnSize={100}>
                             <h1 className={"sectionLabel"}>{resx.get("lblAADSettings")}</h1>
@@ -167,6 +173,7 @@ SyncSettings.propTypes = {
     aadAppClientId: PropTypes.string,
     aadAppSecret: PropTypes.string,
     roleSyncEnabled: PropTypes.bool,
+    userSyncEnabled: PropTypes.bool,
     profileSyncEnabled: PropTypes.bool,
     usernamePrefixEnabled: PropTypes.bool,
     groupNamePrefixEnabled: PropTypes.bool
@@ -178,6 +185,7 @@ function mapStateToProps(state) {
         aadAppClientId: state.settings.aadAppClientId,
         aadAppSecret: state.settings.aadAppSecret,
         roleSyncEnabled: state.settings.roleSyncEnabled,
+        userSyncEnabled: state.settings.userSyncEnabled,
         profileSyncEnabled: state.settings.profileSyncEnabled,
         usernamePrefixEnabled: state.settings.usernamePrefixEnabled,
         groupNamePrefixEnabled: state.settings.groupNamePrefixEnabled

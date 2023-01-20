@@ -71,7 +71,7 @@ class MoreSettings extends Component {
         return (
             <div className="dnn-azuread-aad-advancedSettings">
                 <InputGroup>
-                    <h1 className={"sectionLabel spacer"}>{resx.get("lblTokenValidation")}</h1>
+                    <h1>{resx.get("lblTokenValidation")}</h1>
                     <p>{resx.get("lblTokenValidation.Help")}</p>
                     <GridSystem  numberOfColumns={2}>
                         <GridCell columnSize={90}>

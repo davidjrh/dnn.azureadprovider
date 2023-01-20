@@ -483,7 +483,7 @@
     <value>If included, the app skips the email-based discovery process that user goes through on the sign-in page, leading to a slightly more streamlined user experience.</value>
   </data>
   <data name="lblPromptBlank" xml:space="preserve">
-    <value> </value>
+    <value>&#160;</value>
   </data>
   <data name="lblPromptLogin" xml:space="preserve">
     <value>login</value>
@@ -511,5 +511,17 @@
   </data>
   <data name="PromptSelectAccount" xml:space="preserve">
     <value>select_account</value>
+  </data>
+  <data name="lblUserSyncEnabled.Help" xml:space="preserve">
+    <value>Enables the user synchronization for this portal</value>
+  </data>
+  <data name="lblUserSyncEnabled.Text" xml:space="preserve">
+    <value>User Sync</value>
+  </data>
+  <data name="lblAutoMatchExistingUsers.Help" xml:space="preserve">
+    <value>If enabled, logging in with Azure AD, by providing a username identical to an existing user created on DNN, will automatically bind that user to the the one in Azure AD.</value>
+  </data>
+  <data name="lblAutoMatchExistingUsers.Text" xml:space="preserve">
+    <value>Auto-Match Existing Users</value>
   </data>
 </root>
