@@ -2,6 +2,7 @@
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace DotNetNuke.Authentication.Azure.Components.Graph
@@ -33,6 +34,9 @@ namespace DotNetNuke.Authentication.Azure.Components.Graph
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue(
                 "Bearer", accessToken
             );
+            string version = CustomAttributeExtensions.GetCustomAttribute<AssemblyFileVersionAttribute>((Assembly.GetExecutingAssembly()))?.Version;
+            requestMessage.Headers.Add("User-Agent", $"DNN Azure AD Provider (v{version})");
         }
+
     }
 }
