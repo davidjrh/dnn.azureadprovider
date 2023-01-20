@@ -36,7 +36,7 @@ namespace DotNetNuke.Authentication.Azure.Components
         public const string ServiceName = "Azure";
 
         private const string _cacheKey = "Authentication";
-        
+
         private AzureConfig() : base("", 0)
         { }
         protected internal AzureConfig(string service, int portalId) : base(service, portalId)
@@ -64,6 +64,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             UsernamePrefixEnabled = bool.Parse(GetScopedSetting(Service + "_UsernamePrefixEnabled", portalId, "true"));
             GroupNamePrefixEnabled = bool.Parse(GetScopedSetting(Service + "_GroupNamePrefixEnabled", portalId, "true"));
             AutoAuthorize = bool.Parse(GetScopedSetting(Service + "_AutoAuthorize", portalId, "true"));
+            AutoMatchExistingUsers = bool.Parse(GetScopedSetting(Service + "_AutoMatchExistingUsers", portalId, "false"));
             AuthorizationCodePrompt = GetScopedSetting(Service + "_AuthorizationCodePrompt", portalId, "");
             DomainHint = GetScopedSetting(Service + "_DomainHint", portalId, "");
         }
@@ -124,6 +125,8 @@ namespace DotNetNuke.Authentication.Azure.Components
         public string DomainHint { get; set; }
         [SortOrder(23)]
         public bool UserSyncEnabled { get; set; }
+        [SortOrder(24)]
+        public bool AutoMatchExistingUsers { get; set; }
 
 
 
@@ -167,6 +170,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_UsernamePrefixEnabled", config.UsernamePrefixEnabled.ToString());
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_GroupNamePrefixEnabled", config.GroupNamePrefixEnabled.ToString());
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_AutoAuthorize", config.AutoAuthorize.ToString());
+            UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_AutoMatchExistingUsers", config.AutoMatchExistingUsers.ToString());
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_AuthorizationCodePrompt", config.AuthorizationCodePrompt);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_DomainHint", config.DomainHint);
 

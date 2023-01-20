@@ -466,15 +466,15 @@
     <value>Prompt</value>
   </data>
   <data name="lblAuthorizationCodePrompt.Help" xml:space="preserve">
-    <value>Indicates the type of user interaction that is required.
+    <value>Indicates the type of user interaction that is required. The default behavior is to either sign in the sole current user, show the account picker if there are multiple users, or show the login page if there are no users signed in.
 &lt;br/&gt;
-- prompt=login forces the user to enter their credentials on that request, negating single-sign on.
+&lt;b&gt;[login]&lt;/b&gt; forces the user to enter their credentials on that request, negating single-sign on.
 &lt;br/&gt;
-- prompt=none is the opposite. It ensures that the user isn't presented with any interactive prompt. If the request can't be completed silently by using single-sign on, the Microsoft identity platform returns an interaction_required error.
+&lt;b&gt;[none]&lt;/b&gt; is the opposite. It ensures that the user isn't presented with any interactive prompt. If the request can't be completed silently by using single-sign on, the Microsoft identity platform returns an interaction_required error.
 &lt;br/&gt;
-- prompt=consent triggers the OAuth consent dialog after the user signs in, asking the user to grant permissions to the app.
+&lt;b&gt;[consent]&lt;/b&gt; triggers the OAuth consent dialog after the user signs in, asking the user to grant permissions to the app.
 &lt;br/&gt;
-- prompt=select_account interrupts single sign-on providing account selection experience listing all the accounts either in session or any remembered account or an option to choose to use a different account altogether.</value>
+&lt;b&gt;[select_account]&lt;/b&gt; interrupts single sign-on providing account selection experience listing all the accounts either in session or any remembered account or an option to choose to use a different account altogether.</value>
   </data>
   <data name="lblAuthorizationCodeDomainHint.Text" xml:space="preserve">
     <value>Domain Hint</value>
@@ -483,7 +483,7 @@
     <value>If included, the app skips the email-based discovery process that user goes through on the sign-in page, leading to a slightly more streamlined user experience.</value>
   </data>
   <data name="lblPromptBlank" xml:space="preserve">
-    <value>""</value>
+    <value>&#160;</value>
   </data>
   <data name="lblPromptLogin" xml:space="preserve">
     <value>login</value>
@@ -517,5 +517,11 @@
   </data>
   <data name="lblUserSyncEnabled.Text" xml:space="preserve">
     <value>User Sync</value>
+  </data>
+  <data name="lblAutoMatchExistingUsers.Help" xml:space="preserve">
+    <value>If enabled, logging in with Azure AD, by providing a username identical to an existing user created on DNN, will automatically bind that user to the the one in Azure AD.</value>
+  </data>
+  <data name="lblAutoMatchExistingUsers.Text" xml:space="preserve">
+    <value>Auto-Match Existing Users</value>
   </data>
 </root>

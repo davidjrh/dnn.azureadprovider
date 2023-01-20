@@ -73,6 +73,8 @@ namespace DotNetNuke.Authentication.Azure.Services
         public string AuthorizationCodePrompt { set; get; }
         [DataMember(Name = "domainHint")]
         public string DomainHint { get; set; }
+        [DataMember(Name = "autoMatchExistingUsers")]
+        public bool AutoMatchExistingUsers { get; set; }
 
 
 
@@ -88,6 +90,7 @@ namespace DotNetNuke.Authentication.Azure.Services
                 OnErrorUri = config.OnErrorUri,
                 AutoRedirect = config.AutoRedirect,
                 AutoAuthorize = config.AutoAuthorize,
+                AutoMatchExistingUsers = config.AutoMatchExistingUsers,
                 AadAppClientId = config.AADApplicationId,
                 AadAppSecret = config.AADApplicationKey,
                 Enabled = config.Enabled,
@@ -117,6 +120,7 @@ namespace DotNetNuke.Authentication.Azure.Services
                 OnErrorUri = settings.OnErrorUri,
                 AutoRedirect = settings.AutoRedirect,
                 AutoAuthorize = settings.AutoAuthorize,
+                AutoMatchExistingUsers = settings.AutoMatchExistingUsers,
                 Enabled = settings.Enabled,
                 UseGlobalSettings = settings.UseGlobalSettings
             };

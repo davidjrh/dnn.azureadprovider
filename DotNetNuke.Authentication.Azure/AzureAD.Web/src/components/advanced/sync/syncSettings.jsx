@@ -96,7 +96,7 @@ class SyncSettings extends Component {
                             <Switch label={resx.get("lblProfileSyncEnabled")} onText="" offText=""
                                 tooltipMessage={resx.get("lblProfileSyncEnabled.Help")}
                                 value={this.props.profileSyncEnabled}
-                                onChange={this.onSettingChange.bind(this, "profileSyncEnabled")} />                                                  
+                                onChange={this.onSettingChange.bind(this, "profileSyncEnabled")} />
                         </GridCell>                           
                         <GridCell columnSize={100}>
                             <h1 className={"sectionLabel"}>{resx.get("lblAADSettings")}</h1>
