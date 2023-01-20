@@ -355,7 +355,7 @@ namespace DotNetNuke.Authentication.Azure.ScheduledTasks
                         foreach (var aadUser in users)
                         {
                             try
-                            {                                
+                            {                               
                                 var userName =  $"{userPrefix}{GetPropertyValueByClaimName(aadUser, userMappings.FirstOrDefault(x => x.DnnPropertyName == "Id")?.AadClaimName)}";
                                 var displayName = GetPropertyValueByClaimName(aadUser, userMappings.FirstOrDefault(x => x.DnnPropertyName == "DisplayName")?.AadClaimName);
                                 var firstName = GetPropertyValueByClaimName(aadUser, userMappings.FirstOrDefault(x => x.DnnPropertyName == "FirstName")?.AadClaimName); 
