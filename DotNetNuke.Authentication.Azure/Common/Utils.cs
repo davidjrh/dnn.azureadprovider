@@ -162,7 +162,8 @@ namespace DotNetNuke.Authentication.Azure.Common
         {
             return displayName.Split(' ')
                 .Skip(1)
-                .Aggregate("", (current, next) => current + " " + next);
+                .Aggregate("", (current, next) => current + " " + next)
+                .TrimStart(' ');
         }
 
     }
