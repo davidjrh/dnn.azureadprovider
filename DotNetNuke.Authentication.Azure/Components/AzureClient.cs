@@ -228,10 +228,7 @@ namespace DotNetNuke.Authentication.Azure.Components
         {
             get
             {
-                // Will always return true if _autoMatchExistingUsers is true
-                // Otherwise, it will return the value specified in the settings
-                // This code would have to be changed if we wanted it to always return false whenever _autoMatchExistingUsers is false
-                return _autoMatchExistingUsers || Settings.AutoMatchExistingUsers;
+                return _autoMatchExistingUsers;
             }
         }
 
