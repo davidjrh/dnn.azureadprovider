@@ -223,6 +223,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Auth\AadAuthMessageHandler.cs" />
+    <Compile Include="Plugin.cs" />
     <Compile Include="Common\Utils.cs" />
     <Compile Include="Components\AzureClient.cs" />
     <Compile Include="Components\AzureConfig.cs" />
@@ -295,7 +296,12 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\DotNetNuke.Authentication.Azure.Extensibility\DotNetNuke.Authentication.Azure.Extensibility.csproj">
+      <Project>{42445032-9098-4160-930d-4127dc292695}</Project>
+      <Name>DotNetNuke.Authentication.Azure.Extensibility</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <Extension>zip</Extension>

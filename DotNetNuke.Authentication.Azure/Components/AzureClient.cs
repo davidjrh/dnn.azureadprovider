@@ -40,6 +40,7 @@ using DotNetNuke.Authentication.Azure.Common;
 using DotNetNuke.Authentication.Azure.Components.Graph;
 using DotNetNuke.Authentication.Azure.Components.Models;
 using DotNetNuke.Authentication.Azure.Data;
+using DotNetNuke.Authentication.Azure.Extensibility;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
@@ -127,6 +128,33 @@ namespace DotNetNuke.Authentication.Azure.Components
                 return _customUserMappings;
             }
         }
+        private ILoginValidation _loginValidationAddIn;
+        public ILoginValidation LoginValidationAddIn
+        {
+            get
+            {
+                if (_loginValidationAddIn == null)
+                {
+                    var loginValidateTypeName = Utils.GetAppSetting("AzureADB2C.LoginValidationProvider");
+                    if (!string.IsNullOrEmpty(loginValidateTypeName))
+                    {
+                        var type = Type.GetType(loginValidateTypeName, true);
+                        if (type.GetInterfaces().Contains(typeof(ILoginValidation)))
+                        {
+                            _loginValidationAddIn = (ILoginValidation)Activator.CreateInstance(type);
+                        }
+                        else
+                        {
+                            throw new Exception($"Provider '{loginValidateTypeName}' does not implement ILoginValidation");
+                        }
+                    }
+                }
+
+                return _loginValidationAddIn;
+            }
+        }
+
+        public string UnauthorizedReason { get; set; }
 
         private string _userIdClaim;
         private string UserIdClaim
@@ -644,18 +672,34 @@ namespace DotNetNuke.Authentication.Azure.Components
 
             ExchangeCodeForToken();
 
-            SaveTokenCookie(string.IsNullOrEmpty(AuthToken));
-            
-            if (!string.IsNullOrEmpty(AuthToken) && !string.IsNullOrEmpty(HttpContext.Current.Request["state"]))
+            var authResult = string.IsNullOrEmpty(AuthToken) ? AuthorisationResult.Denied : AuthorisationResult.Authorized;
+
+            if (authResult == AuthorisationResult.Authorized)
             {
-                var state = new State(HttpContext.Current.Request["state"]);
-                if (!string.IsNullOrEmpty(state.RedirectUrl))
+                if (LoginValidationAddIn != null)
                 {
-                    this.RedirectUrl = state.RedirectUrl;
+                    Logger.Debug("Calling external ILoginValidate.OnTokenReceived method");
+                    try
+                    {
+                        UnauthorizedReason = null;
+                        LoginValidationAddIn.OnTokenReceived(AuthToken, HttpContext.Current);
+                    }
+                    catch (SecurityTokenException e)
+                    {
+                        Logger.Error("ILoginValidate.OnTokenReceived unauthorized this login", e);
+                        UnauthorizedReason = e.Message;
+                        authResult = AuthorisationResult.Denied;
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Error($"Error while calling ILoginValidate.OnTokenReceived: {e.Message}", e);
+                        authResult = AuthorisationResult.Denied;
+                    }
                 }
             }
 
-            return string.IsNullOrEmpty(AuthToken) ? AuthorisationResult.Denied : AuthorisationResult.Authorized;
+            SaveTokenCookie(authResult != AuthorisationResult.Authorized);
+            return authResult;
         }
 
         private void SaveTokenCookie(bool expireCookie = false)
