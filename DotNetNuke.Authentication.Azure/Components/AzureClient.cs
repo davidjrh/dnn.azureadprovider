@@ -341,7 +341,6 @@ namespace DotNetNuke.Authentication.Azure.Components
                 return null;
             }
             var claims = JwtIdToken.Claims.ToArray();
-            EnsureClaimExists(claims, DisplayNameClaimName);
             EnsureClaimExists(claims, EmailClaimName);
             EnsureClaimExists(claims, UserIdClaim);
             EnsureClaimExists(claims, "oid");       // we need this claim to make calls to AAD Graph
@@ -355,13 +354,25 @@ namespace DotNetNuke.Authentication.Azure.Components
                 Id = claims.FirstOrDefault(x => x.Type == UserIdClaim).Value
             };
 
+            // Store checks in variables to increase readability and avoid executing the same logic more than once.
+            bool noFirstName = string.IsNullOrEmpty(user.AzureFirstName);
+            bool noLastName = string.IsNullOrEmpty(user.AzureLastName);
+
+            // If no display name, try to get it from the first and last name.
+            if (string.IsNullOrEmpty(user.AzureDisplayName))
+            {
+                user.AzureDisplayName = !noFirstName ? user.AzureFirstName + (!noLastName ? " " + user.AzureLastName : "") : "";
+                return user; // We don't need to run the rest of the code if there's no display name.
+            }
+
             // If no first name, try and get it from the display name.
-            if (string.IsNullOrEmpty(user.AzureFirstName))
+            if (noFirstName)
             {
                 user.AzureFirstName = Utils.GetFirstName(user.AzureDisplayName);
             }
+
             // If no last name, try and get it from the display name.
-            if (string.IsNullOrEmpty(user.AzureLastName))
+            if (noLastName)
             {
                 user.AzureLastName = Utils.GetLastName(user.AzureDisplayName);
             }
