@@ -135,7 +135,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             {
                 if (_loginValidationAddIn == null)
                 {
-                    var loginValidateTypeName = Utils.GetAppSetting("AzureADB2C.LoginValidationProvider");
+                    var loginValidateTypeName = Utils.GetAppSetting("AzureAD.LoginValidationProvider");
                     if (!string.IsNullOrEmpty(loginValidateTypeName))
                     {
                         var type = Type.GetType(loginValidateTypeName, true);
