@@ -1,5 +1,5 @@
 # DNN Azure Active Directory provider
-### Latest release [![Latest release](docs/images/DNNAzureAD_LatestRelease.svg)](https://github.com/davidjrh/dnn.azureadprovider/releases/latest)
+[![Latest release](docs/images/DNNAzureAD_LatestRelease.svg)](https://github.com/davidjrh/dnn.azureadprovider/releases/latest) [![Build Status](https://intelequia.visualstudio.com/intelequia/_apis/build/status/Dnn.AzureADProvider-CI?branchName=master)](https://intelequia.visualstudio.com/Intelequia/_build?definitionId=54)
 
 **Looking for the DNN Azure AD B2C provider? Go to https://github.com/intelequia/dnn.azureadb2cprovider**
 
