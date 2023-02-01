@@ -44,11 +44,11 @@ Following this two steps, you will give access to all your Azure AD users to reg
 To support the role and profile synchronization by internally using the Microsoft Graph API, a service principal is needed to call the API. To setup the service principal:
 
 1. Go to https://portal.azure.com to setup the required applications on your Azure Active Directory. You need to use the user credentials of a user with at least "Service Admin" role. 
-2. In the left-hand navigation pane, click the Azure Active Directory service, click **App registrations (Legacy)**, and click **New application registration**.
+2. In the left-hand navigation pane, click the Azure Active Directory service, click **App registrations**, and click **New  registration**.
 3. When the **Create** page appears, enter your application's registration information:
     * **Name**: Enter a meaningful application name. This can be any name you want and is simply how you will identify the application in your Azure Active Directory (i.e. "My DNN Web Application").
-    * **Application type**: Select "Web app / API" (notice that Web Applications and Web API’s are considered the same type of application as far as Azure AD is concerned)
-    * **Sign-On URL**: This is the URL where user can sign in and use your app. In a typical DNN site, this should be something like "http://mysite.com/Login". You can change this URL later.
+    * **Supported account types**: select the supported account type, typically the first option (Single tenant). If you want to support users from multiple tenants, choose the second option "Multitenant", and if you desire to support Microsoft accounts choose any of the other options.
+    * **Redirect URI**: This is the URL where user can sign in and use your app. In a typical DNN site, this should be something like "http://mysite.com/Login". You can change this URL later.
 4. <a name="applicationid"></a> When finished, click **Create**. Azure AD assigns a unique **Application ID** to your application, and you're taken to your application's main registration page.
 5. Click on the name of the app we've just created and then on "All settings" > "API permissions" > "Microsoft Graph". Ensure that the app has, at least the following API Permissions over the MS Graph API:
     * Delegated
@@ -73,7 +73,7 @@ It's important to remember that you need a DNN deployment with **version 7.4.1 o
 ![alt text](https://github.com/davidjrh/dnn.azureadprovider/raw/master/docs/images/DNNAzureADv3_5.png "AAD settings v3")
 
 The settings page is very straightforward. It only requires three parameters from your Azure AD application:
-* **Directory Tenant ID**: You can get this parameter from the **Properties** section of your active directory (it's the value of the field **Directory ID**)
+* **Directory Tenant ID**: You can get this parameter from the **Properties** section of your active directory (it's the value of the field **Directory ID**). If you created the app registration as multitenant, type "common".
 * **App ID**: This is the **Application ID** of the application you created in [step 4](#applicationid) of the previous section of this guide
 * **Secret**: This is the **Key** that you generated in [step 6](#getaadkey) of the previous section
 * **Enabled**: Use this switch to enable/disable the provider
