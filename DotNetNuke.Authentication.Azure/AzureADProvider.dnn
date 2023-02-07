@@ -35,6 +35,10 @@
               <path>bin</path>
               <name>DotNetNuke.Authentication.Azure.dll</name>
             </assembly>
+	    <assembly>
+              <path>bin</path>
+              <name>DotNetNuke.Authentication.Azure.Extensibility.dll</name>
+            </assembly>
             <assembly>
               <path>bin</path>
               <name>System.IdentityModel.Tokens.Jwt.dll</name>
