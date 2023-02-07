@@ -58,6 +58,7 @@
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Microsoft.IdentityModel.Tokens.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Microsoft.IdentityModel.Logging.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="$(MSBuildDnnBinPath)\Microsoft.IdentityModel.JsonWebTokens.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
+    <Copy SourceFiles="$(MSBuildDnnBinPath)\DotNetNuke.Authentication.Azure.Extensibility.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
 
 	  <Copy SourceFiles="$(MSBuildDnnBinPath)\Microsoft.Graph.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
 	  <Copy SourceFiles="$(MSBuildDnnBinPath)\Microsoft.Graph.Core.dll" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
