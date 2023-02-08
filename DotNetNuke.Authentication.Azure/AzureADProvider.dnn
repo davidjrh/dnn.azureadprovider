@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="AzureADProvider" type="Auth_System" version="04.02.00">
+    <package name="AzureADProvider" type="Auth_System" version="04.02.01">
       <friendlyName>DNN Azure Active Directory Provider</friendlyName>
       <description>
         The DNN Azure Active Directory Provider is an Authentication provider for DNN Platform that uses Azure Active Directory OAuth2 authentication to authenticate users.
@@ -35,7 +35,7 @@
               <path>bin</path>
               <name>DotNetNuke.Authentication.Azure.dll</name>
             </assembly>
-	    <assembly>
+            <assembly>
               <path>bin</path>
               <name>DotNetNuke.Authentication.Azure.Extensibility.dll</name>
             </assembly>
