@@ -286,7 +286,7 @@
     <value>API Resource</value>
   </data>
   <data name="lblAPIResourceDesc.Text" xml:space="preserve">
-    <value>If you are going to use the issued tokens to access an external WebAPI that uses B2C Authorization, you can specify the App ID URI and scopes that will be validated by the WebAPI</value>
+    <value>If you are going to use the issued tokens to access an external WebAPI that uses Azure AD Authorization, you can specify the App ID URI and scopes that will be validated by the WebAPI</value>
   </data>
   <data name="lblAppIdUri.Help" xml:space="preserve">
     <value>The App ID Uri of the external WebAPI, obtained from the Azure portal (i.e. https://mytenant.onmicrosoft.com/myapi/)</value>
@@ -295,7 +295,7 @@
     <value>App ID Uri</value>
   </data>
   <data name="lblAudiences.Help" xml:space="preserve">
-    <value>Introduce the audiences to validate JWT tokens, separated by commas. If left empty, the B2C Application Id will be used by default.</value>
+    <value>Introduce the audiences to validate JWT tokens, separated by commas. If left empty, the Application Id will be used by default.</value>
   </data>
   <data name="lblAudiences.Text" xml:space="preserve">
     <value>Audiences</value>
@@ -340,7 +340,7 @@
     <value>Enabled</value>
   </data>
   <data name="lblNamePrefixes.Help" xml:space="preserve">
-    <value>By default, all users and groups coming from B2C will contain the prefix "Azure-". The following two options allow you to disable the addition of that prefix</value>
+    <value>By default, all users and groups coming from Azure AD will contain the prefix "Azure-". The following two options allow you to disable the addition of that prefix</value>
   </data>
   <data name="lblNamePrefixes.Text" xml:space="preserve">
     <value>Name prefixes</value>
@@ -391,7 +391,7 @@
     <value>Synchronization</value>
   </data>
   <data name="lblSynchronizationDesc.Text" xml:space="preserve">
-    <value>The synchronization process automatically syncs roles and profile from your Azure AD B2C tenant into your DNN portal when a user logins. This can affect login performance.</value>
+    <value>The synchronization process can automatically sync roles, users and profiles from your Azure AD tenant into your DNN portal. This can affect login performance.</value>
   </data>
   <data name="lblTabDescription.Text1" xml:space="preserve">
     <value>The DNN Azure Active Directory  Provider is an Authentication provider for DNN Platform that uses Azure Active Directory OAuth2 authentication to authenticate users.</value>
