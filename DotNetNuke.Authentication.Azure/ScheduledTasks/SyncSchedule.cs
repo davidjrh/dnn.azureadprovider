@@ -18,6 +18,7 @@ using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Runtime;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace DotNetNuke.Authentication.Azure.ScheduledTasks
@@ -133,12 +134,9 @@ namespace DotNetNuke.Authentication.Azure.ScheduledTasks
                 var groupsDeleted = 0;
                 var customRoleMappings = GetRoleMappingsForPortal(portalId, settings);
 
-                if (string.IsNullOrEmpty(settings.AADApplicationId) || string.IsNullOrEmpty(settings.AADApplicationKey))
-                {
-                    throw new Exception($"AAD application ID or key are not valid on portal {portalId}");
-                }
+                Utils.ValidateAadParameters(portalId, settings);
 
-                var graphClient = new GraphClient(settings.AADApplicationId, settings.AADApplicationKey, settings.TenantId);
+                var graphClient = new GraphClient(settings.AADApplicationId, settings.AADApplicationKey, settings.AADTenantId);
                 // Add roles from AAD 
                 var aadGroups = graphClient.GetAllGroups();
                 var allaadGroups = new List<Microsoft.Graph.Group>();
@@ -333,12 +331,9 @@ namespace DotNetNuke.Authentication.Azure.ScheduledTasks
                 var usersCreated = 0;
                 var usersUpdated = 0;
 
-                if (string.IsNullOrEmpty(settings.AADApplicationId) || string.IsNullOrEmpty(settings.AADApplicationKey))
-                {
-                    throw new Exception($"AAD application ID or key are not valid on portal {portalId}");
-                }
+                Utils.ValidateAadParameters(portalId, settings);
 
-                var graphClient = new GraphClient(settings.AADApplicationId, settings.AADApplicationKey, settings.TenantId);
+                var graphClient = new GraphClient(settings.AADApplicationId, settings.AADApplicationKey, settings.AADTenantId);
                 var userMappings = UserMappingsRepository.Instance.GetUserMappings(portalId).ToList();
 
                 // Add users from AAD 
