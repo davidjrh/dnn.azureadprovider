@@ -135,8 +135,10 @@ namespace DotNetNuke.Authentication.Azure.ScheduledTasks
                 var customRoleMappings = GetRoleMappingsForPortal(portalId, settings);
 
                 Utils.ValidateAadParameters(portalId, settings);
+                var graphClient = settings.GraphUseCustomParams
+                    ? new GraphClient(settings.AADApplicationId, settings.AADApplicationKey, settings.AADTenantId)
+                    : new GraphClient(settings.APIKey, settings.APISecret, settings.TenantId);
 
-                var graphClient = new GraphClient(settings.AADApplicationId, settings.AADApplicationKey, settings.AADTenantId);
                 // Add roles from AAD 
                 var aadGroups = graphClient.GetAllGroups();
                 var allaadGroups = new List<Microsoft.Graph.Group>();
@@ -333,7 +335,9 @@ namespace DotNetNuke.Authentication.Azure.ScheduledTasks
 
                 Utils.ValidateAadParameters(portalId, settings);
 
-                var graphClient = new GraphClient(settings.AADApplicationId, settings.AADApplicationKey, settings.AADTenantId);
+                var graphClient = settings.GraphUseCustomParams
+                    ? new GraphClient(settings.AADApplicationId, settings.AADApplicationKey, settings.AADTenantId)
+                    : new GraphClient(settings.APIKey, settings.APISecret, settings.TenantId);
                 var userMappings = UserMappingsRepository.Instance.GetUserMappings(portalId).ToList();
 
                 // Add users from AAD 

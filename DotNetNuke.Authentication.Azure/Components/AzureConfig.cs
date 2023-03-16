@@ -55,6 +55,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             AADTenantId = GetScopedSetting(Service + "_AADTenantId", portalId, "");
             AADApplicationId = GetScopedSetting(Service + "_AADApplicationId", portalId, "");
             AADApplicationKey = GetScopedSetting(Service + "_AADApplicationKey", portalId, "");
+            GraphUseCustomParams = bool.Parse(GetScopedSetting(Service + "_GraphUseCustomParams", portalId, "false"));
             JwtAudiences = GetScopedSetting(Service + "_JwtAudiences", portalId, "");
             RoleSyncEnabled = bool.Parse(GetScopedSetting(Service + "_RoleSyncEnabled", portalId, "false"));
             UserSyncEnabled = bool.Parse(GetScopedSetting(Service + "_UserSyncEnabled", portalId, "false"));
@@ -96,6 +97,8 @@ namespace DotNetNuke.Authentication.Azure.Components
         public string AADApplicationId { get; set; }
         [SortOrder(8)]
         public string AADApplicationKey { get; set; }
+        [SortOrder(8)]
+        public bool GraphUseCustomParams { get; set; }
         [SortOrder(8)]
         public string JwtAudiences { get; set; }
         [SortOrder(9)]
@@ -164,6 +167,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_AADTenantId", config.AADTenantId);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_AADApplicationId", config.AADApplicationId);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_AADApplicationKey", config.AADApplicationKey);
+            UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_GraphUseCustomParams", config.GraphUseCustomParams.ToString());
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_JwtAudiences", config.JwtAudiences);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_RoleSyncEnabled", config.RoleSyncEnabled.ToString());
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_UserSyncEnabled", config.UserSyncEnabled.ToString());
