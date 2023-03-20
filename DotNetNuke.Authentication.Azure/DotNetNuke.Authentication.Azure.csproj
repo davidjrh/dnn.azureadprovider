@@ -276,6 +276,7 @@
     <None Include="app.config" />
     <None Include="AzureADProvider.dnn" />
     <Content Include="packages.config" />
+    <None Include="Providers\DataProviders\SqlDataProvider\04.03.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\04.00.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.00.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\uninstall.SqlDataProvider" />
