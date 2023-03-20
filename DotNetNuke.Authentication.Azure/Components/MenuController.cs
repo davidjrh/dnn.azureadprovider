@@ -51,7 +51,7 @@ namespace DotNetNuke.Authentication.Azure.Components
 #if DEBUG
             var uiUrl = "http://localhost:8080/dist";
 #else
-            var uiUrl = "/DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.AzureAD";            
+            var uiUrl = "./Modules/Dnn.AzureAD";            
 #endif
             var apiUrl = "/DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.AzureAD";
             var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
