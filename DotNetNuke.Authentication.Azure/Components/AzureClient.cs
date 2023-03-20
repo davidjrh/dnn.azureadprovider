@@ -78,12 +78,9 @@ namespace DotNetNuke.Authentication.Azure.Components
             {
                 if (_graphClient == null)
                 {
-                    if (string.IsNullOrEmpty(Settings.AADApplicationId) || string.IsNullOrEmpty(Settings.AADApplicationKey))
-                    {
-                        throw new Exception("AAD application ID or key are not valid");
-                    }
+                    Utils.ValidateAadParameters(Settings);
 
-                    _graphClient = new GraphClient(Settings.AADApplicationId, Settings.AADApplicationKey, Settings.TenantId);
+                    _graphClient = new GraphClient(Settings.AADApplicationId, Settings.AADApplicationKey, Settings.AADTenantId);
                 }
                 return _graphClient;
             }

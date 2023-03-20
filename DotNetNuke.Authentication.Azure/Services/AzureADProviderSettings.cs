@@ -45,6 +45,8 @@ namespace DotNetNuke.Authentication.Azure.Services
         public bool Enabled { get; set; }
         [DataMember(Name = "useGlobalSettings")]
         public bool UseGlobalSettings { get; set; }
+        [DataMember(Name = "aadTenantId")]
+        public string AadTenantId { get; set; }
         [DataMember(Name = "aadAppClientId")]
         public string AadAppClientId { get; set; }
         [DataMember(Name = "aadAppSecret")]
@@ -91,6 +93,7 @@ namespace DotNetNuke.Authentication.Azure.Services
                 AutoRedirect = config.AutoRedirect,
                 AutoAuthorize = config.AutoAuthorize,
                 AutoMatchExistingUsers = config.AutoMatchExistingUsers,
+                AadTenantId = config.AADTenantId,
                 AadAppClientId = config.AADApplicationId,
                 AadAppSecret = config.AADApplicationKey,
                 Enabled = config.Enabled,
@@ -132,6 +135,7 @@ namespace DotNetNuke.Authentication.Azure.Services
         {
             var config = new AzureConfig(service, portalId)
             {
+                AADTenantId = settings.AadTenantId,
                 AADApplicationId = settings.AadAppClientId,
                 AADApplicationKey = settings.AadAppSecret,
                 RoleSyncEnabled = settings.RoleSyncEnabled,

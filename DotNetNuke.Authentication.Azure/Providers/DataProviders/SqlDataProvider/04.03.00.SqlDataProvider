@@ -1,0 +1,13 @@
+﻿/* Setup default values for new setting for separate Graph TenantId to the current tenantId */
+
+INSERT INTO {databaseOwner}[{objectQualifier}PortalSettings]
+	(PortalID, SettingName, SettingValue, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate, CultureCode, IsSecure)
+SELECT PortalID, 'Azure_AADTenantId', SettingValue, CreatedByUserID, GETUTCDATE(), LastModifiedByUserID, GETUTCDATE(), CultureCode, IsSecure
+FROM {databaseOwner}[{objectQualifier}PortalSettings]
+WHERE SettingName='Azure_TenantId'
+
+INSERT INTO {databaseOwner}[{objectQualifier}HostSettings]
+	(SettingName, SettingValue, SettingIsSecure, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+SELECT 'Azure_AADTenantId', SettingValue, SettingIsSecure, CreatedByUserID, GETUTCDATE(), LastModifiedByUserID, GETUTCDATE()
+FROM {databaseOwner}[{objectQualifier}HostSettings]
+WHERE SettingName='Azure_TenantId'

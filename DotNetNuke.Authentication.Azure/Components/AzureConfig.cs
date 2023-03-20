@@ -52,6 +52,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             TenantId = GetScopedSetting(Service + "_TenantId", portalId, "");
             AutoRedirect = bool.Parse(GetScopedSetting(Service + "_AutoRedirect", portalId, "false"));
             Enabled = bool.Parse(GetScopedSetting(Service + "_Enabled", portalId, "false"));
+            AADTenantId = GetScopedSetting(Service + "_AADTenantId", portalId, "");
             AADApplicationId = GetScopedSetting(Service + "_AADApplicationId", portalId, "");
             AADApplicationKey = GetScopedSetting(Service + "_AADApplicationKey", portalId, "");
             JwtAudiences = GetScopedSetting(Service + "_JwtAudiences", portalId, "");
@@ -89,6 +90,8 @@ namespace DotNetNuke.Authentication.Azure.Components
         public string TenantId { get; set; }
         [SortOrder(2)]
         public bool AutoRedirect { get; set; }
+        [SortOrder(7)]
+        public string AADTenantId { get; set; }
         [SortOrder(7)]
         public string AADApplicationId { get; set; }
         [SortOrder(8)]
@@ -158,6 +161,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_TenantId", config.TenantId);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_AutoRedirect", config.AutoRedirect.ToString());
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_Enabled", config.Enabled.ToString());
+            UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_AADTenantId", config.AADTenantId);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_AADApplicationId", config.AADApplicationId);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_AADApplicationKey", config.AADApplicationKey);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_JwtAudiences", config.JwtAudiences);

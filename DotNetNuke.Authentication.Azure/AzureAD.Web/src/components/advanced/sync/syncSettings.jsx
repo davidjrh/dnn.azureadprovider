@@ -17,6 +17,7 @@ class SyncSettings extends Component {
 
         this.state = {
             error: {
+                aadTenantId: false,
                 aadAppClientId: false,
                 aadAppSecret: false
             }
@@ -32,6 +33,7 @@ class SyncSettings extends Component {
     UNSAFE_componentWillReceiveProps(nextProps) {
         const {state} = this;
 
+        state.error["aadTenantId"] = ((nextProps.roleSyncEnabled || nextProps.userSyncEnabled || nextProps.profileSyncEnabled) && nextProps.aadTenantId === "");
         state.error["aadAppClientId"] = ((nextProps.roleSyncEnabled || nextProps.userSyncEnabled || nextProps.profileSyncEnabled) && nextProps.aadAppClientId === "");
         state.error["aadAppSecret"] = ((nextProps.roleSyncEnabled || nextProps.userSyncEnabled || nextProps.profileSyncEnabled) && nextProps.aadAppSecret === "");
     }      
@@ -40,6 +42,7 @@ class SyncSettings extends Component {
         let {props} = this;
 
         props.dispatch(SettingsActions.settingsClientModified({
+            aadTenantId: (key === "AadTenantId") ? event.target.value : props.aadTenantId,
             aadAppClientId: (key === "AadAppClientId") ? event.target.value : props.aadAppClientId,
             aadAppSecret: (key === "AadAppSecret") ? event.target.value : props.aadAppSecret,
             roleSyncEnabled: (key === "roleSyncEnabled") ? !props.roleSyncEnabled : props.roleSyncEnabled,
@@ -59,6 +62,7 @@ class SyncSettings extends Component {
         let {props} = this;
 
         props.dispatch(SettingsActions.updateAdvancedSyncSettings({
+            aadTenantId: props.aadTenantId,
             aadAppClientId: props.aadAppClientId,
             aadAppSecret: props.aadAppSecret,
             roleSyncEnabled: props.roleSyncEnabled,
@@ -101,7 +105,17 @@ class SyncSettings extends Component {
                         <GridCell columnSize={100}>
                             <h1 className={"sectionLabel"}>{resx.get("lblAADSettings")}</h1>
                             <p>{resx.get("lblGraphClient.Help")}
-                            </p>                            
+                            </p>
+                            <SingleLineInputWithError
+                                withLabel={true}
+                                label={resx.get("lblTenantId")}
+                                enabled={true}
+                                error={this.state.error.aadTenantId}
+                                errorMessage={resx.get("lblTenantId.Error")}
+                                tooltipMessage={resx.get("lblTenantId.Help")}
+                                value={this.props.aadTenantId}
+                                onChange={this.onSettingChange.bind(this, "AadTenantId")}
+                            />
                             <SingleLineInputWithError
                                 withLabel={true}
                                 label={resx.get("lblAADAppClientId")}
@@ -155,7 +169,7 @@ class SyncSettings extends Component {
                                 {resx.get("Cancel")}
                             </Button>
                             <Button
-                                disabled={this.state.error.aadAppClientId || this.state.error.aadAppSecret }
+                                disabled={this.state.error.aadAppClientId || this.state.error.aadAppSecret || this.state.error.aadTenantId}
                                 type="primary"
                                 onClick={this.onClickSave.bind(this)}>
                                 {resx.get("SaveSettings")}
@@ -170,6 +184,7 @@ class SyncSettings extends Component {
 
 SyncSettings.propTypes = {
     dispatch: PropTypes.func.isRequired,
+    aadTenantId: PropTypes.string,
     aadAppClientId: PropTypes.string,
     aadAppSecret: PropTypes.string,
     roleSyncEnabled: PropTypes.bool,
@@ -182,6 +197,7 @@ SyncSettings.propTypes = {
 
 function mapStateToProps(state) {
     return {
+        aadTenantId: state.settings.aadTenantId,
         aadAppClientId: state.settings.aadAppClientId,
         aadAppSecret: state.settings.aadAppSecret,
         roleSyncEnabled: state.settings.roleSyncEnabled,

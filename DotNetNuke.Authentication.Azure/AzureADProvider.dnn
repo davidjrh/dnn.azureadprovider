@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="AzureADProvider" type="Auth_System" version="04.02.01">
+    <package name="AzureADProvider" type="Auth_System" version="04.03.00">
       <friendlyName>DNN Azure Active Directory Provider</friendlyName>
       <description>
         The DNN Azure Active Directory Provider is an Authentication provider for DNN Platform that uses Azure Active Directory OAuth2 authentication to authenticate users.
@@ -175,7 +175,13 @@
               <version>04.00.00</version>
             </script>
 
-            <script type="UnInstall" >
+			  <script type="Install">
+				  <path>Providers\DataProviders\SqlDataProvider</path>
+				  <name>04.03.00.SqlDataProvider</name>
+				  <version>04.03.00</version>
+			  </script>
+
+			  <script type="UnInstall" >
               <path>Providers\DataProviders\SqlDataProvider</path>
               <name>uninstall.SqlDataProvider</name>
               <version>03.00.00</version>

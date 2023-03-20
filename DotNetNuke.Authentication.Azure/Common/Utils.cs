@@ -21,6 +21,7 @@
 
 #endregion
 
+using DotNetNuke.Authentication.Azure.Components;
 using DotNetNuke.Authentication.Azure.Data;
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
@@ -164,6 +165,19 @@ namespace DotNetNuke.Authentication.Azure.Common
                 .Skip(1)
                 .Aggregate("", (current, next) => current + " " + next)
                 .TrimStart(' ');
+        }
+
+        public static void ValidateAadParameters(AzureConfig settings)
+        {
+            ValidateAadParameters(-1, settings);
+        }
+
+        public static void ValidateAadParameters(int portalId, AzureConfig settings)
+        {
+            if (string.IsNullOrEmpty(settings.AADApplicationId) || string.IsNullOrEmpty(settings.AADApplicationKey) || string.IsNullOrEmpty(settings.AADTenantId))
+            {
+                throw new Exception("AAD tenant ID, application ID or application key are not valid" + (portalId >= 0 ? " on portal " + portalId : ""));
+            }
         }
 
     }
