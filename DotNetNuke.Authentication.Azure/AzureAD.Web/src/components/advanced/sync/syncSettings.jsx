@@ -45,6 +45,7 @@ class SyncSettings extends Component {
             aadTenantId: (key === "AadTenantId") ? event.target.value : props.aadTenantId,
             aadAppClientId: (key === "AadAppClientId") ? event.target.value : props.aadAppClientId,
             aadAppSecret: (key === "AadAppSecret") ? event.target.value : props.aadAppSecret,
+            graphUseCustomParams: (key === "graphUseCustomParams") ? !props.graphUseCustomParams : props.graphUseCustomParams,
             roleSyncEnabled: (key === "roleSyncEnabled") ? !props.roleSyncEnabled : props.roleSyncEnabled,
             userSyncEnabled: (key === "userSyncEnabled") ? !props.userSyncEnabled : props.userSyncEnabled,
             profileSyncEnabled: (key === "profileSyncEnabled") ? !props.profileSyncEnabled : props.profileSyncEnabled,
@@ -65,6 +66,7 @@ class SyncSettings extends Component {
             aadTenantId: props.aadTenantId,
             aadAppClientId: props.aadAppClientId,
             aadAppSecret: props.aadAppSecret,
+            graphUseCustomParams: props.graphUseCustomParams,
             roleSyncEnabled: props.roleSyncEnabled,
             userSyncEnabled: props.userSyncEnabled,
             profileSyncEnabled: props.profileSyncEnabled,
@@ -85,7 +87,7 @@ class SyncSettings extends Component {
         return (
             <div className="dnn-azuread-aad-advancedSettings">
                 <InputGroup>                    
-                    <GridSystem  numberOfColumns={2}>
+                    <GridSystem numberOfColumns={2}>
                         <GridCell columnSize={90}>              
                             <h1>{resx.get("lblSynchronization")}</h1>      
                             <p>{resx.get("lblSynchronizationDesc")}</p>
@@ -104,13 +106,18 @@ class SyncSettings extends Component {
                         </GridCell>                           
                         <GridCell columnSize={100}>
                             <h1 className={"sectionLabel"}>{resx.get("lblAADSettings")}</h1>
-                            <p>{resx.get("lblGraphClient.Help")}
-                            </p>
+                            <p>{resx.get("lblGraphClient.Help")}</p>
+
+                            <Switch label={resx.get("lblUseCustomParameters")} onText="" offText=""
+                                tooltipMessage={resx.get("lblUseCustomParameters.Help")}
+                                value={this.props.graphUseCustomParams}
+                                onChange={this.onSettingChange.bind(this, "graphUseCustomParams")} />
+                            
                             <SingleLineInputWithError
                                 withLabel={true}
                                 label={resx.get("lblTenantId")}
-                                enabled={true}
-                                error={this.state.error.aadTenantId}
+                                enabled={this.props.graphUseCustomParams}
+                                error={this.props.graphUseCustomParams && this.state.error.aadTenantId}
                                 errorMessage={resx.get("lblTenantId.Error")}
                                 tooltipMessage={resx.get("lblTenantId.Help")}
                                 value={this.props.aadTenantId}
@@ -119,8 +126,8 @@ class SyncSettings extends Component {
                             <SingleLineInputWithError
                                 withLabel={true}
                                 label={resx.get("lblAADAppClientId")}
-                                enabled={true}
-                                error={this.state.error.aadAppClientId}
+                                enabled={this.props.graphUseCustomParams}
+                                error={this.props.graphUseCustomParams && this.state.error.aadAppClientId}
                                 errorMessage={resx.get("lblAADAppClientId.Error")}
                                 tooltipMessage={resx.get("lblAADAppClientId.Help")}
                                 value={this.props.aadAppClientId}
@@ -130,13 +137,13 @@ class SyncSettings extends Component {
                                 withLabel={true}
                                 label={resx.get("lblAADAppSecret")}
                                 type="password"
-                                enabled={true}
-                                error={this.state.error.AadAppSecret}
+                                enabled={this.props.graphUseCustomParams}
+                                error={this.props.graphUseCustomParams && this.state.error.aadAppSecret}
                                 errorMessage={resx.get("lblAADAppSecret.Error")}
                                 tooltipMessage={resx.get("lblAADAppSecret.Help")}
                                 value={this.props.aadAppSecret}
                                 onChange={this.onSettingChange.bind(this, "AadAppSecret")}
-                            />                            
+                            />
                         </GridCell>                         
                     </GridSystem>
                 </InputGroup>
@@ -169,7 +176,7 @@ class SyncSettings extends Component {
                                 {resx.get("Cancel")}
                             </Button>
                             <Button
-                                disabled={this.state.error.aadAppClientId || this.state.error.aadAppSecret || this.state.error.aadTenantId}
+                                disabled={this.props.graphUseCustomParams && (this.state.error.aadAppClientId || this.state.error.aadAppSecret || this.state.error.aadTenantId)}
                                 type="primary"
                                 onClick={this.onClickSave.bind(this)}>
                                 {resx.get("SaveSettings")}
@@ -187,6 +194,7 @@ SyncSettings.propTypes = {
     aadTenantId: PropTypes.string,
     aadAppClientId: PropTypes.string,
     aadAppSecret: PropTypes.string,
+    graphUseCustomParams: PropTypes.bool,
     roleSyncEnabled: PropTypes.bool,
     userSyncEnabled: PropTypes.bool,
     profileSyncEnabled: PropTypes.bool,
@@ -200,6 +208,7 @@ function mapStateToProps(state) {
         aadTenantId: state.settings.aadTenantId,
         aadAppClientId: state.settings.aadAppClientId,
         aadAppSecret: state.settings.aadAppSecret,
+        graphUseCustomParams: state.settings.graphUseCustomParams,
         roleSyncEnabled: state.settings.roleSyncEnabled,
         userSyncEnabled: state.settings.userSyncEnabled,
         profileSyncEnabled: state.settings.profileSyncEnabled,

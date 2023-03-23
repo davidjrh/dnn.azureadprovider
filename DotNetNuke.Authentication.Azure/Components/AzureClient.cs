@@ -80,7 +80,9 @@ namespace DotNetNuke.Authentication.Azure.Components
                 {
                     Utils.ValidateAadParameters(Settings);
 
-                    _graphClient = new GraphClient(Settings.AADApplicationId, Settings.AADApplicationKey, Settings.AADTenantId);
+                    _graphClient = Settings.GraphUseCustomParams
+                        ? new GraphClient(Settings.AADApplicationId, Settings.AADApplicationKey, Settings.AADTenantId)
+                        : new GraphClient(Settings.APIKey, Settings.APISecret, Settings.TenantId);
                 }
                 return _graphClient;
             }

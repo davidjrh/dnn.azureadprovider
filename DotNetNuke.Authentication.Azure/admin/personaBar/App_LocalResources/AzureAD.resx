@@ -325,7 +325,7 @@
     <value>DNN user property*</value>
   </data>
   <data name="lblGraphClient.Help" xml:space="preserve">
-    <value>If the sync is enabled, you need to specify an Azure App ID and secret to use the Microsoft Graph API.</value>
+    <value>A Tenant ID, an Application ID and an Application Secret are needed to use the Microsoft Graph API. By default, the ones introduced in General Settings will be used, but you can also specify different ones.</value>
   </data>
   <data name="lblGroupNamePrefixEnabled.Help" xml:space="preserve">
     <value>Enables the addition of the prefix "Azure-" to all group names coming from AAD.</value>
@@ -483,7 +483,7 @@
     <value>If included, the app skips the email-based discovery process that user goes through on the sign-in page, leading to a slightly more streamlined user experience.</value>
   </data>
   <data name="lblPromptBlank" xml:space="preserve">
-    <value>&#160;</value>
+    <value> </value>
   </data>
   <data name="lblPromptLogin" xml:space="preserve">
     <value>login</value>
@@ -523,5 +523,11 @@
   </data>
   <data name="lblAutoMatchExistingUsers.Text" xml:space="preserve">
     <value>Auto-Match Existing Users</value>
+  </data>
+  <data name="lblUseCustomParameters.Help" xml:space="preserve">
+    <value>If enabled, the Microsoft Graph API will use the values specified in this section. Otherwise, it will use the ones in specified in General Settings.</value>
+  </data>
+  <data name="lblUseCustomParameters.Text" xml:space="preserve">
+    <value>Use Custom Parameters</value>
   </data>
 </root>

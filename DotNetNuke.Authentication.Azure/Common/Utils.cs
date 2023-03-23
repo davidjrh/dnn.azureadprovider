@@ -174,7 +174,19 @@ namespace DotNetNuke.Authentication.Azure.Common
 
         public static void ValidateAadParameters(int portalId, AzureConfig settings)
         {
-            if (string.IsNullOrEmpty(settings.AADApplicationId) || string.IsNullOrEmpty(settings.AADApplicationKey) || string.IsNullOrEmpty(settings.AADTenantId))
+            if (settings.GraphUseCustomParams)
+            {
+                ValidateAadParameters(portalId, settings.AADTenantId, settings.AADApplicationId, settings.AADApplicationKey);
+            }
+            else
+            {
+                ValidateAadParameters(portalId, settings.TenantId, settings.APIKey, settings.APISecret);
+            }
+        }
+
+        public static void ValidateAadParameters(int portalId, string tenantId, string applicationId, string applicationKey)
+        {
+            if (string.IsNullOrEmpty(applicationId) || string.IsNullOrEmpty(applicationKey) || string.IsNullOrEmpty(tenantId))
             {
                 throw new Exception("AAD tenant ID, application ID or application key are not valid" + (portalId >= 0 ? " on portal " + portalId : ""));
             }

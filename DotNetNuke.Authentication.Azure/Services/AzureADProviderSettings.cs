@@ -51,6 +51,8 @@ namespace DotNetNuke.Authentication.Azure.Services
         public string AadAppClientId { get; set; }
         [DataMember(Name = "aadAppSecret")]
         public string AadAppSecret { get; set; }
+        [DataMember(Name = "graphUseCustomParams")]
+        public bool GraphUseCustomParams { get; set; }
         [DataMember(Name = "jwtAudiences")]
         public string JwtAudiences { get; set; }
         [DataMember(Name = "roleSyncEnabled")]
@@ -96,6 +98,7 @@ namespace DotNetNuke.Authentication.Azure.Services
                 AadTenantId = config.AADTenantId,
                 AadAppClientId = config.AADApplicationId,
                 AadAppSecret = config.AADApplicationKey,
+                GraphUseCustomParams = config.GraphUseCustomParams,
                 Enabled = config.Enabled,
                 UseGlobalSettings = config.UseGlobalSettings,
                 JwtAudiences = config.JwtAudiences,
@@ -138,6 +141,7 @@ namespace DotNetNuke.Authentication.Azure.Services
                 AADTenantId = settings.AadTenantId,
                 AADApplicationId = settings.AadAppClientId,
                 AADApplicationKey = settings.AadAppSecret,
+                GraphUseCustomParams = settings.GraphUseCustomParams,
                 RoleSyncEnabled = settings.RoleSyncEnabled,
                 UserSyncEnabled = settings.UserSyncEnabled,
                 ProfileSyncEnabled = settings.ProfileSyncEnabled,
