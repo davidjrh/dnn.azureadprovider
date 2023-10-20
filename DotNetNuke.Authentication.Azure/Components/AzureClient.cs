@@ -332,6 +332,37 @@ namespace DotNetNuke.Authentication.Azure.Components
             return oState.Service == Service;
         }
 
+        private void LoadToken(string token)
+        {
+            // Verify token
+            var aadController = new AadController();
+            var authorization = aadController.ValidateAuthHeader(token);
+            string username = string.IsNullOrEmpty(authorization) ? null : aadController.ValidateAuthorizationValue(authorization);
+            if (string.IsNullOrEmpty(username))
+            {
+                Logger.Warn("Invalid token cookie");
+                RemoveToken();
+                SetAuthTokenInternal(string.Empty);
+            }
+            else
+            {
+                // Set the token
+                AuthToken = token;
+            }
+        }
+
+        protected new void LoadTokenCookie(string suffix)
+        {
+            HttpCookie authTokenCookie = HttpContext.Current.Request.Cookies[this.AuthTokenName + suffix];
+            if (authTokenCookie != null)
+            {
+                if (authTokenCookie.HasKeys)
+                {
+                    LoadToken(authTokenCookie.Values[OAuthTokenKey]);
+                }
+            }
+        }
+
         protected override TimeSpan GetExpiry(string responseText)
         {
             var jsonSerializer = new JavaScriptSerializer();
@@ -349,8 +380,9 @@ namespace DotNetNuke.Authentication.Azure.Components
             var jsonSerializer = new JavaScriptSerializer();
             var tokenDictionary = jsonSerializer.DeserializeObject(responseText) as Dictionary<string, object>;
             var token = Convert.ToString(tokenDictionary["access_token"]);
-            JwtIdToken = new JwtSecurityToken(Convert.ToString(tokenDictionary["access_token"]));
-            return token;
+            JwtIdToken = new JwtSecurityToken(token);
+            LoadToken(token);
+            return AuthToken;
         }
 
         public override TUserData GetCurrentUser<TUserData>()
