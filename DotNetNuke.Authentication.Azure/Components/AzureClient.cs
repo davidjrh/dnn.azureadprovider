@@ -380,14 +380,23 @@ namespace DotNetNuke.Authentication.Azure.Components
             var jsonSerializer = new JavaScriptSerializer();
             var tokenDictionary = jsonSerializer.DeserializeObject(responseText) as Dictionary<string, object>;
             var token = Convert.ToString(tokenDictionary["access_token"]);
-            JwtIdToken = new JwtSecurityToken(token);
-            LoadToken(token);
-            return AuthToken;
+            
+            if (Settings.JwtAuthEnabled)
+            {
+                JwtIdToken = new JwtSecurityToken(token);
+                LoadToken(token);
+                return AuthToken;
+            }
+            else
+            {
+                JwtIdToken = new JwtSecurityToken(Convert.ToString(tokenDictionary["access_token"]));
+                return token;
+            }
         }
 
         public override TUserData GetCurrentUser<TUserData>()
         {
-            LoadTokenCookie(String.Empty);
+            base.LoadTokenCookie(String.Empty);
             return GetCurrentUserInternal() as TUserData;
         }
 
