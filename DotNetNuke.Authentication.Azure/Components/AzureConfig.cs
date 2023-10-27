@@ -60,7 +60,6 @@ namespace DotNetNuke.Authentication.Azure.Components
             RoleSyncEnabled = bool.Parse(GetScopedSetting(Service + "_RoleSyncEnabled", portalId, "false"));
             UserSyncEnabled = bool.Parse(GetScopedSetting(Service + "_UserSyncEnabled", portalId, "false"));
             ProfileSyncEnabled = bool.Parse(GetScopedSetting(Service + "_ProfileSyncEnabled", portalId, "false"));
-            JwtAuthEnabled = bool.Parse(GetScopedSetting(Service + "_JwtAuthEnabled", portalId, "false"));
             APIResource = GetScopedSetting(Service + "_APIResource", portalId, "");
             Scopes = GetScopedSetting(Service + "_Scopes", portalId, "");
             UsernamePrefixEnabled = bool.Parse(GetScopedSetting(Service + "_UsernamePrefixEnabled", portalId, "true"));
@@ -105,8 +104,6 @@ namespace DotNetNuke.Authentication.Azure.Components
         public bool RoleSyncEnabled { get; set; }
         [SortOrder(10)]
         public bool ProfileSyncEnabled { get; set; }
-        [SortOrder(11)]
-        public bool JwtAuthEnabled { get; set; }
 
         [SortOrder(12)]
         public string APIResource { get; set; }
@@ -172,7 +169,6 @@ namespace DotNetNuke.Authentication.Azure.Components
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_RoleSyncEnabled", config.RoleSyncEnabled.ToString());
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_UserSyncEnabled", config.UserSyncEnabled.ToString());
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_ProfileSyncEnabled", config.ProfileSyncEnabled.ToString());
-            UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_JwtAuthEnabled", config.JwtAuthEnabled.ToString());
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_APIResource", config.APIResource);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_Scopes", config.Scopes);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_UsernamePrefixEnabled", config.UsernamePrefixEnabled.ToString());
