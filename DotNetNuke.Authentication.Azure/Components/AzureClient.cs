@@ -360,7 +360,13 @@ namespace DotNetNuke.Authentication.Azure.Components
                 Logger.Warn("Invalid token cookie");
                 RemoveToken();
                 SetAuthTokenInternal(string.Empty);
-                HttpContext.Current.Response.Redirect(HttpContext.Current.Request.RawUrl + (!HttpContext.Current.Request.RawUrl.Contains('?') ? "?" : "") + "ctl=logoff", true);
+
+                // If logged in, redirect to logoff
+                if (HttpContext.Current.Request.Cookies[".DOTNETNUKE"] != null)
+                {
+                    HttpContext.Current.Response.Redirect(HttpContext.Current.Request.RawUrl + (!HttpContext.Current.Request.RawUrl.Contains('?') ? "?" : "") + "ctl=logoff", true);
+                }
+
                 return false;
             }
             else
