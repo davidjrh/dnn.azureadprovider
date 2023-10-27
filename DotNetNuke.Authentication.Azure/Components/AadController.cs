@@ -38,6 +38,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
@@ -182,10 +183,12 @@ namespace DotNetNuke.Authentication.Azure.Components
                 return cache.GetItem(cacheKey).ToString();
             }
 
+            // NOTE: This cleaning logic is currently redundant when called from LoadToken method
             if (authorization.Contains("oauth_token="))
             {
                 authorization = authorization.Split('&').FirstOrDefault(x => x.Contains("oauth_token=")).Substring("oauth_token=".Length);
             }
+
             var parts = authorization.Split('.');
             if (parts.Length < 3)
             {
@@ -227,9 +230,9 @@ namespace DotNetNuke.Authentication.Azure.Components
                     if (Logger.IsDebugEnabled) Logger.Debug("Unable to retrieve portal settings");
                     return null;
                 }
-                if (!azureConfig.Enabled || !azureConfig.JwtAuthEnabled)
+                if (!azureConfig.Enabled)
                 {
-                    if (Logger.IsDebugEnabled) Logger.Debug($"Azure AD JWT auth is not enabled for portal {portalSettings.PortalId}");
+                    if (Logger.IsDebugEnabled) Logger.Debug($"Azure AD auth is not enabled for portal {portalSettings.PortalId}");
                     return null;
                 }
 
@@ -378,9 +381,9 @@ namespace DotNetNuke.Authentication.Azure.Components
                 if (Logger.IsDebugEnabled) Logger.Debug("Unable to retrieve portal settings");
                 return null;
             }
-            if (!azureConfig.Enabled || !azureConfig.JwtAuthEnabled)
+            if (!azureConfig.Enabled)
             {
-                if (Logger.IsDebugEnabled) Logger.Debug($"Azure AD JWT auth is not enabled for portal {portalSettings.PortalId}");
+                if (Logger.IsDebugEnabled) Logger.Debug($"Azure AD auth is not enabled for portal {portalSettings.PortalId}");
                 return null;
             }
 
@@ -420,22 +423,23 @@ namespace DotNetNuke.Authentication.Azure.Components
                     }
                 }
 
+                string issuer = config.Issuer.Replace("{tenantid}", jsonToken.Claims.FirstOrDefault(x => x.Type == "tid")?.Value);
                 var validationParameters = new TokenValidationParameters
                 {
-                    // App Id URI and AppId of this service application are both valid audiences.
+                    // App Id URI and AppId of this service application are both valid audiences
                     RequireAudience = true,
                     ValidateAudience = true,
                     ValidAudiences = validAudiences,
 
-                    // Support Azure AD V1 and V2 endpoints.
-                    ValidateIssuer = true,
-                    ValidIssuers = new[] { config.Issuer, $"{config.Issuer}v2.0/" },
-
-                    // Validate signing keys.
+                    // Validate signing keys
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKeys = config.SigningKeys,
+                    
+                    // Validate the token issuer
+                    ValidateIssuer = true,
+                    ValidIssuers = new[] { issuer, $"{issuer}v2.0/" },
 
-                    // Validate the token expiry.
+                    // Validate the token expiry
                     RequireExpirationTime = true,
                     ValidateLifetime = true,
                 };

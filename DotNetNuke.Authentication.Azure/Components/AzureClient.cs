@@ -36,6 +36,7 @@ using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.Script.Serialization;
+using Azure;
 using DotNetNuke.Authentication.Azure.Common;
 using DotNetNuke.Authentication.Azure.Components.Graph;
 using DotNetNuke.Authentication.Azure.Components.Models;
@@ -332,22 +333,41 @@ namespace DotNetNuke.Authentication.Azure.Components
             return oState.Service == Service;
         }
 
-        private void LoadToken(string token)
+        public bool LoadToken(string token)
         {
+            // Clean token
+            if (token.Contains("oauth_token="))
+            {
+                token = token.Split('&').FirstOrDefault(x => x.Contains("oauth_token=")).Substring("oauth_token=".Length);
+            }
+
             // Verify token
             var aadController = new AadController();
-            var authorization = aadController.ValidateAuthHeader(token);
+            string authorization = string.Empty;
+            try
+            {
+                authorization = aadController.ValidateAuthHeader(token);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error validating token", ex);
+            }
             string username = string.IsNullOrEmpty(authorization) ? null : aadController.ValidateAuthorizationValue(authorization);
+            
             if (string.IsNullOrEmpty(username))
             {
+                // If the token is not valid, remove it and redirect to logoff
                 Logger.Warn("Invalid token cookie");
                 RemoveToken();
                 SetAuthTokenInternal(string.Empty);
+                HttpContext.Current.Response.Redirect(HttpContext.Current.Request.RawUrl + (!HttpContext.Current.Request.RawUrl.Contains('?') ? "?" : "") + "ctl=logoff", true);
+                return false;
             }
             else
             {
-                // Set the token
+                // If the token is valid, set it
                 AuthToken = token;
+                return true;
             }
         }
 
@@ -381,17 +401,9 @@ namespace DotNetNuke.Authentication.Azure.Components
             var tokenDictionary = jsonSerializer.DeserializeObject(responseText) as Dictionary<string, object>;
             var token = Convert.ToString(tokenDictionary["access_token"]);
             
-            if (Settings.JwtAuthEnabled)
-            {
-                JwtIdToken = new JwtSecurityToken(token);
-                LoadToken(token);
-                return AuthToken;
-            }
-            else
-            {
-                JwtIdToken = new JwtSecurityToken(Convert.ToString(tokenDictionary["access_token"]));
-                return token;
-            }
+            JwtIdToken = new JwtSecurityToken(token);
+            LoadToken(token);
+            return AuthToken;
         }
 
         public override TUserData GetCurrentUser<TUserData>()
