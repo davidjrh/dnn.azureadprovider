@@ -391,7 +391,8 @@ namespace DotNetNuke.Authentication.Azure.Components
             var validAudiences = azureConfig.JwtAudiences.Split(',').Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x)).ToArray();
             if (validAudiences.Length == 0)
             {
-                validAudiences = new[] { azureConfig.APIKey };
+                // We accept the default audience (the App ID URI of this service application) and the MS Graph AppID
+                validAudiences = new[] { azureConfig.APIKey, "00000003-0000-0000-c000-000000000000" };
             }
              
             try
