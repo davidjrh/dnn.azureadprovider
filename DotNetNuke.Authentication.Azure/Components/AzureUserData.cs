@@ -73,7 +73,7 @@ namespace DotNetNuke.Authentication.Azure.Components
                 FirstName = this.FirstName,
                 LastName = this.LastName,
                 Email = this.Email,
-                Username = usernamePrefixEnabled ? $"AzureAD-{this.Id}" : this.Id
+                Username = usernamePrefixEnabled ? $"Azure-{this.Id}" : this.Id
             };
         }
 
