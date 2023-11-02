@@ -333,12 +333,6 @@
   <data name="lblGroupNamePrefixEnabled.Text" xml:space="preserve">
     <value>Prefix group names</value>
   </data>
-  <data name="lblJwtAuthEnabled.Help" xml:space="preserve">
-    <value>Enables JWT authorization for this portal</value>
-  </data>
-  <data name="lblJwtAuthEnabled.Text" xml:space="preserve">
-    <value>Enabled</value>
-  </data>
   <data name="lblNamePrefixes.Help" xml:space="preserve">
     <value>By default, all users and groups coming from Azure AD will contain the prefix "Azure-". The following two options allow you to disable the addition of that prefix</value>
   </data>
@@ -397,10 +391,11 @@
     <value>The DNN Azure Active Directory  Provider is an Authentication provider for DNN Platform that uses Azure Active Directory OAuth2 authentication to authenticate users.</value>
   </data>
   <data name="lblTokenValidation.Help" xml:space="preserve">
-    <value>This provider supports JWT authorization. If enabled, you can get a JWT token directly from the Azure AD API, and then call a DNN WebAPI controller.</value>
+    <value>This provider supports JWT authorization. You can get a JWT token directly from the Azure AD API with your desired audiences, and then call a DNN WebAPI controller. Below 
+	you can specify different settings to validate issued tokens.</value>
   </data>
   <data name="lblTokenValidation.Text" xml:space="preserve">
-    <value>JWT Authorization</value>
+    <value>Token Validation</value>
   </data>
   <data name="lblUseGlobalSettings.Help" xml:space="preserve">
     <value>If enabled, all the settings are applied to all portals on this deployment. Only Super Users can edit this setting</value>

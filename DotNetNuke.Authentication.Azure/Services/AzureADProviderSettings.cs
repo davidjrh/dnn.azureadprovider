@@ -61,8 +61,6 @@ namespace DotNetNuke.Authentication.Azure.Services
         public bool UserSyncEnabled { get; set; }
         [DataMember(Name = "profileSyncEnabled")]
         public bool ProfileSyncEnabled { get; set; }
-        [DataMember(Name = "jwtAuthEnabled")]
-        public bool JwtAuthEnabled { get; set; }
         [DataMember(Name = "apiResource")]
         public string ApiResource { get; set; }
         [DataMember(Name = "scopes")]
@@ -105,7 +103,6 @@ namespace DotNetNuke.Authentication.Azure.Services
                 RoleSyncEnabled = config.RoleSyncEnabled,
                 UserSyncEnabled = config.UserSyncEnabled,
                 ProfileSyncEnabled = config.ProfileSyncEnabled,
-                JwtAuthEnabled = config.JwtAuthEnabled,
                 ApiResource = config.APIResource,
                 Scopes = config.Scopes,
                 UsernamePrefixEnabled = config.UsernamePrefixEnabled,
@@ -156,7 +153,6 @@ namespace DotNetNuke.Authentication.Azure.Services
             var config = new AzureConfig(service, portalId)
             {
                 JwtAudiences = settings.JwtAudiences,
-                JwtAuthEnabled = settings.JwtAuthEnabled,
                 APIResource = settings.ApiResource + (!string.IsNullOrEmpty(settings.ApiResource.Trim()) && !settings.ApiResource.EndsWith("/") ? "/" : ""),
                 Scopes = settings.Scopes,
                 AuthorizationCodePrompt = settings.AuthorizationCodePrompt,

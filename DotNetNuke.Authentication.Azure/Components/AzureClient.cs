@@ -36,6 +36,7 @@ using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.Script.Serialization;
+using Azure;
 using DotNetNuke.Authentication.Azure.Common;
 using DotNetNuke.Authentication.Azure.Components.Graph;
 using DotNetNuke.Authentication.Azure.Components.Models;
@@ -332,6 +333,62 @@ namespace DotNetNuke.Authentication.Azure.Components
             return oState.Service == Service;
         }
 
+        public bool LoadToken(string token)
+        {
+            // Clean token
+            if (token.Contains("oauth_token="))
+            {
+                token = token.Split('&').FirstOrDefault(x => x.Contains("oauth_token=")).Substring("oauth_token=".Length);
+            }
+
+            // Verify token
+            var aadController = new AadController();
+            string authorization = string.Empty;
+            try
+            {
+                authorization = aadController.ValidateAuthHeader(token);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Error validating token", ex);
+            }
+            string username = string.IsNullOrEmpty(authorization) ? null : aadController.ValidateAuthorizationValue(authorization);
+            
+            if (string.IsNullOrEmpty(username))
+            {
+                // If the token is not valid, remove it and redirect to logoff
+                Logger.Warn("Invalid token cookie");
+                RemoveToken();
+                SetAuthTokenInternal(string.Empty);
+
+                // If logged in, redirect to logoff
+                if (HttpContext.Current.Request.Cookies[".DOTNETNUKE"] != null)
+                {
+                    HttpContext.Current.Response.Redirect(HttpContext.Current.Request.RawUrl + (!HttpContext.Current.Request.RawUrl.Contains('?') ? "?" : "") + "ctl=logoff", true);
+                }
+
+                return false;
+            }
+            else
+            {
+                // If the token is valid, set it
+                AuthToken = token;
+                return true;
+            }
+        }
+
+        protected new void LoadTokenCookie(string suffix)
+        {
+            HttpCookie authTokenCookie = HttpContext.Current.Request.Cookies[this.AuthTokenName + suffix];
+            if (authTokenCookie != null)
+            {
+                if (authTokenCookie.HasKeys)
+                {
+                    LoadToken(authTokenCookie.Values[OAuthTokenKey]);
+                }
+            }
+        }
+
         protected override TimeSpan GetExpiry(string responseText)
         {
             var jsonSerializer = new JavaScriptSerializer();
@@ -349,13 +406,15 @@ namespace DotNetNuke.Authentication.Azure.Components
             var jsonSerializer = new JavaScriptSerializer();
             var tokenDictionary = jsonSerializer.DeserializeObject(responseText) as Dictionary<string, object>;
             var token = Convert.ToString(tokenDictionary["access_token"]);
-            JwtIdToken = new JwtSecurityToken(Convert.ToString(tokenDictionary["access_token"]));
-            return token;
+            
+            JwtIdToken = new JwtSecurityToken(token);
+            LoadToken(token);
+            return AuthToken;
         }
 
         public override TUserData GetCurrentUser<TUserData>()
         {
-            LoadTokenCookie(String.Empty);
+            base.LoadTokenCookie(String.Empty);
             return GetCurrentUserInternal() as TUserData;
         }
 

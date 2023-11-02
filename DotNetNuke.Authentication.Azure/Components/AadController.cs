@@ -38,6 +38,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
@@ -55,6 +56,7 @@ namespace DotNetNuke.Authentication.Azure.Components
         private static Dictionary<int, OpenIdConnectConfiguration> _config = null;
         private static readonly Encoding TextEncoder = Encoding.UTF8;
         public const string AuthScheme = "Bearer";
+        public const string AuthAlgorithm = "RS256";
         public string SchemeType => "JWT";
 
         internal static Dictionary<int, OpenIdConnectConfiguration> Config
@@ -114,7 +116,7 @@ namespace DotNetNuke.Authentication.Azure.Components
         /// </summary>
         /// <param name="authHdr">The request auhorization header.</param>
         /// <returns>The B2C passed in the request; otherwise, it returns null.</returns>
-        private string ValidateAuthHeader(AuthenticationHeaderValue authHdr)
+        internal string ValidateAuthHeader(AuthenticationHeaderValue authHdr)
         {
             if (authHdr == null)
             {
@@ -138,12 +140,55 @@ namespace DotNetNuke.Authentication.Azure.Components
             return authorization;
         }
 
-        private string ValidateAuthorizationValue(string authorization)
+        /// <summary>
+        /// Checks for Authorization header and validates its scheme and algorithm. If successful, it returns the token string.
+        /// </summary>
+        /// <param name="authHdr">The request auhorization header.</param>
+        /// <returns>The token string passed in the request; otherwise, it returns null.</returns>
+        internal string ValidateAuthHeader(string token)
         {
+            if (string.IsNullOrEmpty(token))
+            {
+                //if (Logger.IsDebugEnabled) Logger.Debug("Authorization header not present in the request"); // too verbose; shows in all web requests
+                return null;
+            }
+            
+            var jwt = new JwtSecurityToken(token);
+            var alg = jwt.Header["alg"].ToString();
+            var typ = jwt.Header["typ"].ToString();
+            
+            if (alg != AuthAlgorithm)
+            {
+                if (Logger.IsDebugEnabled) Logger.Debug("Authorization header algorithm in the request is not equal to " + AuthAlgorithm);
+                return null;
+            }
+
+            if (typ != SchemeType)
+            {
+                if (Logger.IsDebugEnabled) Logger.Debug("Authorization header scheme in the request is not equal to " + SchemeType);
+                return null;
+            }
+            
+            return token;
+        }
+
+        internal string ValidateAuthorizationValue(string authorization)
+        {
+            var cache = DotNetNuke.Services.Cache.CachingProvider.Instance();
+            // Calculate a hash of a string
+            var hash = authorization.GetHashCode().ToString();
+            var cacheKey = "TokenValidation" + hash;
+            if (cache.GetItem(cacheKey) != null)
+            {
+                return cache.GetItem(cacheKey).ToString();
+            }
+
+            // NOTE: This cleaning logic is currently redundant when called from LoadToken method
             if (authorization.Contains("oauth_token="))
             {
                 authorization = authorization.Split('&').FirstOrDefault(x => x.Contains("oauth_token=")).Substring("oauth_token=".Length);
             }
+
             var parts = authorization.Split('.');
             if (parts.Length < 3)
             {
@@ -163,11 +208,13 @@ namespace DotNetNuke.Authentication.Azure.Components
                 return null;
 
             var jwt = GetAndValidateJwt(authorization, true);
-            if (jwt == null)
-                return null;
+            if (jwt == null) 
+                return null; 
 
-            var userInfo = TryGetUser(jwt);
+            var userInfo = TryGetUser(jwt);  
             var userName = userInfo?.Username;
+
+            cache.Insert(cacheKey, userName, null, jwt.ValidTo, TimeSpan.Zero);
 
             return userName;
         }
@@ -183,9 +230,9 @@ namespace DotNetNuke.Authentication.Azure.Components
                     if (Logger.IsDebugEnabled) Logger.Debug("Unable to retrieve portal settings");
                     return null;
                 }
-                if (!azureConfig.Enabled || !azureConfig.JwtAuthEnabled)
+                if (!azureConfig.Enabled)
                 {
-                    if (Logger.IsDebugEnabled) Logger.Debug($"Azure AD JWT auth is not enabled for portal {portalSettings.PortalId}");
+                    if (Logger.IsDebugEnabled) Logger.Debug($"Azure AD auth is not enabled for portal {portalSettings.PortalId}");
                     return null;
                 }
 
@@ -297,6 +344,13 @@ namespace DotNetNuke.Authentication.Azure.Components
             return TextEncoder.GetString(Convert.FromBase64String(b64Str));
         }
 
+        internal static string Base64Url(byte[] bytes)
+        {
+            char[] padding = { '=' };
+            return Convert.ToBase64String(bytes)
+                    .TrimEnd(padding).Replace('+', '-').Replace('/', '_');
+        }
+
         private static JwtSecurityToken GetAndValidateJwt(string rawToken, bool checkExpiry)
         {
             JwtSecurityToken jwt;
@@ -327,33 +381,71 @@ namespace DotNetNuke.Authentication.Azure.Components
                 if (Logger.IsDebugEnabled) Logger.Debug("Unable to retrieve portal settings");
                 return null;
             }
-            if (!azureConfig.Enabled || !azureConfig.JwtAuthEnabled)
+            if (!azureConfig.Enabled)
             {
-                if (Logger.IsDebugEnabled) Logger.Debug($"Azure AD JWT auth is not enabled for portal {portalSettings.PortalId}");
+                if (Logger.IsDebugEnabled) Logger.Debug($"Azure AD auth is not enabled for portal {portalSettings.PortalId}");
                 return null;
             }
 
-            var _config = GetConfig(portalSettings.PortalId, azureConfig);
+            var config = GetConfig(portalSettings.PortalId, azureConfig);
             var validAudiences = azureConfig.JwtAudiences.Split(',').Select(x => x.Trim()).Where(x => !string.IsNullOrEmpty(x)).ToArray();
             if (validAudiences.Length == 0)
             {
-                validAudiences = new[] { azureConfig.APIKey };
+                // We accept the default audience (the App ID URI of this service application) and the MS Graph AppID
+                validAudiences = new[] { azureConfig.APIKey, "00000003-0000-0000-c000-000000000000" };
             }
-            
+             
             try
             {
                 // Validate token.
-                var _tokenValidator = new JwtSecurityTokenHandler();
+                var tokenValidator = new JwtSecurityTokenHandler();
+                var jsonToken = tokenValidator.ReadJwtToken(rawToken);
+
+                bool hashNonceBeforeValidateToken = true;
+
+                string[] parts = rawToken.Split('.');
+                string header = parts[0];
+                string payload = parts[1];
+                string signature = parts[2];
+
+                // Hash nonce and update header with the hash before validating
+                if (hashNonceBeforeValidateToken &&
+                    jsonToken.Header.TryGetValue("nonce", out object nonceAsObject))
+                {
+                    string plainNonce = nonceAsObject.ToString();
+                    using (SHA256 sha256 = SHA256.Create())
+                    {
+                        byte[] hashedNonceAsBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(plainNonce));
+                        string hashedNonce = Base64Url(hashedNonceAsBytes);
+                        jsonToken.Header.Remove("nonce");
+                        jsonToken.Header.Add("nonce", hashedNonce);
+                        header = tokenValidator.WriteToken(jsonToken).Split('.')[0];
+                        rawToken = $"{header}.{payload}.{signature}";
+                    }
+                }
+
+                string issuer = config.Issuer.Replace("{tenantid}", jsonToken.Claims.FirstOrDefault(x => x.Type == "tid")?.Value);
                 var validationParameters = new TokenValidationParameters
                 {
-                    // App Id URI and AppId of this service application are both valid audiences.
+                    // App Id URI and AppId of this service application are both valid audiences
+                    RequireAudience = true,
+                    ValidateAudience = true,
                     ValidAudiences = validAudiences,
-                    // Support Azure AD V1 and V2 endpoints.
-                    ValidIssuers = new[] { _config.Issuer, $"{_config.Issuer}v2.0/" },
-                    IssuerSigningKeys = _config.SigningKeys
+
+                    // Validate signing keys
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKeys = config.SigningKeys,
+                    
+                    // Validate the token issuer
+                    ValidateIssuer = true,
+                    ValidIssuers = new[] { issuer, $"{issuer}v2.0/" },
+
+                    // Validate the token expiry
+                    RequireExpirationTime = true,
+                    ValidateLifetime = true,
                 };
 
-                var claimsPrincipal = _tokenValidator.ValidateToken(rawToken, validationParameters, out SecurityToken _);
+                var claimsPrincipal = tokenValidator.ValidateToken(rawToken, validationParameters, out SecurityToken _);
             }
             catch (Exception ex)
             {
