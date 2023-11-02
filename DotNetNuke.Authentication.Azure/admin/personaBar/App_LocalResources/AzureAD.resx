@@ -391,10 +391,11 @@
     <value>The DNN Azure Active Directory  Provider is an Authentication provider for DNN Platform that uses Azure Active Directory OAuth2 authentication to authenticate users.</value>
   </data>
   <data name="lblTokenValidation.Help" xml:space="preserve">
-    <value>This provider supports JWT authorization. You can get a JWT token directly from the Azure AD API, and then call a DNN WebAPI controller.</value>
+    <value>This provider supports JWT authorization. You can get a JWT token directly from the Azure AD API with your desired audiences, and then call a DNN WebAPI controller. Below 
+	you can specify different settings to validate issued tokens.</value>
   </data>
   <data name="lblTokenValidation.Text" xml:space="preserve">
-    <value>JWT Authorization</value>
+    <value>Token Validation</value>
   </data>
   <data name="lblUseGlobalSettings.Help" xml:space="preserve">
     <value>If enabled, all the settings are applied to all portals on this deployment. Only Super Users can edit this setting</value>
