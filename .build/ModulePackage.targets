@@ -19,7 +19,7 @@
 
     <!--in VS 2012 we exclude the packages folder -->
     <ItemGroup>
-      <InstallInclude Include="**\*.txt;**\*.ascx;**\*.css"  Exclude="**\obj\**;**\_ReSharper*\**;packages\**;" />
+      <InstallInclude Include="**\*.txt;**\*.ascx;**\*.css"  Exclude="**\obj\**;**\_ReSharper*\**;**\packages\**;**\node_modules\**;" />
       <InstallInclude Include="**\images\*.png" />
       <InstallInclude Include="**\App_LocalResources\*.resx" />
     </ItemGroup>
