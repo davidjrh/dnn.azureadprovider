@@ -200,48 +200,50 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-	  <Content Include="admin\personaBar\AzureAD.html">
-		  <Pack>false</Pack>
-	  </Content>
-	  <Content Include="admin\personaBar\css\AzureAD.css">
-		  <Pack>false</Pack>
-	  </Content>
-	  <Content Include="admin\personaBar\scripts\AzureAD.js">
-		  <Pack>false</Pack>
-	  </Content>
-	  <Content Include="admin\personaBar\scripts\bundles\bundle-en.js">
-		  <Pack>false</Pack>
-	  </Content>
-	  <Content Include="Images\azure-bg.png">
-		  <Pack>false</Pack>
-	  </Content>
-	  <Content Include="Images\azure-login.png"><Pack>false</Pack></Content>
-	  <Content Include="Images\azure.png">
-		  <Pack>false</Pack>
-	  </Content>
-	  <Content Include="Images\dnn-webapp.png">
-		  <Pack>false</Pack>
-	  </Content>
-	  <Content Include="AzureADLicense.txt">
-		  <Pack>false</Pack>
-	  </Content>
+    <Content Include="admin\personaBar\AzureAD.html">
+      <Pack>false</Pack>
+    </Content>
+    <Content Include="admin\personaBar\css\AzureAD.css">
+      <Pack>false</Pack>
+    </Content>
+    <Content Include="admin\personaBar\scripts\AzureAD.js">
+      <Pack>false</Pack>
+    </Content>
+    <Content Include="admin\personaBar\scripts\bundles\bundle-en.js">
+      <Pack>false</Pack>
+    </Content>
+    <Content Include="Images\azure-bg.png">
+      <Pack>false</Pack>
+    </Content>
+    <Content Include="Images\azure-login.png">
+      <Pack>false</Pack>
+    </Content>
+    <Content Include="Images\azure.png">
+      <Pack>false</Pack>
+    </Content>
+    <Content Include="Images\dnn-webapp.png">
+      <Pack>false</Pack>
+    </Content>
+    <Content Include="AzureADLicense.txt">
+      <Pack>false</Pack>
+    </Content>
     <Content Include="Logoff.ascx">
       <SubType>ASPXCodeBehind</SubType>
-		<Pack>false</Pack>
+      <Pack>false</Pack>
     </Content>
     <Content Include="Login.ascx">
       <SubType>ASPXCodeBehind</SubType>
-		<Pack>false</Pack>
+      <Pack>false</Pack>
     </Content>
-	  <Content Include="module.css">
-		  <Pack>false</Pack>
-	  </Content>
-	  <Content Include="AzureADReleaseNotes.txt">
-		  <Pack>false</Pack>
-	  </Content>
+    <Content Include="module.css">
+      <Pack>false</Pack>
+    </Content>
+    <Content Include="AzureADReleaseNotes.txt">
+      <Pack>false</Pack>
+    </Content>
     <Content Include="Settings.ascx">
       <SubType>ASPXCodeBehind</SubType>
-		<Pack>false</Pack>
+      <Pack>false</Pack>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -299,6 +301,7 @@
     <None Include="app.config" />
     <None Include="AzureADProvider.dnn" />
     <Content Include="packages.config" />
+    <None Include="DotNetNuke.Authentication.Azure.nuspec" />
     <None Include="Providers\DataProviders\SqlDataProvider\04.03.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\04.00.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\03.00.00.SqlDataProvider" />
