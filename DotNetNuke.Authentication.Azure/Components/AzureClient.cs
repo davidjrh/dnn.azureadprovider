@@ -88,7 +88,7 @@ namespace DotNetNuke.Authentication.Azure.Components
                 return _graphClient;
             }
         }
-        private readonly AzureConfig Settings;
+        private AzureConfig Settings;
 
         private List<ProfileMapping> _customClaimsMappings;
         public List<ProfileMapping> CustomClaimsMappings
@@ -250,7 +250,7 @@ namespace DotNetNuke.Authentication.Azure.Components
         #region Constructors
 
         internal JwtSecurityToken JwtIdToken { get; set; }
-        public Uri LogoutEndpoint { get; }
+        public Uri LogoutEndpoint { get; set; }
 
         private bool _autoMatchExistingUsers = false;
         public override bool AutoMatchExistingUsers
@@ -277,18 +277,28 @@ namespace DotNetNuke.Authentication.Azure.Components
 
         public string RedirectUrl { get; set; }
 
-
         public AzureClient(int portalId, AuthMode mode) 
             : base(portalId, mode, AzureConfig.ServiceName)
+        {
+            Initialize(portalId, mode, null);
+        }
+
+        public AzureClient(int portalId, AuthMode mode, JwtSecurityToken jwt)
+            : base(portalId, mode, AzureConfig.ServiceName)
+        {
+            Initialize(portalId, mode, jwt);
+        }
+
+        private void Initialize(int portalId, AuthMode mode, JwtSecurityToken jwt)
         {
             Settings = new AzureConfig(AzureConfig.ServiceName, portalId);
 
             TokenMethod = HttpMethod.POST;
-    
-            
+
+
             if (!string.IsNullOrEmpty(Settings.TenantId))
             {
-                TokenEndpoint = new Uri(string.Format(Utils.GetAppSetting("AzureAD.TokenEndpointPattern", TokenEndpointPattern), Settings.TenantId));  
+                TokenEndpoint = new Uri(string.Format(Utils.GetAppSetting("AzureAD.TokenEndpointPattern", TokenEndpointPattern), Settings.TenantId));
                 LogoutEndpoint = new Uri(string.Format(Utils.GetAppSetting("AzureAD.LogoutEndpointPattern", LogoutEndpointPattern), Settings.TenantId, UrlEncode(HttpContext.Current.Request.Url.ToString())));
                 AuthorizationEndpoint = new Uri(string.Format(Utils.GetAppSetting("AzureAD.AuthorizationEndpointPattern", AuthorizationEndpointPattern), Settings.TenantId));
                 MeGraphEndpoint = new Uri(string.Format(Utils.GetAppSetting("AzureAD.GraphEndpointPattern", GraphEndpointPattern), Settings.TenantId));
@@ -317,8 +327,8 @@ namespace DotNetNuke.Authentication.Azure.Components
             AuthTokenName = "AzureUserToken";
             OAuthVersion = "2.0";
             OAuthHeaderCode = "Basic";
-            LoadTokenCookie(string.Empty);
-            JwtIdToken = null;
+            LoadTokenCookieInternal(string.Empty, jwt == null);
+            JwtIdToken = jwt;
 
             _prefixServiceToUserName = Settings.UsernamePrefixEnabled;
             _prefixServiceToGroupName = Settings.GroupNamePrefixEnabled;
@@ -333,7 +343,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             return oState.Service == Service;
         }
 
-        public bool LoadToken(string token)
+        internal bool LoadTokenInternal(string token, bool verifyToken = true)
         {
             // Clean token
             if (token.Contains("oauth_token="))
@@ -341,19 +351,35 @@ namespace DotNetNuke.Authentication.Azure.Components
                 token = token.Split('&').FirstOrDefault(x => x.Contains("oauth_token=")).Substring("oauth_token=".Length);
             }
 
-            // Verify token
-            var aadController = new AadController();
-            string authorization = string.Empty;
-            try
+            if (!verifyToken)
             {
-                authorization = aadController.ValidateAuthHeader(token);
+                AuthToken = token;
+                return true;
             }
-            catch (Exception ex)
+
+            // Verify token            
+            var cache = DotNetNuke.Services.Cache.CachingProvider.Instance();
+            // Calculate a hash of a string
+            var hash = token.GetHashCode().ToString();
+            var cacheKey = "TokenValidation" + hash;
+            string username = (string) cache.GetItem(cacheKey);
+            if (string.IsNullOrEmpty(username))
             {
-                Logger.Error("Error validating token", ex);
+                var aadController = new AadController();
+                string authorization = string.Empty;
+                try
+                {
+                    authorization = aadController.ValidateAuthHeader(token);
+                    username = string.IsNullOrEmpty(authorization) 
+                        ? string.Empty 
+                        : aadController.ValidateAuthorizationValue(authorization);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error("Error validating token", ex);
+                }
             }
-            string username = string.IsNullOrEmpty(authorization) ? null : aadController.ValidateAuthorizationValue(authorization);
-            
+
             if (string.IsNullOrEmpty(username))
             {
                 // If the token is not valid, remove it and redirect to logoff
@@ -375,18 +401,29 @@ namespace DotNetNuke.Authentication.Azure.Components
                 AuthToken = token;
                 return true;
             }
+
         }
 
-        protected new void LoadTokenCookie(string suffix)
+        public bool LoadToken(string token)
+        {
+            return LoadTokenInternal(token);
+        }
+
+        internal void LoadTokenCookieInternal(string suffix, bool verifyToken = true)
         {
             HttpCookie authTokenCookie = HttpContext.Current.Request.Cookies[this.AuthTokenName + suffix];
             if (authTokenCookie != null)
             {
                 if (authTokenCookie.HasKeys)
                 {
-                    LoadToken(authTokenCookie.Values[OAuthTokenKey]);
+                    LoadTokenInternal(authTokenCookie.Values[OAuthTokenKey], verifyToken);
                 }
             }
+        }
+
+        protected new void LoadTokenCookie(string suffix)
+        {
+            LoadTokenCookieInternal(suffix);
         }
 
         protected override TimeSpan GetExpiry(string responseText)
