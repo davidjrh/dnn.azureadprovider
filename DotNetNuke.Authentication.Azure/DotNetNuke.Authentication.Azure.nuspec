@@ -2,7 +2,7 @@
 <package >
 	<metadata>
 		<id>DotNetNuke.Authentication.Azure</id>
-		<version>4.4.2</version>
+		<version>4.4.4</version>
 		<title>DotNetNuke.Authentication.Azure</title>
 		<authors>Intelequia Technologies</authors>
 		<owners>Intelequia Technologies</owners>
@@ -16,6 +16,6 @@
 		<tags>Intelequia DNN AzureAD</tags>
 	</metadata>
 	<files>
-		<file src="bin\DotNetNuke.Authentication.Azure.dll" />
+		<file src="bin\DotNetNuke.Authentication.Azure.dll" target="lib\net472" />
 	</files>
 </package>
