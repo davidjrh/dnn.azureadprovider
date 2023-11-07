@@ -88,7 +88,7 @@ namespace DotNetNuke.Authentication.Azure.Components
                 return _graphClient;
             }
         }
-        private readonly AzureConfig Settings;
+        private AzureConfig Settings;
 
         private List<ProfileMapping> _customClaimsMappings;
         public List<ProfileMapping> CustomClaimsMappings
@@ -250,7 +250,7 @@ namespace DotNetNuke.Authentication.Azure.Components
         #region Constructors
 
         internal JwtSecurityToken JwtIdToken { get; set; }
-        public Uri LogoutEndpoint { get; }
+        public Uri LogoutEndpoint { get; set; }
 
         private bool _autoMatchExistingUsers = false;
         public override bool AutoMatchExistingUsers
@@ -277,18 +277,28 @@ namespace DotNetNuke.Authentication.Azure.Components
 
         public string RedirectUrl { get; set; }
 
-
-        public AzureClient(int portalId, AuthMode mode, JwtSecurityToken jwt = null) 
+        public AzureClient(int portalId, AuthMode mode) 
             : base(portalId, mode, AzureConfig.ServiceName)
+        {
+            Initialize(portalId, mode, null);
+        }
+
+        public AzureClient(int portalId, AuthMode mode, JwtSecurityToken jwt)
+            : base(portalId, mode, AzureConfig.ServiceName)
+        {
+            Initialize(portalId, mode, jwt);
+        }
+
+        private void Initialize(int portalId, AuthMode mode, JwtSecurityToken jwt)
         {
             Settings = new AzureConfig(AzureConfig.ServiceName, portalId);
 
             TokenMethod = HttpMethod.POST;
-    
-            
+
+
             if (!string.IsNullOrEmpty(Settings.TenantId))
             {
-                TokenEndpoint = new Uri(string.Format(Utils.GetAppSetting("AzureAD.TokenEndpointPattern", TokenEndpointPattern), Settings.TenantId));  
+                TokenEndpoint = new Uri(string.Format(Utils.GetAppSetting("AzureAD.TokenEndpointPattern", TokenEndpointPattern), Settings.TenantId));
                 LogoutEndpoint = new Uri(string.Format(Utils.GetAppSetting("AzureAD.LogoutEndpointPattern", LogoutEndpointPattern), Settings.TenantId, UrlEncode(HttpContext.Current.Request.Url.ToString())));
                 AuthorizationEndpoint = new Uri(string.Format(Utils.GetAppSetting("AzureAD.AuthorizationEndpointPattern", AuthorizationEndpointPattern), Settings.TenantId));
                 MeGraphEndpoint = new Uri(string.Format(Utils.GetAppSetting("AzureAD.GraphEndpointPattern", GraphEndpointPattern), Settings.TenantId));
@@ -406,7 +416,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             {
                 if (authTokenCookie.HasKeys)
                 {
-                    LoadToken(authTokenCookie.Values[OAuthTokenKey]);
+                    LoadTokenInternal(authTokenCookie.Values[OAuthTokenKey], verifyToken);
                 }
             }
         }

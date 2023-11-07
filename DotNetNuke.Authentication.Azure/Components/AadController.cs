@@ -281,10 +281,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             var cache = DotNetNuke.Services.Cache.CachingProvider.Instance();
             if (string.IsNullOrEmpty((string)cache.GetItem($"SyncAADToken|{tokenKey}")))
             {
-                var azureClient = new AzureClient(portalSettings.PortalId, AuthMode.Login)
-                {
-                    JwtIdToken = jwt
-                };
+                var azureClient = new AzureClient(portalSettings.PortalId, AuthMode.Login, jwt);
                 azureClient.SetAuthTokenInternal(jwt.RawData);
                 azureClient.SetAutoMatchExistingUsers(true);
                 var userData = azureClient.GetCurrentUserInternal(jwt);
