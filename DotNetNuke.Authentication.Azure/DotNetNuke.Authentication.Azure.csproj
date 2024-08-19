@@ -363,8 +363,13 @@
       ]]></Code>
     </Task>
   </UsingTask>
-  <Target Name="SampleTarget" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Release' ">
-    <SetEnvironmentVariableTask Name="NODE_ENV" Value="production" />
-    <Exec Command="webpack --mode=production" WorkingDirectory="AzureAD.Web" />
-  </Target>
+	<Target Name="SampleTarget" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Release' ">
+		<SetEnvironmentVariableTask Name="NODE_ENV" Value="production" />
+		<Exec Command="webpack --mode=production --env production" WorkingDirectory="AzureAD.Web" />
+	</Target>
+	<Target Name="SampleTargetLegacy" BeforeTargets="PackageModule" Condition=" '$(Configuration)' == 'Release Legacy' ">
+		<SetEnvironmentVariableTask Name="NODE_ENV" Value="production" />
+		<SetEnvironmentVariableTask Name="NODE_OPTIONS" Value="--openssl-legacy-provider" />
+		<Exec Command="webpack --mode production --env production" WorkingDirectory="AzureAD.Web" />
+	</Target>
 </Project>
