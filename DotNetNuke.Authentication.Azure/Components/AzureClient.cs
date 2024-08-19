@@ -36,6 +36,7 @@ using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.Script.Serialization;
+using System.Web.Security;
 using Azure;
 using DotNetNuke.Authentication.Azure.Common;
 using DotNetNuke.Authentication.Azure.Components.Graph;
@@ -738,11 +739,24 @@ namespace DotNetNuke.Authentication.Azure.Components
 
         private void UpdateUserAndRoles(UserInfo userInfo)
         {
+            // Reset user password with a new one to avoid password expiration errors on DNN for Azure AD users
+            MembershipUser aspnetUser = Membership.GetUser(userInfo.Username);
+            aspnetUser.ResetPassword();
+
+            // Last login date not being updated by DNN on OAuth login, so we have to do it manually
+            aspnetUser = Membership.GetUser(userInfo.Username);
+            aspnetUser.LastLoginDate = DateTime.Now;
+            Membership.UpdateUser(aspnetUser);
+
+            // Updates the user in DNN
+            userInfo.Membership.LastLoginDate = aspnetUser.LastLoginDate;
+            userInfo.Membership.UpdatePassword = false;
             if (Settings.AutoAuthorize && !userInfo.Membership.Approved && IsCurrentUserAuthorized())
             {
                 userInfo.Membership.Approved = true; // Delegate approval on Auth Provider
-                UserController.UpdateUser(userInfo.PortalID, userInfo);
             }
+            UserController.UpdateUser(userInfo.PortalID, userInfo);
+
             UpdateUserRoles(JwtIdToken.Claims.First(c => c.Type == "oid").Value, userInfo);
             UpdateUserProfilePicture(JwtIdToken.Claims.First(c => c.Type == "oid").Value, userInfo, true);
         }
