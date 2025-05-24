@@ -741,7 +741,15 @@ namespace DotNetNuke.Authentication.Azure.Components
         {
             // Reset user password with a new one to avoid password expiration errors on DNN for Azure AD users
             MembershipUser aspnetUser = Membership.GetUser(userInfo.Username);
-            aspnetUser.ResetPassword();
+            try
+            {
+                aspnetUser.ResetPassword();
+            }
+            catch (Exception ex)
+            {
+                // If password reset is disabled, log the error but continue with the authentication process
+                Logger.Warn("Unable to reset password, continuing with login: " + ex.Message);
+            }
 
             // Last login date not being updated by DNN on OAuth login, so we have to do it manually
             aspnetUser = Membership.GetUser(userInfo.Username);
