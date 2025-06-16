@@ -8,6 +8,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Scheduling;
@@ -72,6 +73,13 @@ namespace DotNetNuke.Authentication.Azure.ScheduledTasks
                         {
                             var message = SyncRoles(portal.PortalID, settings);
                             ScheduleHistoryItem.AddLogNote(message);
+                            
+                            // Remove expired role memberships from Entra ID if enabled
+                            if (settings.RemoveExpiredRoleMembershipsEnabled)
+                            {
+                                var expiredMessage = RemoveExpiredRoleMemberships(portal.PortalID, settings);
+                                ScheduleHistoryItem.AddLogNote(expiredMessage);
+                            }
                         }
                         if (settings.UserSyncEnabled)
                         {
@@ -237,6 +245,174 @@ namespace DotNetNuke.Authentication.Azure.ScheduledTasks
                 string message = $"Error while synchronizing the roles from portal {portalId}: {e}.\n";
                 Logger.Error(message);
                 return message;
+            }
+        }
+
+        internal string RemoveExpiredRoleMemberships(int portalId, AzureConfig settings)
+        {
+            try
+            {
+                if (!settings.RemoveExpiredRoleMembershipsEnabled || !settings.RoleSyncEnabled)
+                {
+                    return $"Expired role membership removal is disabled for portal {portalId}.\n";
+                }
+
+                var syncErrorsDesc = "";
+                var syncErrors = 0;
+                var membershipsRemoved = 0;
+                var customRoleMappings = GetRoleMappingsForPortal(portalId, settings);
+
+                Utils.ValidateAadParameters(portalId, settings);
+                var graphClient = settings.GraphUseCustomParams
+                    ? new GraphClient(settings.AADApplicationId, settings.AADApplicationKey, settings.AADTenantId)
+                    : new GraphClient(settings.APIKey, settings.APISecret, settings.TenantId);
+
+                // Get all DNN roles imported from AAD
+                var dnnAadRoles = GetDnnAadRoles(portalId);
+
+                foreach (var dnnRole in dnnAadRoles)
+                {
+                    try
+                    {
+                        // Get expired role memberships for this role
+                        var expiredMemberships = RoleController.Instance.GetUserRoles(portalId, null, dnnRole.RoleName)
+                            .Where(ur => ur.ExpiryDate != Null.NullDate && ur.ExpiryDate < DateTime.Now && ur.Status == RoleStatus.Approved)
+                            .ToList();
+
+                        foreach (var expiredMembership in expiredMemberships)
+                        {
+                            try
+                            {
+                                // Get the user
+                                var userInfo = UserController.GetUserById(portalId, expiredMembership.UserID);
+                                if (userInfo == null) continue;
+
+                                // Find the AAD user ID from the user authentication records
+                                var aadUserId = GetAadUserIdFromDnnUser(userInfo, graphClient, settings);
+                                if (string.IsNullOrEmpty(aadUserId)) continue;
+
+                                // Determine the AAD group name
+                                var aadGroupName = dnnRole.RoleName;
+                                var mapping = customRoleMappings?.FirstOrDefault(x => x.DnnRoleName == dnnRole.RoleName);
+                                if (mapping != null)
+                                {
+                                    aadGroupName = mapping.AadRoleName;
+                                }
+                                else if (settings.GroupNamePrefixEnabled && dnnRole.RoleName.StartsWith($"{AzureConfig.ServiceName}-"))
+                                {
+                                    aadGroupName = dnnRole.RoleName.Substring($"{AzureConfig.ServiceName}-".Length);
+                                }
+
+                                // Get the AAD group ID by name
+                                var aadGroups = graphClient.GetAllGroups(aadGroupName);
+                                var aadGroup = aadGroups?.CurrentPage?.FirstOrDefault(g => g.DisplayName == aadGroupName);
+                                if (aadGroup != null)
+                                {
+                                    // Remove the user from the AAD group
+                                    graphClient.RemoveGroupMember(aadGroup.Id, aadUserId);
+                                    membershipsRemoved++;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                syncErrors++;
+                                syncErrorsDesc += $"\nError removing expired role membership for user {expiredMembership.UserID} from role {dnnRole.RoleName}: {ex.Message}";
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        syncErrors++;
+                        syncErrorsDesc += $"\nError processing expired memberships for role {dnnRole.RoleName}: {ex.Message}";
+                    }
+                }
+
+                var syncResultDesc = "";
+                var syncResultStats = $"sync errors: {syncErrors}; expired memberships removed: {membershipsRemoved}";
+                if (!string.IsNullOrEmpty(syncErrorsDesc))
+                {
+                    Logger.Error($"AAD Expired Role Membership Removal errors detected: {syncErrorsDesc}");
+                    syncResultDesc = $"Portal {portalId} expired role membership removal completed with errors, check logs for more information ({syncResultStats}).\n";
+                }
+                else
+                {
+                    syncResultDesc = $"Successfully removed expired role memberships for portal {portalId} ({syncResultStats}).\n";
+                }
+                return syncResultDesc;
+            }
+            catch (Exception e)
+            {
+                string message = $"Error while removing expired role memberships from portal {portalId}: {e}.\n";
+                Logger.Error(message);
+                return message;
+            }
+        }
+
+        private string GetAadUserIdFromDnnUser(UserInfo userInfo, GraphClient graphClient, AzureConfig settings)
+        {
+            try
+            {
+                // Get the authentication record for this user
+                var userAuthentications = DotNetNuke.Security.Membership.MembershipProvider.Instance().GetUserAuthentication(userInfo.UserID);
+                var aadAuth = userAuthentications?.FirstOrDefault(ua => ua.AuthenticationType == AzureConfig.ServiceName);
+                if (aadAuth == null)
+                {
+                    return null; // User is not an AAD user
+                }
+
+                // The AuthenticationToken contains the username used during authentication
+                var authToken = aadAuth.AuthenticationToken;
+                if (string.IsNullOrEmpty(authToken))
+                {
+                    return null;
+                }
+
+                // If the username has a prefix, remove it to get the original AAD identifier
+                var aadIdentifier = authToken;
+                if (settings.UsernamePrefixEnabled && authToken.StartsWith($"{AzureConfig.ServiceName}-"))
+                {
+                    aadIdentifier = authToken.Substring($"{AzureConfig.ServiceName}-".Length);
+                }
+
+                // Try to get the user from AAD using the identifier
+                // This could be a UPN, email, or object ID depending on the user mapping configuration
+                try
+                {
+                    // First, try to get by object ID (if it looks like a GUID)
+                    if (Guid.TryParse(aadIdentifier, out _))
+                    {
+                        var user = graphClient.GetUser(aadIdentifier);
+                        return user?.Id;
+                    }
+
+                    // If not a GUID, search for the user by UPN/email
+                    var users = graphClient.GetAllUsers();
+                    while (users != null && users.Count > 0)
+                    {
+                        var foundUser = users.CurrentPage?.FirstOrDefault(u => 
+                            u.UserPrincipalName?.Equals(aadIdentifier, StringComparison.OrdinalIgnoreCase) == true ||
+                            u.Mail?.Equals(aadIdentifier, StringComparison.OrdinalIgnoreCase) == true ||
+                            u.Id?.Equals(aadIdentifier, StringComparison.OrdinalIgnoreCase) == true);
+                        
+                        if (foundUser != null)
+                        {
+                            return foundUser.Id;
+                        }
+                        
+                        users = users.NextPageRequest?.GetSync();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Warn($"Error looking up AAD user for DNN user {userInfo.UserID}: {ex.Message}", ex);
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Error getting AAD user ID for DNN user {userInfo.UserID}: {ex.Message}", ex);
+                return null;
             }
         }
 
