@@ -8,7 +8,6 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Membership;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Scheduling;
@@ -352,8 +351,8 @@ namespace DotNetNuke.Authentication.Azure.ScheduledTasks
         {
             try
             {
-                // Get the authentication record for this user
-                var userAuthentications = DotNetNuke.Security.Membership.MembershipProvider.Instance().GetUserAuthentication(userInfo.UserID);
+                // Get the authentication record for this user using AuthenticationController
+                var userAuthentications = AuthenticationController.GetUserAuthentications(userInfo.UserID);
                 var aadAuth = userAuthentications?.FirstOrDefault(ua => ua.AuthenticationType == AzureConfig.ServiceName);
                 if (aadAuth == null)
                 {
