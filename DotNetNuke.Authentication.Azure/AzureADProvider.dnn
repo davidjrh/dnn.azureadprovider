@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="AzureADProvider" type="Auth_System" version="04.04.06">
+    <package name="AzureADProvider" type="Auth_System" version="04.04.07">
       <friendlyName>DNN Azure Active Directory Provider</friendlyName>
       <description>
         The DNN Azure Active Directory Provider is an Authentication provider for DNN Platform that uses Azure Active Directory OAuth2 authentication to authenticate users.
@@ -67,68 +67,69 @@
               <path>bin</path>
               <name>Microsoft.IdentityModel.JsonWebTokens.dll</name>
             </assembly>
-			  <assembly>
-				  <path>bin</path>
-				  <name>Microsoft.Graph.dll</name>
-			  </assembly>
-			  <assembly>
-				  <path>bin</path>
-				  <name>Microsoft.Graph.Core.dll</name>
-			  </assembly>
-			  <assembly>
-				  <path>bin</path>
-				  <name>Microsoft.Identity.Client.dll</name>
-			  </assembly>
-			  <assembly>
-				  <path>bin</path>
-				  <name>Microsoft.Bcl.AsyncInterfaces.dll</name>
-			  </assembly>
-			  <assembly>
-				  <path>bin</path>
-				  <name>Azure.Core.dll</name>
-			  </assembly>
-			  <assembly>
-				  <path>bin</path>
-				  <name>System.Text.Json.dll</name>
-			  </assembly>
-			  <assembly>
-				  <path>bin</path>
-				  <name>System.Threading.Tasks.Extensions.dll</name>
-			  </assembly>
-			  <assembly>
-				  <path>bin</path>
-				  <name>System.Text.Encodings.Web.dll</name>
-			  </assembly>
-			  <assembly>
-				  <name>System.ValueTuple.dll</name>
-				  <path>bin</path>
-			  </assembly>
-			  <assembly>
-				  <name>System.Memory.dll</name>
-				  <path>bin</path>
-			  </assembly>
-			  <assembly>
-				  <path>bin</path>
-				  <name>System.Memory.Data.dll</name>
-			  </assembly>
-			  <assembly>
-				  <name>System.Diagnostics.DiagnosticSource.dll</name>
-				  <path>bin</path>
-			  </assembly>
-			  <assembly>
-				  <name>System.Runtime.CompilerServices.Unsafe.dll</name>
-				  <path>bin</path>
-			  </assembly>
-			  <assembly>
-				  <name>System.Buffers.dll</name>
-				  <path>bin</path>
-			  </assembly>
-			  <assembly>
-				  <name>System.Numerics.Vectors.dll</name>
-				  <path>bin</path>
-			  </assembly>
-		  </assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.Graph.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.Graph.Core.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.Identity.Client.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.Bcl.AsyncInterfaces.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Azure.Core.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Text.Json.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Threading.Tasks.Extensions.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Text.Encodings.Web.dll</name>
+            </assembly>
+            <assembly>
+              <name>System.ValueTuple.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>System.Memory.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Memory.Data.dll</name>
+            </assembly>
+            <assembly>
+              <name>System.Diagnostics.DiagnosticSource.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>System.Runtime.CompilerServices.Unsafe.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>System.Buffers.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>System.Numerics.Vectors.dll</name>
+              <path>bin</path>
+            </assembly>
+          </assemblies>
         </component>
+
         <component type="ResourceFile">
           <resourceFiles>
             <basePath>DesktopModules/AuthenticationServices/Azure</basePath>
@@ -137,6 +138,7 @@
             </resourceFile>
           </resourceFiles>
         </component>
+
         <component type="ResourceFile">
           <resourceFiles>
             <basePath>DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.AzureAD</basePath>
@@ -175,20 +177,91 @@
               <version>04.00.00</version>
             </script>
 
-			  <script type="Install">
-				  <path>Providers\DataProviders\SqlDataProvider</path>
-				  <name>04.03.00.SqlDataProvider</name>
-				  <version>04.03.00</version>
-			  </script>
+            <script type="Install">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>04.03.00.SqlDataProvider</name>
+              <version>04.03.00</version>
+            </script>
 
-			  <script type="UnInstall" >
+            <script type="UnInstall" >
               <path>Providers\DataProviders\SqlDataProvider</path>
               <name>uninstall.SqlDataProvider</name>
               <version>03.00.00</version>
             </script>
           </scripts>
         </component>
-        
+
+        <component type="Config">
+          <config>
+            <configFile>web.config</configFile>
+            <install>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/runtime/ab:assemblyBinding"
+                    action="update"
+                    collision="save"
+                    targetpath="/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='System.Diagnostics.DiagnosticSource'][ab:assemblyIdentity/@publicKeyToken='cc7b13ffcd2ddd51']"
+                    nameSpace="urn:schemas-microsoft-com:asm.v1"
+                    nameSpacePrefix="ab">
+                    <dependentAssembly xmlns="urn:schemas-microsoft-com:asm.v1">
+                      <assemblyIdentity name="System.Diagnostics.DiagnosticSource" publicKeyToken="cc7b13ffcd2ddd51" culture="neutral" />
+                      <bindingRedirect oldVersion="0.0.0.0-32767.32767.32767.32767" newVersion="6.0.0.2" />
+                    </dependentAssembly>
+                  </node>
+
+                  <node path="/configuration/runtime/ab:assemblyBinding"
+                    action="update"
+                    collision="save"
+                    targetpath="/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='System.IdentityModel.Tokens.Jwt'][ab:assemblyIdentity/@publicKeyToken='31bf3856ad364e35']"
+                    nameSpace="urn:schemas-microsoft-com:asm.v1"
+                    nameSpacePrefix="ab">
+                    <dependentAssembly xmlns="urn:schemas-microsoft-com:asm.v1">
+                      <assemblyIdentity name="System.IdentityModel.Tokens.Jwt" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+                      <bindingRedirect oldVersion="0.0.0.0-32767.32767.32767.32767" newVersion="8.4.0.0" />
+                    </dependentAssembly>
+                  </node>
+                  
+                  <node path="/configuration/runtime/ab:assemblyBinding"
+                    action="update"
+                    collision="save"
+                    targetpath="/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='Microsoft.IdentityModel.Tokens'][ab:assemblyIdentity/@publicKeyToken='31bf3856ad364e35']"
+                    nameSpace="urn:schemas-microsoft-com:asm.v1"
+                    nameSpacePrefix="ab">
+                    <dependentAssembly xmlns="urn:schemas-microsoft-com:asm.v1">
+                      <assemblyIdentity name="Microsoft.IdentityModel.Tokens" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+                      <bindingRedirect oldVersion="0.0.0.0-32767.32767.32767.32767" newVersion="8.4.0.0" />
+                    </dependentAssembly>
+                  </node>
+                  
+                  <node path="/configuration/runtime/ab:assemblyBinding"
+                    action="update"
+                    collision="save"
+                    targetpath="/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='Microsoft.IdentityModel.Protocols'][ab:assemblyIdentity/@publicKeyToken='31bf3856ad364e35']"
+                    nameSpace="urn:schemas-microsoft-com:asm.v1"
+                    nameSpacePrefix="ab">
+                    <dependentAssembly xmlns="urn:schemas-microsoft-com:asm.v1">
+                      <assemblyIdentity name="Microsoft.IdentityModel.Protocols" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+                      <bindingRedirect oldVersion="0.0.0.0-32767.32767.32767.32767" newVersion="8.4.0.0" />
+                    </dependentAssembly>
+                  </node>
+                  
+                  <node path="/configuration/runtime/ab:assemblyBinding"
+                    action="update"
+                    collision="save"
+                    targetpath="/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='Microsoft.IdentityModel.Protocols.OpenIdConnect'][ab:assemblyIdentity/@publicKeyToken='31bf3856ad364e35']"
+                    nameSpace="urn:schemas-microsoft-com:asm.v1"
+                    nameSpacePrefix="ab">
+                    <dependentAssembly xmlns="urn:schemas-microsoft-com:asm.v1">
+                      <assemblyIdentity name="Microsoft.IdentityModel.Protocols.OpenIdConnect" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+                      <bindingRedirect oldVersion="0.0.0.0-32767.32767.32767.32767" newVersion="8.4.0.0" />
+                    </dependentAssembly>
+                  </node>
+                </nodes>
+              </configuration>
+            </install>
+          </config>
+        </component>
+
       </components>
     </package>
   </packages>
