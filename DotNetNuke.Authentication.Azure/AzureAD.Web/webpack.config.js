@@ -100,6 +100,5 @@ module.exports = (env, argv) => {
                     }                
                 })
             ],
-        devtool: 'source-map'
-    }
+    };
 };

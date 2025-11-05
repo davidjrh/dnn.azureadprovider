@@ -198,7 +198,7 @@ FakesAssemblies/
 # Folder config file
 [Dd]esktop.ini
 
-/DotNetNuke.Authentication.Azure/.vs
+.vs/
 /DotNetNuke.Authentication.Azure/packages
 /Releases
 /DotNetNuke.Authentication.Azure/AzureAD.Web/package-lock.json
