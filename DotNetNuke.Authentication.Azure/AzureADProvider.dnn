@@ -127,6 +127,18 @@
               <name>System.Numerics.Vectors.dll</name>
               <path>bin</path>
             </assembly>
+            <assembly>
+              <name>Microsoft.IdentityModel.Abstractions.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>Microsoft.Bcl.Memory.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>Microsoft.Bcl.TimeProvider.dll</name>
+              <path>bin</path>
+            </assembly>
           </assemblies>
         </component>
 
@@ -189,77 +201,6 @@
               <version>03.00.00</version>
             </script>
           </scripts>
-        </component>
-
-        <component type="Config">
-          <config>
-            <configFile>web.config</configFile>
-            <install>
-              <configuration>
-                <nodes>
-                  <node path="/configuration/runtime/ab:assemblyBinding"
-                    action="update"
-                    collision="save"
-                    targetpath="/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='System.Diagnostics.DiagnosticSource'][ab:assemblyIdentity/@publicKeyToken='cc7b13ffcd2ddd51']"
-                    nameSpace="urn:schemas-microsoft-com:asm.v1"
-                    nameSpacePrefix="ab">
-                    <dependentAssembly xmlns="urn:schemas-microsoft-com:asm.v1">
-                      <assemblyIdentity name="System.Diagnostics.DiagnosticSource" publicKeyToken="cc7b13ffcd2ddd51" culture="neutral" />
-                      <bindingRedirect oldVersion="0.0.0.0-32767.32767.32767.32767" newVersion="6.0.0.2" />
-                    </dependentAssembly>
-                  </node>
-
-                  <node path="/configuration/runtime/ab:assemblyBinding"
-                    action="update"
-                    collision="save"
-                    targetpath="/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='System.IdentityModel.Tokens.Jwt'][ab:assemblyIdentity/@publicKeyToken='31bf3856ad364e35']"
-                    nameSpace="urn:schemas-microsoft-com:asm.v1"
-                    nameSpacePrefix="ab">
-                    <dependentAssembly xmlns="urn:schemas-microsoft-com:asm.v1">
-                      <assemblyIdentity name="System.IdentityModel.Tokens.Jwt" publicKeyToken="31bf3856ad364e35" culture="neutral" />
-                      <bindingRedirect oldVersion="0.0.0.0-32767.32767.32767.32767" newVersion="8.4.0.0" />
-                    </dependentAssembly>
-                  </node>
-                  
-                  <node path="/configuration/runtime/ab:assemblyBinding"
-                    action="update"
-                    collision="save"
-                    targetpath="/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='Microsoft.IdentityModel.Tokens'][ab:assemblyIdentity/@publicKeyToken='31bf3856ad364e35']"
-                    nameSpace="urn:schemas-microsoft-com:asm.v1"
-                    nameSpacePrefix="ab">
-                    <dependentAssembly xmlns="urn:schemas-microsoft-com:asm.v1">
-                      <assemblyIdentity name="Microsoft.IdentityModel.Tokens" publicKeyToken="31bf3856ad364e35" culture="neutral" />
-                      <bindingRedirect oldVersion="0.0.0.0-32767.32767.32767.32767" newVersion="8.4.0.0" />
-                    </dependentAssembly>
-                  </node>
-                  
-                  <node path="/configuration/runtime/ab:assemblyBinding"
-                    action="update"
-                    collision="save"
-                    targetpath="/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='Microsoft.IdentityModel.Protocols'][ab:assemblyIdentity/@publicKeyToken='31bf3856ad364e35']"
-                    nameSpace="urn:schemas-microsoft-com:asm.v1"
-                    nameSpacePrefix="ab">
-                    <dependentAssembly xmlns="urn:schemas-microsoft-com:asm.v1">
-                      <assemblyIdentity name="Microsoft.IdentityModel.Protocols" publicKeyToken="31bf3856ad364e35" culture="neutral" />
-                      <bindingRedirect oldVersion="0.0.0.0-32767.32767.32767.32767" newVersion="8.4.0.0" />
-                    </dependentAssembly>
-                  </node>
-                  
-                  <node path="/configuration/runtime/ab:assemblyBinding"
-                    action="update"
-                    collision="save"
-                    targetpath="/configuration/runtime/ab:assemblyBinding/ab:dependentAssembly[ab:assemblyIdentity/@name='Microsoft.IdentityModel.Protocols.OpenIdConnect'][ab:assemblyIdentity/@publicKeyToken='31bf3856ad364e35']"
-                    nameSpace="urn:schemas-microsoft-com:asm.v1"
-                    nameSpacePrefix="ab">
-                    <dependentAssembly xmlns="urn:schemas-microsoft-com:asm.v1">
-                      <assemblyIdentity name="Microsoft.IdentityModel.Protocols.OpenIdConnect" publicKeyToken="31bf3856ad364e35" culture="neutral" />
-                      <bindingRedirect oldVersion="0.0.0.0-32767.32767.32767.32767" newVersion="8.4.0.0" />
-                    </dependentAssembly>
-                  </node>
-                </nodes>
-              </configuration>
-            </install>
-          </config>
         </component>
 
       </components>
