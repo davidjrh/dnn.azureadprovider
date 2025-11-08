@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="AzureADProvider" type="Auth_System" version="04.04.06">
+    <package name="AzureADProvider" type="Auth_System" version="04.04.07">
       <friendlyName>DNN Azure Active Directory Provider</friendlyName>
       <description>
         The DNN Azure Active Directory Provider is an Authentication provider for DNN Platform that uses Azure Active Directory OAuth2 authentication to authenticate users.
@@ -67,68 +67,81 @@
               <path>bin</path>
               <name>Microsoft.IdentityModel.JsonWebTokens.dll</name>
             </assembly>
-			  <assembly>
-				  <path>bin</path>
-				  <name>Microsoft.Graph.dll</name>
-			  </assembly>
-			  <assembly>
-				  <path>bin</path>
-				  <name>Microsoft.Graph.Core.dll</name>
-			  </assembly>
-			  <assembly>
-				  <path>bin</path>
-				  <name>Microsoft.Identity.Client.dll</name>
-			  </assembly>
-			  <assembly>
-				  <path>bin</path>
-				  <name>Microsoft.Bcl.AsyncInterfaces.dll</name>
-			  </assembly>
-			  <assembly>
-				  <path>bin</path>
-				  <name>Azure.Core.dll</name>
-			  </assembly>
-			  <assembly>
-				  <path>bin</path>
-				  <name>System.Text.Json.dll</name>
-			  </assembly>
-			  <assembly>
-				  <path>bin</path>
-				  <name>System.Threading.Tasks.Extensions.dll</name>
-			  </assembly>
-			  <assembly>
-				  <path>bin</path>
-				  <name>System.Text.Encodings.Web.dll</name>
-			  </assembly>
-			  <assembly>
-				  <name>System.ValueTuple.dll</name>
-				  <path>bin</path>
-			  </assembly>
-			  <assembly>
-				  <name>System.Memory.dll</name>
-				  <path>bin</path>
-			  </assembly>
-			  <assembly>
-				  <path>bin</path>
-				  <name>System.Memory.Data.dll</name>
-			  </assembly>
-			  <assembly>
-				  <name>System.Diagnostics.DiagnosticSource.dll</name>
-				  <path>bin</path>
-			  </assembly>
-			  <assembly>
-				  <name>System.Runtime.CompilerServices.Unsafe.dll</name>
-				  <path>bin</path>
-			  </assembly>
-			  <assembly>
-				  <name>System.Buffers.dll</name>
-				  <path>bin</path>
-			  </assembly>
-			  <assembly>
-				  <name>System.Numerics.Vectors.dll</name>
-				  <path>bin</path>
-			  </assembly>
-		  </assemblies>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.Graph.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.Graph.Core.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.Identity.Client.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Microsoft.Bcl.AsyncInterfaces.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>Azure.Core.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Text.Json.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Threading.Tasks.Extensions.dll</name>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Text.Encodings.Web.dll</name>
+            </assembly>
+            <assembly>
+              <name>System.ValueTuple.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>System.Memory.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <path>bin</path>
+              <name>System.Memory.Data.dll</name>
+            </assembly>
+            <assembly>
+              <name>System.Diagnostics.DiagnosticSource.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>System.Runtime.CompilerServices.Unsafe.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>System.Buffers.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>System.Numerics.Vectors.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>Microsoft.IdentityModel.Abstractions.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>Microsoft.Bcl.Memory.dll</name>
+              <path>bin</path>
+            </assembly>
+            <assembly>
+              <name>Microsoft.Bcl.TimeProvider.dll</name>
+              <path>bin</path>
+            </assembly>
+          </assemblies>
         </component>
+
         <component type="ResourceFile">
           <resourceFiles>
             <basePath>DesktopModules/AuthenticationServices/Azure</basePath>
@@ -137,6 +150,7 @@
             </resourceFile>
           </resourceFiles>
         </component>
+
         <component type="ResourceFile">
           <resourceFiles>
             <basePath>DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.AzureAD</basePath>
@@ -175,20 +189,20 @@
               <version>04.00.00</version>
             </script>
 
-			  <script type="Install">
-				  <path>Providers\DataProviders\SqlDataProvider</path>
-				  <name>04.03.00.SqlDataProvider</name>
-				  <version>04.03.00</version>
-			  </script>
+            <script type="Install">
+              <path>Providers\DataProviders\SqlDataProvider</path>
+              <name>04.03.00.SqlDataProvider</name>
+              <version>04.03.00</version>
+            </script>
 
-			  <script type="UnInstall" >
+            <script type="UnInstall" >
               <path>Providers\DataProviders\SqlDataProvider</path>
               <name>uninstall.SqlDataProvider</name>
               <version>03.00.00</version>
             </script>
           </scripts>
         </component>
-        
+
       </components>
     </package>
   </packages>

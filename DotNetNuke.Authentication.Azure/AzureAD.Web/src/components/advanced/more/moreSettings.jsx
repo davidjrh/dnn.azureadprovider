@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { GridSystem, GridCell, Switch, SingleLineInputWithError, Button, InputGroup, DropdownWithError} from "@dnnsoftware/dnn-react-common";
+import { GridSystem, GridCell, SingleLineInputWithError, Button, InputGroup, DropdownWithError} from "@dnnsoftware/dnn-react-common";
 import SettingsActions from "../../../actions/settings";
 import resx from "../../../resources";
 import "../advancedSettings.less";

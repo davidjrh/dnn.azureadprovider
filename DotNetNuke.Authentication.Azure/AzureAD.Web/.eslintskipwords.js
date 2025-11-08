@@ -127,6 +127,5 @@ module.exports = [
     "searchpanel",
     "uncollapse",
     "dev",
-    "devtools",
     "ctrl"
 ]
