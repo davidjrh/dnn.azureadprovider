@@ -29,7 +29,7 @@ class App extends Component {
         return (
             <div id="AzureADAppContainer">
                 <PersonaBarPage isOpen="true">
-                    <PersonaBarPageHeader title="Azure Active Directory" titleCharLimit={30}>
+                    <PersonaBarPageHeader title="Microsoft Entra ID" titleCharLimit={30}>
                     </PersonaBarPageHeader>
                     <PersonaBarPageBody>
                         <Tabs

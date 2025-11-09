@@ -4,13 +4,13 @@
 		<id>DotNetNuke.Authentication.Azure</id>
 		<version>4.4.5</version>
 		<title>DotNetNuke.Authentication.Azure</title>
-		<authors>Intelequia Technologies</authors>
-		<owners>Intelequia Technologies</owners>
+		<authors>Intelequia</authors>
+		<owners>Intelequia</owners>
 		<licenseUrl>https://raw.githubusercontent.com/davidjrh/dnn.azureadprovider/master/LICENSE</licenseUrl>
 		<projectUrl>https://github.com/davidjrh/dnn.azureadprovider</projectUrl>
 		<iconUrl>https://intelequia.com/favicon-32x32.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
-		<description>DNN Azure AD Authentication provider library</description>
+		<description>Microsoft Entra ID Authentication provider library</description>
 		<releaseNotes>See https://github.com/davidjrh/dnn.azureadprovider/releases</releaseNotes>
 		<copyright>Copyright 2023</copyright>
 		<tags>Intelequia DNN AzureAD</tags>

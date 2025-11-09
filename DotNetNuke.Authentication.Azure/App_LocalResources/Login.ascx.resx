@@ -118,15 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="LoginAzure.Text" xml:space="preserve">
-    <value>Sign in with Azure</value>
+    <value>Sign in with Microsoft Entra ID</value>
   </data>
   <data name="LoginError.Text" xml:space="preserve">
     <value>Error: {0}&lt;br/&gt;Details: {1}</value>
   </data>
   <data name="RegisterAzure.Text" xml:space="preserve">
-    <value>Register with Azure</value>
+    <value>Register with Microsoft Entra ID</value>
   </data>
   <data name="Title.Text" xml:space="preserve">
-    <value>Azure</value>
+    <value>Microsoft Entra ID</value>
   </data>
 </root>
