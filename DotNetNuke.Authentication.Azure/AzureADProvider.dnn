@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="AzureADProvider" type="Auth_System" version="04.04.07">
+    <package name="AzureADProvider" type="Auth_System" version="04.05.00">
       <friendlyName>Microsoft Entra ID Provider</friendlyName>
       <description>
         The Microsoft Entra ID Provider is an Authentication provider for DNN Platform that uses Microsoft Entra ID OAuth2 authentication to authenticate users.
