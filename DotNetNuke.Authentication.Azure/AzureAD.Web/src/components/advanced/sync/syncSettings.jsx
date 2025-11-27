@@ -50,7 +50,8 @@ class SyncSettings extends Component {
             userSyncEnabled: (key === "userSyncEnabled") ? !props.userSyncEnabled : props.userSyncEnabled,
             profileSyncEnabled: (key === "profileSyncEnabled") ? !props.profileSyncEnabled : props.profileSyncEnabled,
             usernamePrefixEnabled: (key === "usernamePrefixEnabled") ? !props.usernamePrefixEnabled : props.usernamePrefixEnabled,
-            groupNamePrefixEnabled: (key === "groupNamePrefixEnabled") ? !props.groupNamePrefixEnabled : props.groupNamePrefixEnabled
+            groupNamePrefixEnabled: (key === "groupNamePrefixEnabled") ? !props.groupNamePrefixEnabled : props.groupNamePrefixEnabled,
+            removeExpiredRoleMembershipsEnabled: (key === "removeExpiredRoleMembershipsEnabled") ? !props.removeExpiredRoleMembershipsEnabled : props.removeExpiredRoleMembershipsEnabled
         }));
     }    
 
@@ -71,7 +72,8 @@ class SyncSettings extends Component {
             userSyncEnabled: props.userSyncEnabled,
             profileSyncEnabled: props.profileSyncEnabled,
             usernamePrefixEnabled: props.usernamePrefixEnabled,
-            groupNamePrefixEnabled: props.groupNamePrefixEnabled
+            groupNamePrefixEnabled: props.groupNamePrefixEnabled,
+            removeExpiredRoleMembershipsEnabled: props.removeExpiredRoleMembershipsEnabled
         }, () => {
             utils.utilities.notify(resx.get("SettingsUpdateSuccess"));
             this.setState({
@@ -103,6 +105,10 @@ class SyncSettings extends Component {
                                 tooltipMessage={resx.get("lblProfileSyncEnabled.Help")}
                                 value={this.props.profileSyncEnabled}
                                 onChange={this.onSettingChange.bind(this, "profileSyncEnabled")} />
+                            <Switch label={resx.get("lblRemoveExpiredRoleMembershipsEnabled")} onText="" offText=""
+                                tooltipMessage={resx.get("lblRemoveExpiredRoleMembershipsEnabled.Help")}
+                                value={this.props.removeExpiredRoleMembershipsEnabled}
+                                onChange={this.onSettingChange.bind(this, "removeExpiredRoleMembershipsEnabled")} />
                         </GridCell>                           
                         <GridCell columnSize={100}>
                             <h1 className={"sectionLabel"}>{resx.get("lblAADSettings")}</h1>
@@ -199,7 +205,8 @@ SyncSettings.propTypes = {
     userSyncEnabled: PropTypes.bool,
     profileSyncEnabled: PropTypes.bool,
     usernamePrefixEnabled: PropTypes.bool,
-    groupNamePrefixEnabled: PropTypes.bool
+    groupNamePrefixEnabled: PropTypes.bool,
+    removeExpiredRoleMembershipsEnabled: PropTypes.bool
 };
 
 
@@ -213,7 +220,8 @@ function mapStateToProps(state) {
         userSyncEnabled: state.settings.userSyncEnabled,
         profileSyncEnabled: state.settings.profileSyncEnabled,
         usernamePrefixEnabled: state.settings.usernamePrefixEnabled,
-        groupNamePrefixEnabled: state.settings.groupNamePrefixEnabled
+        groupNamePrefixEnabled: state.settings.groupNamePrefixEnabled,
+        removeExpiredRoleMembershipsEnabled: state.settings.removeExpiredRoleMembershipsEnabled
     };
 }
 export default connect(mapStateToProps)(SyncSettings);

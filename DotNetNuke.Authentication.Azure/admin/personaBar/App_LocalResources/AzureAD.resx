@@ -351,6 +351,12 @@
   <data name="lblProfileSyncEnabled.Text" xml:space="preserve">
     <value>Profile Sync</value>
   </data>
+  <data name="lblRemoveExpiredRoleMembershipsEnabled.Help" xml:space="preserve">
+    <value>When enabled, users with expired role memberships in DNN will be removed from corresponding groups in Entra ID during synchronization</value>
+  </data>
+  <data name="lblRemoveExpiredRoleMembershipsEnabled.Text" xml:space="preserve">
+    <value>Remove Expired Role Memberships from Entra ID</value>
+  </data>
   <data name="lblRedirectUri.Help" xml:space="preserve">
     <value>If specified, the redirect uri after a successful login. By default (blank), the user will be redirected to the page originating the login redirection.</value>
   </data>
