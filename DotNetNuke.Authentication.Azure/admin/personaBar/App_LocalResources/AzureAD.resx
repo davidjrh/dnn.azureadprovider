@@ -184,7 +184,7 @@
     <value>Provider credentials</value>
   </data>
   <data name="lblTabDescription.Text" xml:space="preserve">
-    <value>The Microsoft Entra ID Provider is an Authentication provider for DNN Platform that uses Microsoft Entra ID OAuth2 authentication to authenticate users.</value>
+    <value>The Microsoft Entra ID Provider is an Authentication provider that uses Microsoft Entra ID OAuth2 authentication to authenticate users.</value>
   </data>
   <data name="SaveSettings.Text" xml:space="preserve">
     <value>Save Settings</value>
@@ -211,13 +211,13 @@
     <value>Add Mapping</value>
   </data>
   <data name="DnnProfileProperty.Header.Text" xml:space="preserve">
-    <value>DNN Profile Property</value>
+    <value>User Profile Property</value>
   </data>
   <data name="DnnProperty.Header.Text" xml:space="preserve">
-    <value>DNN Property</value>
+    <value>User Property</value>
   </data>
   <data name="DnnRole.Header.Text" xml:space="preserve">
-    <value>DNN Role</value>
+    <value>Role</value>
   </data>
   <data name="ErrorMappingDuplicated.Text" xml:space="preserve">
     <value>This item is already mapped</value>
@@ -271,7 +271,7 @@
     <value>Entra ID Extension</value>
   </data>
   <data name="lblAadPropertyName.Help" xml:space="preserve">
-    <value>This is the Entra ID property against which the DNN property will be mapped.</value>
+    <value>This is the Entra ID property against which the user property will be mapped.</value>
   </data>
   <data name="lblAadPropertyName.Text" xml:space="preserve">
     <value>Entra ID Property</value>
@@ -301,28 +301,28 @@
     <value>Audiences</value>
   </data>
   <data name="lblDnnProfilePropertyName.Help" xml:space="preserve">
-    <value>The DNN profile property you want to map with a Entra ID claim</value>
+    <value>The user profile property you want to map with a Entra ID claim</value>
   </data>
   <data name="lblDnnProfilePropertyName.Text" xml:space="preserve">
-    <value>DNN profile property*</value>
+    <value>User profile property*</value>
   </data>
   <data name="lblDnnPropertyName.Help" xml:space="preserve">
-    <value>This is the DNN property that is going to be mapped against a Entra ID property</value>
+    <value>This is the user property that is going to be mapped against a Entra ID property</value>
   </data>
   <data name="lblDnnPropertyName.Text" xml:space="preserve">
-    <value>DNN Property</value>
+    <value>User Property</value>
   </data>
   <data name="lblDnnRoleName.Help" xml:space="preserve">
-    <value>The DNN role you want to map with a Entra ID role</value>
+    <value>The local role you want to map with a Entra ID role</value>
   </data>
   <data name="lblDnnRoleName.Text" xml:space="preserve">
-    <value>DNN Role*</value>
+    <value>Local Role*</value>
   </data>
   <data name="lblDnnUserPropertyName.Help" xml:space="preserve">
-    <value>The DNN user property you want to map with a Entra ID claim</value>
+    <value>The user property you want to map with a Entra ID claim</value>
   </data>
   <data name="lblDnnUserPropertyName.Text" xml:space="preserve">
-    <value>DNN user property*</value>
+    <value>User property*</value>
   </data>
   <data name="lblGraphClient.Help" xml:space="preserve">
     <value>A Tenant ID, an Application ID and an Application Secret are needed to use the Microsoft Graph API. By default, the ones introduced in General Settings will be used, but you can also specify different ones.</value>
@@ -361,7 +361,7 @@
     <value>You must specify a full, valid HTTPS or localhost URL</value>
   </data>
   <data name="lblOnErrorUri.Help" xml:space="preserve">
-    <value>If specified, when an Microsoft Entra auth error happens the user is redirected to the url instead of showing the default DNN login page.</value>
+    <value>If specified, when an Microsoft Entra auth error happens the user is redirected to the url instead of showing the default login page.</value>
   </data>
   <data name="lblOnErrorUri.Text" xml:space="preserve">
     <value>On Auth Error Uri</value>
@@ -385,14 +385,13 @@
     <value>Synchronization</value>
   </data>
   <data name="lblSynchronizationDesc.Text" xml:space="preserve">
-    <value>The synchronization process can automatically sync roles, users and profiles from your Microsoft Entra tenant into your DNN portal. This can affect login performance.</value>
+    <value>The synchronization process can automatically sync roles, users and profiles from your Microsoft Entra tenant into your portal. This can affect login performance.</value>
   </data>
   <data name="lblTabDescription.Text1" xml:space="preserve">
-    <value>The Microsoft Entra ID Provider is an Authentication provider for DNN Platform that uses Microsoft Entra ID OAuth2 authentication to authenticate users.</value>
+    <value>The Microsoft Entra ID Provider is an Authentication provider that uses Microsoft Entra ID OAuth2 authentication to authenticate users.</value>
   </data>
   <data name="lblTokenValidation.Help" xml:space="preserve">
-    <value>This provider supports JWT authorization. You can get a JWT token directly from the Microsoft Entra API with your desired audiences, and then call a DNN WebAPI controller. Below 
-	you can specify different settings to validate issued tokens.</value>
+    <value>This provider supports JWT authorization. You can get a JWT token directly from the Microsoft Entra API with your desired audiences, and then call a WebAPI controller. Below you can specify different settings to validate issued tokens.</value>
   </data>
   <data name="lblTokenValidation.Text" xml:space="preserve">
     <value>Token Validation</value>
@@ -413,7 +412,7 @@
     <value>USER PROPERTIES MAPPINGS</value>
   </data>
   <data name="MappingDeletedWarning.Text" xml:space="preserve">
-    <value>Are you sure you want to delete this mapping?&lt;br/&gt;Microsoft Entra users will remain in the DNN role</value>
+    <value>Are you sure you want to delete this mapping?&lt;br/&gt;Microsoft Entra users will remain in the local role</value>
   </data>
   <data name="MappingDeleteSuccess.Text" xml:space="preserve">
     <value>Mapping removed successfully</value>
@@ -514,7 +513,7 @@
     <value>User Sync</value>
   </data>
   <data name="lblAutoMatchExistingUsers.Help" xml:space="preserve">
-    <value>If enabled, when signing in with Microsoft Entra by providing a username identical to an existing user created on DNN, will automatically bind that user to the Microsoft Entra one.</value>
+    <value>If enabled, when signing in with Microsoft Entra by providing a username identical to an existing user created locally, will automatically bind that user to the Microsoft Entra one.</value>
   </data>
   <data name="lblAutoMatchExistingUsers.Text" xml:space="preserve">
     <value>Auto-Match Existing Users</value>
