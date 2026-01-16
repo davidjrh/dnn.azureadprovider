@@ -206,6 +206,8 @@ namespace DotNetNuke.Authentication.Azure.ScheduledTasks
                     {
                         try
                         {
+                            // Delete object permissions associated with this role before deleting the role
+                            DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, $"DELETE {DotNetNuke.Data.DataProvider.Instance().DatabaseOwner}{DotNetNuke.Data.DataProvider.Instance().ObjectQualifier}PBI_ObjectPermissions WHERE RoleID = @0", dnnRole.RoleID);
                             RoleController.Instance.DeleteRole(dnnRole);
                             // This is a workaround due to a bug in DNN where RoleSettings are not deleted when a role is deleted
                             DotNetNuke.Data.DataContext.Instance().Execute(System.Data.CommandType.Text, $"DELETE {DotNetNuke.Data.DataProvider.Instance().DatabaseOwner}{DotNetNuke.Data.DataProvider.Instance().ObjectQualifier}RoleSettings WHERE RoleID = @0", dnnRole.RoleID);
