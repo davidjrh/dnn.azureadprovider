@@ -68,6 +68,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             AutoMatchExistingUsers = bool.Parse(GetScopedSetting(Service + "_AutoMatchExistingUsers", portalId, "false"));
             AuthorizationCodePrompt = GetScopedSetting(Service + "_AuthorizationCodePrompt", portalId, "");
             DomainHint = GetScopedSetting(Service + "_DomainHint", portalId, "");
+            RemoveExpiredRoleMembershipsEnabled = bool.Parse(GetScopedSetting(Service + "_RemoveExpiredRoleMembershipsEnabled", portalId, "false"));
         }
 
         public static string GetSetting(string service, string key, int portalId, string defaultValue)
@@ -130,6 +131,8 @@ namespace DotNetNuke.Authentication.Azure.Components
         public bool UserSyncEnabled { get; set; }
         [SortOrder(24)]
         public bool AutoMatchExistingUsers { get; set; }
+        [SortOrder(25)]
+        public bool RemoveExpiredRoleMembershipsEnabled { get; set; }
 
 
 
@@ -177,6 +180,7 @@ namespace DotNetNuke.Authentication.Azure.Components
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_AutoMatchExistingUsers", config.AutoMatchExistingUsers.ToString());
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_AuthorizationCodePrompt", config.AuthorizationCodePrompt);
             UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_DomainHint", config.DomainHint);
+            UpdateScopedSetting(config.UseGlobalSettings, config.PortalID, config.Service + "_RemoveExpiredRoleMembershipsEnabled", config.RemoveExpiredRoleMembershipsEnabled.ToString());
 
             UpdateConfig((OAuthConfigBase)config);
 
