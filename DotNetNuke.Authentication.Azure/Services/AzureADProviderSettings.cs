@@ -77,6 +77,8 @@ namespace DotNetNuke.Authentication.Azure.Services
         public string DomainHint { get; set; }
         [DataMember(Name = "autoMatchExistingUsers")]
         public bool AutoMatchExistingUsers { get; set; }
+        [DataMember(Name = "removeExpiredRoleMembershipsEnabled")]
+        public bool RemoveExpiredRoleMembershipsEnabled { get; set; }
 
 
 
@@ -108,7 +110,8 @@ namespace DotNetNuke.Authentication.Azure.Services
                 UsernamePrefixEnabled = config.UsernamePrefixEnabled,
                 GroupNamePrefixEnabled = config.GroupNamePrefixEnabled,
                 AuthorizationCodePrompt = config.AuthorizationCodePrompt,
-                DomainHint = config.DomainHint
+                DomainHint = config.DomainHint,
+                RemoveExpiredRoleMembershipsEnabled = config.RemoveExpiredRoleMembershipsEnabled
             };
         }
 
@@ -143,7 +146,8 @@ namespace DotNetNuke.Authentication.Azure.Services
                 UserSyncEnabled = settings.UserSyncEnabled,
                 ProfileSyncEnabled = settings.ProfileSyncEnabled,
                 UsernamePrefixEnabled = settings.UsernamePrefixEnabled,
-                GroupNamePrefixEnabled = settings.GroupNamePrefixEnabled
+                GroupNamePrefixEnabled = settings.GroupNamePrefixEnabled,
+                RemoveExpiredRoleMembershipsEnabled = settings.RemoveExpiredRoleMembershipsEnabled
             };
 
             AzureConfig.UpdateConfig(config);
