@@ -845,15 +845,6 @@ namespace DotNetNuke.Authentication.Azure.Components
             HttpContext.Current.Response.Cookies.Add(authTokenCookie);
         }
 
-        private List<string> GetDnnAadRoles()
-        {
-            // This is the list of DNN roles coming from B2C
-            return RoleController.Instance.GetRoles(PortalSettings.Current.PortalId)
-                .Where(r => r.Settings.ContainsKey(RoleSettingsAadPropertyName) && r.Settings[RoleSettingsAadPropertyName] == RoleSettingsAadPropertyValue)
-                .Select((roleInfo) => roleInfo.RoleName)
-                .ToList();
-        }
-
         private int AddRole(string roleName, string roleDescription, bool isFromAad)
         {
             var roleId = RoleController.Instance.AddRole(new RoleInfo
@@ -918,9 +909,8 @@ namespace DotNetNuke.Authentication.Azure.Components
                     groups.RemoveAll(x => !aadRoles.Contains(x.DisplayName));
                 }
 
-                var dnnAadRoles = GetDnnAadRoles();
                 // In DNN, remove user from roles where the user doesn't belong to in AAD (we'll take care only AAD roles)
-                foreach (var dnnUserRole in userInfo.Roles.Where(role => dnnAadRoles.Contains(role)))
+                foreach (var dnnUserRole in userInfo.Roles)
                 {
                     var aadGroupName = dnnUserRole;
                     var roleName = dnnUserRole;
@@ -933,7 +923,10 @@ namespace DotNetNuke.Authentication.Azure.Components
                     if (groups.FirstOrDefault(aadGroup => $"{groupPrefix}{aadGroup.DisplayName}" == aadGroupName) == null)
                     {
                         var role = RoleController.Instance.GetRoleByName(PortalSettings.Current.PortalId, roleName);
-                        RoleController.DeleteUserRole(userInfo, role, PortalSettings.Current, false);
+                        if (role != null && role.Settings.ContainsKey(RoleSettingsAadPropertyName) && role.Settings[RoleSettingsAadPropertyName] == RoleSettingsAadPropertyValue)
+                        {
+                            RoleController.DeleteUserRole(userInfo, role, PortalSettings.Current, false);
+                        }
                     }
                 }
 
